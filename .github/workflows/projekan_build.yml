@@ -1,0 +1,29 @@
+name: Projekan Build
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Up JDK
+        uses: actions/setup-java@v2
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Change Wrapper Permissions
+        run: chmod +x ./gradlew
+
+      - name: Run Unit Tests
+        run: ./gradlew test
+
+      - name: Build Project
+        run: ./gradlew assemble
