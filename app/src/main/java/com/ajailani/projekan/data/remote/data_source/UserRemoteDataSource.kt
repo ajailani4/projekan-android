@@ -1,4 +1,12 @@
 package com.ajailani.projekan.data.remote.data_source
 
-class UserRemoteDataSource {
+import com.ajailani.projekan.data.remote.api_service.AuthService
+import com.ajailani.projekan.data.remote.dto.request.LoginRequest
+import javax.inject.Inject
+
+class UserRemoteDataSource @Inject constructor(
+    private val authService: AuthService
+) {
+    suspend fun login(loginRequest: LoginRequest) =
+        authService.login(loginRequest)
 }
