@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Projekan</string>
+
+    <string name="incorrect_username_or_pass">Username atau password salah</string>
+    <string name="something_wrong_happened">Maaf, terjadi kesalahan</string>
+</resources>
