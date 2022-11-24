@@ -7,6 +7,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 val Typography = Typography(
+    h1 = TextStyle(
+        fontFamily = montserratFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 24.sp
+    ),
     h2 = TextStyle(
         fontFamily = montserratFamily,
         fontWeight = FontWeight.Bold,
@@ -22,6 +27,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp
     ),
+    button = TextStyle(
+        fontFamily = poppinsFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 15.sp
+    ),
     body1 = TextStyle(
         fontFamily = poppinsFamily,
         fontWeight = FontWeight.Normal,
@@ -31,6 +41,5 @@ val Typography = Typography(
         fontFamily = poppinsFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 13.sp
-    ),
-
+    )
 )

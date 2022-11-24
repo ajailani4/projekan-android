@@ -2,6 +2,11 @@
 <resources>
     <string name="app_name">Projekan</string>
 
+    <string name="welcome_to_projekan">Selamat Datang di Projekan</string>
+    <string name="manage_your_projects">Ayo kelola proyekmu</string>
+
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
     <string name="incorrect_username_or_pass">Username atau password salah</string>
     <string name="something_wrong_happened">Maaf, terjadi kesalahan</string>
 </resources>

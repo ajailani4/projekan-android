@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Projekan</string>
 
+    <string name="welcome_to_projekan">Welcome to Projekan</string>
+    <string name="manage_your_projects">Let\'s manage your projects</string>
+
+    <string name="login">Login</string>
+    <string name="register">Register</string>
     <string name="incorrect_username_or_pass">Username or password is incorrect</string>
     <string name="something_wrong_happened">Sorry, something wrong happened</string>
 </resources>
