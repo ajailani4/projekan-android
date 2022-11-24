@@ -10,6 +10,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.ajailani.projekan.ui.Navigation
+import com.ajailani.projekan.ui.Screen
 import com.ajailani.projekan.ui.theme.ProjekanTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Content()
+                    Content(Screen.WelcomeScreen.route)
                 }
             }
         }
@@ -29,6 +32,8 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Content() {
+fun Content(startDestination: String) {
+    val navController = rememberNavController()
 
+    Navigation(navController = navController, startDestination = startDestination)
 }
