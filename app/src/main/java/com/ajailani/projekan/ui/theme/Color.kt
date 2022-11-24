@@ -17,7 +17,7 @@ val light_error = Color(0xFFCF082B)
 val light_onError = Color(0xFFFFFFFF)
 
 // Dark Theme
-val dark_primary = Color(0xFFC3630E)
+val dark_primary = Color(0xFFE07210)
 val dark_onPrimary = Color(0xFFFFFFFF)
 val dark_primaryVariant = Color(0xFFCC6F27)
 val dark_secondary = Color(0xFF00933F)
