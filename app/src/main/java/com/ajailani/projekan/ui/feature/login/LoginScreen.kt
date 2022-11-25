@@ -10,6 +10,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -73,6 +75,12 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     value = username,
                     onValueChange = { onEvent(LoginEvent.OnUsernameChanged(it)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "Username icon"
+                        )
+                    },
                     label = {
                         Text(text = stringResource(id = R.string.username))
                     },
@@ -83,6 +91,12 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     value = password,
                     onValueChange = { onEvent(LoginEvent.OnPasswordChanged(it)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = "Password icon"
+                        )
+                    },
                     label = {
                         Text(text = stringResource(id = R.string.password))
                     },
