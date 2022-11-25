@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.UIState
+import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
 
 @Composable
 fun LoginScreen(
@@ -123,7 +124,7 @@ fun LoginScreen(
         // Observe login state
         when (loginState) {
             UIState.Loading -> {
-
+                ProgressBarWithBackground()
             }
 
             is UIState.Success -> {
