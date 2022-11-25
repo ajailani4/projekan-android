@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -42,6 +43,7 @@ fun LoginScreen(
     val password = loginViewModel.password
     val passwordVisibility = loginViewModel.passwordVisibility
 
+    val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
     val context = LocalContext.current
@@ -130,7 +132,17 @@ fun LoginScreen(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,
-                    onClick = { onEvent(LoginEvent.LogIn) }
+                    onClick = {
+                        if (username.isNotEmpty() && password.isNotEmpty()) {
+                            onEvent(LoginEvent.LogIn)
+                        } else {
+                            coroutineScope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar(
+                                    context.getString(R.string.fill_the_form)
+                                )
+                            }
+                        }
+                    }
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
