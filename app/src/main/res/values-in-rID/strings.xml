@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Projekan</string>
+
+    <string name="welcome_to_projekan">Selamat Datang di Projekan</string>
+    <string name="manage_your_projects">Ayo kelola proyekmu</string>
+
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+
+    <string name="username">Username</string>
+    <string name="password">Kata Sandi</string>
+    <string name="have_no_account">Belum punya akun?</string>
+    <string name="register_here">Daftar di sini</string>
+    <string name="incorrect_username_or_pass">Username atau password salah</string>
+    <string name="something_wrong_happened">Maaf, terjadi kesalahan</string>
+</resources>
