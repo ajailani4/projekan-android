@@ -13,4 +13,9 @@
     <string name="register_here">Register here</string>
     <string name="incorrect_username_or_pass">Username or password is incorrect</string>
     <string name="something_wrong_happened">Sorry, something wrong happened</string>
+
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="have_account">Have an account?</string>
+    <string name="login_here">Login here</string>
 </resources>
