@@ -15,7 +15,9 @@ import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.theme.Grey
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(
+    onNavigateToLogin: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -44,7 +46,7 @@ fun WelcomeScreen() {
         Button(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.large,
-            onClick = { /*TODO*/ }
+            onClick = onNavigateToLogin
         ) {
             Text(
                 modifier = Modifier.padding(5.dp),

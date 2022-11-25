@@ -6,6 +6,11 @@
 
     <string name="login">Login</string>
     <string name="register">Register</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="have_no_account">Don\'t have an account?</string>
+    <string name="register_here">Register here</string>
     <string name="incorrect_username_or_pass">Username or password is incorrect</string>
     <string name="something_wrong_happened">Sorry, something wrong happened</string>
 </resources>

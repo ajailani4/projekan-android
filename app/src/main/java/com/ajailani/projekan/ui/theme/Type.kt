@@ -22,9 +22,14 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp
     ),
-    subtitle1 = TextStyle(
+    h4 = TextStyle(
         fontFamily = montserratFamily,
         fontWeight = FontWeight.Bold,
+        fontSize = 16.sp
+    ),
+    subtitle1 = TextStyle(
+        fontFamily = poppinsFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
     button = TextStyle(
@@ -41,5 +46,10 @@ val Typography = Typography(
         fontFamily = poppinsFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 13.sp
+    ),
+    caption = TextStyle(
+        fontFamily = poppinsFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp
     )
 )
