@@ -4,5 +4,5 @@ import com.ajailani.projekan.domain.model.UserCredential
 
 val userCredential = UserCredential(
     username = "george",
-    accessToken = "x123x"
+    accessToken = "abcd"
 )
