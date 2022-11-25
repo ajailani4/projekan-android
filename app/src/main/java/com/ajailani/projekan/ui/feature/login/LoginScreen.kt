@@ -6,12 +6,11 @@ import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -21,6 +20,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -75,14 +77,14 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     value = username,
                     onValueChange = { onEvent(LoginEvent.OnUsernameChanged(it)) },
+                    label = {
+                        Text(text = stringResource(id = R.string.username))
+                    },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Person,
                             contentDescription = "Username icon"
                         )
-                    },
-                    label = {
-                        Text(text = stringResource(id = R.string.username))
                     },
                     singleLine = true
                 )
@@ -91,16 +93,36 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     value = password,
                     onValueChange = { onEvent(LoginEvent.OnPasswordChanged(it)) },
+                    label = {
+                        Text(text = stringResource(id = R.string.password))
+                    },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Lock,
                             contentDescription = "Password icon"
                         )
                     },
-                    label = {
-                        Text(text = stringResource(id = R.string.password))
+                    trailingIcon = {
+                        IconButton(onClick = { onEvent(LoginEvent.OnPasswordVisibilityChanged) }) {
+                            Icon(
+                                imageVector = if (passwordVisibility) {
+                                    Icons.Default.VisibilityOff
+                                } else {
+                                    Icons.Default.Visibility
+                                },
+                                contentDescription = "Password visibility icon"
+                            )
+                        }
                     },
-                    singleLine = true
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password
+                    ),
+                    visualTransformation = if (passwordVisibility) {
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    }
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
