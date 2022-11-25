@@ -14,7 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.ajailani.projekan.ui.Navigation
 import com.ajailani.projekan.ui.Screen
 import com.ajailani.projekan.ui.theme.ProjekanTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

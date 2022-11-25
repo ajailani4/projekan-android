@@ -1,5 +1,8 @@
 package com.ajailani.projekan.ui.feature.login
 
+import android.app.Activity
+import android.util.Log
+import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
@@ -8,18 +11,38 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajailani.projekan.R
+import com.ajailani.projekan.ui.common.UIState
 
 @Composable
-fun LoginScreen() {
-    Scaffold { innerPadding ->
+fun LoginScreen(
+    loginViewModel: LoginViewModel = hiltViewModel()
+) {
+    val onEvent = loginViewModel::onEvent
+    val loginState = loginViewModel.loginState
+    val username = loginViewModel.username
+    val password = loginViewModel.password
+    val passwordVisibility = loginViewModel.passwordVisibility
+
+    val scaffoldState = rememberScaffoldState()
+
+    val context = LocalContext.current
+
+    (context as Activity).window
+        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
+    Scaffold(scaffoldState = scaffoldState) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -47,26 +70,28 @@ fun LoginScreen() {
                 Spacer(modifier = Modifier.height(60.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = username,
+                    onValueChange = { onEvent(LoginEvent.OnUsernameChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.username))
-                    }
+                    },
+                    singleLine = true
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = password,
+                    onValueChange = { onEvent(LoginEvent.OnPasswordChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.password))
-                    }
+                    },
+                    singleLine = true
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,
-                    onClick = { /*TODO*/ }
+                    onClick = { onEvent(LoginEvent.LogIn) }
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
@@ -93,6 +118,35 @@ fun LoginScreen() {
                     onClick = {}
                 )
             }
+        }
+
+        // Observe login state
+        when (loginState) {
+            UIState.Loading -> {
+
+            }
+
+            is UIState.Success -> {
+                Log.d("LoginStatus", "Success")
+            }
+
+            is UIState.Fail -> {
+                LaunchedEffect(scaffoldState) {
+                    loginState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            is UIState.Error -> {
+                LaunchedEffect(scaffoldState) {
+                    loginState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            else -> {}
         }
     }
 }
