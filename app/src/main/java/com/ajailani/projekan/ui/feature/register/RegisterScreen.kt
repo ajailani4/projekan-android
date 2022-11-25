@@ -25,7 +25,10 @@ import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.R
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(
+    onNavigateUp: () -> Unit,
+    onNavigateToLogin: () -> Unit
+) {
     val scaffoldState = rememberScaffoldState()
 
     val context = LocalContext.current
@@ -42,7 +45,7 @@ fun RegisterScreen() {
         ) {
             IconButton(
                 modifier = Modifier.padding(top = 8.dp, start = 4.dp),
-                onClick = { /*TODO*/ }
+                onClick = onNavigateUp
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -150,13 +153,13 @@ fun RegisterScreen() {
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
-                        text = stringResource(id = R.string.login)
+                        text = stringResource(id = R.string.register)
                     )
                 }
                 Spacer(modifier = Modifier.height(15.dp))
                 ClickableText(
                     text = buildAnnotatedString {
-                        append(stringResource(id = R.string.have_no_account))
+                        append(stringResource(id = R.string.have_account))
                         append(" ")
 
                         withStyle(
@@ -164,13 +167,13 @@ fun RegisterScreen() {
                                 color = MaterialTheme.colors.primary
                             )
                         ) {
-                            append(stringResource(id = R.string.register_here))
+                            append(stringResource(id = R.string.login_here))
                         }
                     },
                     style = MaterialTheme.typography.body1.copy(
                         color = MaterialTheme.colors.onBackground
                     ),
-                    onClick = {}
+                    onClick = { onNavigateToLogin() }
                 )
             }
         }

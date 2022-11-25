@@ -32,7 +32,9 @@ import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
 
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    onNavigateUp: () -> Unit,
+    onNavigateToRegister: () -> Unit
 ) {
     val onEvent = loginViewModel::onEvent
     val loginState = loginViewModel.loginState
@@ -56,7 +58,7 @@ fun LoginScreen(
         ) {
             IconButton(
                 modifier = Modifier.padding(top = 8.dp, start = 4.dp),
-                onClick = { /*TODO*/ }
+                onClick = onNavigateUp
             ) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
@@ -152,7 +154,7 @@ fun LoginScreen(
                     style = MaterialTheme.typography.body1.copy(
                         color = MaterialTheme.colors.onBackground
                     ),
-                    onClick = {}
+                    onClick = { onNavigateToRegister() }
                 )
             }
         }

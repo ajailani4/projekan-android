@@ -18,7 +18,8 @@ import com.ajailani.projekan.ui.theme.Grey
 
 @Composable
 fun WelcomeScreen(
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToRegister: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -67,7 +68,7 @@ fun WelcomeScreen(
                     width = 1.dp,
                     color = MaterialTheme.colors.primary
                 ),
-                onClick = { /*TODO*/ }
+                onClick = onNavigateToRegister
             ) {
                 Text(
                     modifier = Modifier.padding(5.dp),

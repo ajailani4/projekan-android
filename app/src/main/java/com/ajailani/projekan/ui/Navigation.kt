@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ajailani.projekan.ui.feature.login.LoginScreen
+import com.ajailani.projekan.ui.feature.register.RegisterScreen
 import com.ajailani.projekan.ui.feature.welcome.WelcomeScreen
 
 @Composable
@@ -17,12 +18,33 @@ fun Navigation(
             WelcomeScreen(
                 onNavigateToLogin = {
                     navController.navigate(Screen.LoginScreen.route)
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.RegisterScreen.route)
                 }
             )
         }
 
         composable(Screen.LoginScreen.route) {
-            LoginScreen()
+            LoginScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+                onNavigateToRegister = {
+                    navController.navigate(Screen.RegisterScreen.route)
+                }
+            )
+        }
+
+        composable(Screen.RegisterScreen.route) {
+            RegisterScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.LoginScreen.route)
+                }
+            )
         }
     }
 }
