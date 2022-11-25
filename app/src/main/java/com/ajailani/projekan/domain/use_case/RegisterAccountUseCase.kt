@@ -11,10 +11,11 @@ class RegisterAccountUseCase @Inject constructor(
         email: String,
         username: String,
         password: String
-    ) = authRepository.register(
-        name = name,
-        email = email,
-        username = username,
-        password = password
-    )
+    ) =
+        authRepository.register(
+            name = name,
+            email = email,
+            username = username,
+            password = password
+        )
 }
