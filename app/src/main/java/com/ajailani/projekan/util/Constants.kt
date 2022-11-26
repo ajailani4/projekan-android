@@ -1,4 +1,3 @@
 package com.ajailani.projekan.util
 
-object Constants {
-}
+object Constants

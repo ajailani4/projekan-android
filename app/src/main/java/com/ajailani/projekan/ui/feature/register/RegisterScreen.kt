@@ -1,4 +1,4 @@
-package com.ajailani.projekan.ui.feature.login
+package com.ajailani.projekan.ui.feature.register
 
 import android.app.Activity
 import android.util.Log
@@ -32,16 +32,18 @@ import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginScreen(
-    loginViewModel: LoginViewModel = hiltViewModel(),
+fun RegisterScreen(
+    registerViewModel: RegisterViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToRegister: () -> Unit
+    onNavigateToLogin: () -> Unit
 ) {
-    val onEvent = loginViewModel::onEvent
-    val loginState = loginViewModel.loginState
-    val username = loginViewModel.username
-    val password = loginViewModel.password
-    val passwordVisibility = loginViewModel.passwordVisibility
+    val onEvent = registerViewModel::onEvent
+    val registerState = registerViewModel.registerState
+    val name = registerViewModel.name
+    val email = registerViewModel.email
+    val username = registerViewModel.username
+    val password = registerViewModel.password
+    val passwordVisibility = registerViewModel.passwordVisibility
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -72,15 +74,50 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(id = R.string.login),
+                    text = stringResource(id = R.string.register),
                     color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.h1
                 )
                 Spacer(modifier = Modifier.height(60.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    value = name,
+                    onValueChange = { onEvent(RegisterEvent.OnNameChanged(it)) },
+                    label = {
+                        Text(text = stringResource(id = R.string.name))
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Badge,
+                            contentDescription = "Name icon"
+                        )
+                    },
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = email,
+                    onValueChange = { onEvent(RegisterEvent.OnEmailChanged(it)) },
+                    label = {
+                        Text(text = stringResource(id = R.string.email))
+                    },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Mail,
+                            contentDescription = "Email icon"
+                        )
+                    },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email
+                    )
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     value = username,
-                    onValueChange = { onEvent(LoginEvent.OnUsernameChanged(it)) },
+                    onValueChange = { onEvent(RegisterEvent.OnUsernameChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.username))
                     },
@@ -96,7 +133,7 @@ fun LoginScreen(
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = password,
-                    onValueChange = { onEvent(LoginEvent.OnPasswordChanged(it)) },
+                    onValueChange = { onEvent(RegisterEvent.OnPasswordChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.password))
                     },
@@ -107,7 +144,7 @@ fun LoginScreen(
                         )
                     },
                     trailingIcon = {
-                        IconButton(onClick = { onEvent(LoginEvent.OnPasswordVisibilityChanged) }) {
+                        IconButton(onClick = { onEvent(RegisterEvent.OnPasswordVisibilityChanged) }) {
                             Icon(
                                 imageVector = if (passwordVisibility) {
                                     Icons.Default.VisibilityOff
@@ -133,8 +170,10 @@ fun LoginScreen(
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,
                     onClick = {
-                        if (username.isNotEmpty() && password.isNotEmpty()) {
-                            onEvent(LoginEvent.LogIn)
+                        if (name.isNotEmpty() && email.isNotEmpty() &&
+                            username.isNotEmpty() && password.isNotEmpty()
+                        ) {
+                            onEvent(RegisterEvent.Register)
                         } else {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(
@@ -146,13 +185,13 @@ fun LoginScreen(
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
-                        text = stringResource(id = R.string.login)
+                        text = stringResource(id = R.string.register)
                     )
                 }
                 Spacer(modifier = Modifier.height(15.dp))
                 ClickableText(
                     text = buildAnnotatedString {
-                        append(stringResource(id = R.string.have_no_account))
+                        append(stringResource(id = R.string.have_account))
                         append(" ")
 
                         withStyle(
@@ -160,30 +199,30 @@ fun LoginScreen(
                                 color = MaterialTheme.colors.primary
                             )
                         ) {
-                            append(stringResource(id = R.string.register_here))
+                            append(stringResource(id = R.string.login_here))
                         }
                     },
                     style = MaterialTheme.typography.body1.copy(
                         color = MaterialTheme.colors.onBackground
                     ),
-                    onClick = { onNavigateToRegister() }
+                    onClick = { onNavigateToLogin() }
                 )
             }
         }
 
-        // Observe login state
-        when (loginState) {
+        // Observe register state
+        when (registerState) {
             UIState.Loading -> {
                 ProgressBarWithBackground()
             }
 
             is UIState.Success -> {
-                Log.d("LoginStatus", "Success")
+                Log.d("RegisterStatus", "Success")
             }
 
             is UIState.Fail -> {
                 LaunchedEffect(scaffoldState) {
-                    loginState.message?.let {
+                    registerState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
                     }
                 }
@@ -191,7 +230,7 @@ fun LoginScreen(
 
             is UIState.Error -> {
                 LaunchedEffect(scaffoldState) {
-                    loginState.message?.let {
+                    registerState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
                     }
                 }
