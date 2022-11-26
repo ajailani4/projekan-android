@@ -7,10 +7,8 @@ import com.ajailani.projekan.data.mapper.toUserCredential
 import com.ajailani.projekan.data.remote.data_source.AuthRemoteDataSource
 import com.ajailani.projekan.data.remote.dto.request.LoginRequest
 import com.ajailani.projekan.data.remote.dto.request.RegisterRequest
-import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.repository.AuthRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 

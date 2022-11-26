@@ -10,7 +10,6 @@ import com.ajailani.projekan.domain.use_case.LoginAccountUseCase
 import com.ajailani.projekan.ui.common.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

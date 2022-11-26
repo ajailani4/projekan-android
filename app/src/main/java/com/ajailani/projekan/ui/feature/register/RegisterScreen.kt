@@ -171,7 +171,8 @@ fun RegisterScreen(
                     shape = MaterialTheme.shapes.large,
                     onClick = {
                         if (name.isNotEmpty() && email.isNotEmpty() &&
-                            username.isNotEmpty() && password.isNotEmpty()) {
+                            username.isNotEmpty() && password.isNotEmpty()
+                        ) {
                             onEvent(RegisterEvent.Register)
                         } else {
                             coroutineScope.launch {
