@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.use_case.auth.RegisterAccountUseCase
+import com.ajailani.projekan.domain.use_case.user_credential.SaveAccessTokenUseCase
 import com.ajailani.projekan.ui.common.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val registerAccountUseCase: RegisterAccountUseCase
+    private val registerAccountUseCase: RegisterAccountUseCase,
+    private val saveAccessTokenUseCase: SaveAccessTokenUseCase
 ) : ViewModel() {
     var registerState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
@@ -65,6 +67,10 @@ class RegisterViewModel @Inject constructor(
             }.collect {
                 registerState = when (it) {
                     is Resource.Success -> {
+                        it.data?.accessToken?.let { accessToken ->
+                            saveAccessTokenUseCase(accessToken)
+                        }
+                        
                         UIState.Success(null)
                     }
 
