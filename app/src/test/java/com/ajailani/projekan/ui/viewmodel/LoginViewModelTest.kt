@@ -3,6 +3,7 @@ package com.ajailani.projekan.ui.viewmodel
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.use_case.auth.LoginAccountUseCase
+import com.ajailani.projekan.domain.use_case.user_credential.SaveAccessTokenUseCase
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.feature.login.LoginEvent
 import com.ajailani.projekan.ui.feature.login.LoginViewModel
@@ -30,13 +31,19 @@ class LoginViewModelTest {
     @Mock
     private lateinit var loginAccountUseCase: LoginAccountUseCase
 
+    @Mock
+    private lateinit var saveAccessTokenUseCase: SaveAccessTokenUseCase
+
     private lateinit var loginViewModel: LoginViewModel
 
     private lateinit var onEvent: (LoginEvent) -> Unit
 
     @Before
     fun setUp() {
-        loginViewModel = LoginViewModel(loginAccountUseCase)
+        loginViewModel = LoginViewModel(
+            loginAccountUseCase,
+            saveAccessTokenUseCase
+        )
         onEvent = loginViewModel::onEvent
     }
 
