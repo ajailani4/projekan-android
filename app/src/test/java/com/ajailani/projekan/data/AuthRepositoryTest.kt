@@ -21,6 +21,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import retrofit2.Response
 import com.ajailani.projekan.R
+import com.ajailani.projekan.data.remote.dto.UserCredentialDto
 import com.ajailani.projekan.domain.model.UserCredential
 
 @ExperimentalCoroutinesApi
@@ -88,6 +89,59 @@ class AuthRepositoryTest {
             assertEquals(
                 "Resource should be fail",
                 Resource.Error<UserCredential>(),
+                actualResource
+            )
+        }
+
+    @Test
+    fun `Register should return success`() =
+        runBlocking {
+            val response = Response.success(
+                201,
+                BaseResponse(
+                    code = 201,
+                    status = "Created",
+                    data = userCredentialDto
+                )
+            )
+
+            doReturn(response).`when`(authRemoteDataSource).register(any())
+
+            val actualResource = authRepository.register(
+                name = "George Zayvich",
+                email = "george@email.com",
+                username = "george",
+                password = "123"
+            ).first()
+
+            assertEquals(
+                "Resource should be success",
+                Resource.Success(userCredential),
+                actualResource
+            )
+        }
+
+    @Test
+    fun `Register should return fail`() =
+        runBlocking {
+            val response = Response.error<UserCredentialDto>(
+                409,
+                "".toResponseBody()
+            )
+
+            doReturn(null).`when`(context).getString(R.string.username_already_exists)
+            doReturn(response).`when`(authRemoteDataSource).register(any())
+
+            val actualResource = authRepository.register(
+                name = "George Zayvich",
+                email = "george@email.com",
+                username = "george",
+                password = "123"
+            ).first()
+
+            assertEquals(
+                "Resource should be success",
+                Resource.Error<UserCredentialDto>(),
                 actualResource
             )
         }
