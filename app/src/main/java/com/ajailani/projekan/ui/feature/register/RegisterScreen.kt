@@ -1,6 +1,7 @@
 package com.ajailani.projekan.ui.feature.register
 
 import android.app.Activity
+import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -11,6 +12,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -22,13 +25,27 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajailani.projekan.R
+import com.ajailani.projekan.ui.common.UIState
+import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
+    registerViewModel: RegisterViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit,
     onNavigateToLogin: () -> Unit
 ) {
+    val onEvent = registerViewModel::onEvent
+    val registerState = registerViewModel.registerState
+    val name = registerViewModel.name
+    val email = registerViewModel.email
+    val username = registerViewModel.username
+    val password = registerViewModel.password
+    val passwordVisibility = registerViewModel.passwordVisibility
+
+    val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
 
     val context = LocalContext.current
@@ -64,8 +81,8 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(60.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = name,
+                    onValueChange = { onEvent(RegisterEvent.OnNameChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.name))
                     },
@@ -80,8 +97,8 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = email,
+                    onValueChange = { onEvent(RegisterEvent.OnEmailChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.email))
                     },
@@ -91,13 +108,16 @@ fun RegisterScreen(
                             contentDescription = "Email icon"
                         )
                     },
-                    singleLine = true
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email
+                    )
                 )
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = username,
+                    onValueChange = { onEvent(RegisterEvent.OnUsernameChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.username))
                     },
@@ -112,8 +132,8 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = "",
-                    onValueChange = {},
+                    value = password,
+                    onValueChange = { onEvent(RegisterEvent.OnPasswordChanged(it)) },
                     label = {
                         Text(text = stringResource(id = R.string.password))
                     },
@@ -124,9 +144,9 @@ fun RegisterScreen(
                         )
                     },
                     trailingIcon = {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = { onEvent(RegisterEvent.OnPasswordVisibilityChanged) }) {
                             Icon(
-                                imageVector = if (true) {
+                                imageVector = if (passwordVisibility) {
                                     Icons.Default.VisibilityOff
                                 } else {
                                     Icons.Default.Visibility
@@ -139,7 +159,7 @@ fun RegisterScreen(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password
                     ),
-                    visualTransformation = if (true) {
+                    visualTransformation = if (passwordVisibility) {
                         VisualTransformation.None
                     } else {
                         PasswordVisualTransformation()
@@ -149,7 +169,18 @@ fun RegisterScreen(
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     shape = MaterialTheme.shapes.large,
-                    onClick = {}
+                    onClick = {
+                        if (name.isNotEmpty() && email.isNotEmpty() &&
+                            username.isNotEmpty() && password.isNotEmpty()) {
+                            onEvent(RegisterEvent.Register)
+                        } else {
+                            coroutineScope.launch {
+                                scaffoldState.snackbarHostState.showSnackbar(
+                                    context.getString(R.string.fill_the_form)
+                                )
+                            }
+                        }
+                    }
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
@@ -176,6 +207,35 @@ fun RegisterScreen(
                     onClick = { onNavigateToLogin() }
                 )
             }
+        }
+
+        // Observe register state
+        when (registerState) {
+            UIState.Loading -> {
+                ProgressBarWithBackground()
+            }
+
+            is UIState.Success -> {
+                Log.d("RegisterStatus", "Success")
+            }
+
+            is UIState.Fail -> {
+                LaunchedEffect(scaffoldState) {
+                    registerState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            is UIState.Error -> {
+                LaunchedEffect(scaffoldState) {
+                    registerState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            else -> {}
         }
     }
 }
