@@ -70,7 +70,7 @@ class RegisterViewModel @Inject constructor(
                         it.data?.accessToken?.let { accessToken ->
                             saveAccessTokenUseCase(accessToken)
                         }
-                        
+
                         UIState.Success(null)
                     }
 

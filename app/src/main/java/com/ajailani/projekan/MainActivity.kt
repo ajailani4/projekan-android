@@ -3,28 +3,45 @@ package com.ajailani.projekan
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.ajailani.projekan.ui.Navigation
 import com.ajailani.projekan.ui.Screen
+import com.ajailani.projekan.ui.feature.splash.SplashViewModel
 import com.ajailani.projekan.ui.theme.ProjekanTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val splashViewModel: SplashViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            ProjekanTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Content(Screen.WelcomeScreen.route)
+
+        lifecycleScope.launch {
+            splashViewModel.getAccessToken().collect { accessToken ->
+                val startDestination = if (accessToken != "") {
+                    // Home Screen
+                } else {
+                    Screen.WelcomeScreen.route
+                }
+
+                setContent {
+                    ProjekanTheme {
+                        Surface(
+                            modifier = Modifier.fillMaxSize(),
+                            color = MaterialTheme.colors.background
+                        ) {
+                            Content(startDestination)
+                        }
+                    }
                 }
             }
         }
