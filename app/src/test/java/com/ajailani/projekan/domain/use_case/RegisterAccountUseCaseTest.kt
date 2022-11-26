@@ -3,6 +3,7 @@ package com.ajailani.projekan.domain.use_case
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.repository.AuthRepositoryFake
+import com.ajailani.projekan.domain.use_case.auth.RegisterAccountUseCase
 import com.ajailani.projekan.util.ResourceType
 import com.ajailani.projekan.util.userCredential
 import kotlinx.coroutines.flow.first

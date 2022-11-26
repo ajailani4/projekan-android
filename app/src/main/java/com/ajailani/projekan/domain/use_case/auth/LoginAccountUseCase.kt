@@ -1,4 +1,4 @@
-package com.ajailani.projekan.domain.use_case
+package com.ajailani.projekan.domain.use_case.auth
 
 import com.ajailani.projekan.domain.repository.AuthRepository
 import javax.inject.Inject
