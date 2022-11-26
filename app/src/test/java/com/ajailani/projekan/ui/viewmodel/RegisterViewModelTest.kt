@@ -10,7 +10,6 @@ import com.ajailani.projekan.util.TestCoroutineRule
 import com.ajailani.projekan.util.userCredential
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
-import org.junit.Assert
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
