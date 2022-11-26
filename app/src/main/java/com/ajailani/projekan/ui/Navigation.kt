@@ -46,5 +46,9 @@ fun Navigation(
                 }
             )
         }
+
+        composable(Screen.HomeScreen.route) {
+
+        }
     }
 }

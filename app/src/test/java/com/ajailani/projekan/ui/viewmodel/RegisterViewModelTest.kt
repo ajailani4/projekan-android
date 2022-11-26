@@ -2,7 +2,8 @@ package com.ajailani.projekan.ui.viewmodel
 
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.UserCredential
-import com.ajailani.projekan.domain.use_case.RegisterAccountUseCase
+import com.ajailani.projekan.domain.use_case.auth.RegisterAccountUseCase
+import com.ajailani.projekan.domain.use_case.user_credential.SaveAccessTokenUseCase
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.feature.register.RegisterEvent
 import com.ajailani.projekan.ui.feature.register.RegisterViewModel
@@ -30,13 +31,19 @@ class RegisterViewModelTest {
     @Mock
     private lateinit var registerAccountUseCase: RegisterAccountUseCase
 
+    @Mock
+    private lateinit var saveAccessTokenUseCase: SaveAccessTokenUseCase
+
     private lateinit var registerViewModel: RegisterViewModel
 
     private lateinit var onEvent: (RegisterEvent) -> Unit
 
     @Before
     fun setUp() {
-        registerViewModel = RegisterViewModel(registerAccountUseCase)
+        registerViewModel = RegisterViewModel(
+            registerAccountUseCase,
+            saveAccessTokenUseCase
+        )
         onEvent = registerViewModel::onEvent
     }
 
