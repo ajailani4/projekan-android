@@ -20,4 +20,6 @@
     <string name="have_account">Have an account?</string>
     <string name="login_here">Login here</string>
     <string name="username_already_exists">Username already exists. Try another username</string>
+
+    <string name="deadline">Deadline</string>
 </resources>

@@ -21,4 +21,6 @@
     <string name="have_account">Sudah punya akun?</string>
     <string name="login_here">Masuk di sini</string>
     <string name="username_already_exists">Username sudah ada. Coba yang lain</string>
+
+    <string name="deadline">Deadline</string>
 </resources>

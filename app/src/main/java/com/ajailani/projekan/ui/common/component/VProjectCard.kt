@@ -1,13 +1,16 @@
-package com.ajailani.projekan.ui.feature.home.component
+package com.ajailani.projekan.ui.common.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -15,20 +18,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
 import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.Project
-import com.ajailani.projekan.ui.common.component.Label
 import com.ajailani.projekan.ui.theme.Grey
 import com.ajailani.projekan.util.Formatter
 
 /**
- * A card for displaying [Project] in horizontal list
+ * A card for displaying [Project] in vertical list
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HProjectCard(
+fun VProjectCard(
     project: Project,
     onClick: () -> Unit
 ) {
@@ -39,23 +39,19 @@ fun HProjectCard(
     ) {
         Column(
             modifier = Modifier
-                .width(280.dp)
+                .fillMaxWidth()
                 .padding(15.dp)
         ) {
             Row {
                 Image(
                     modifier = Modifier
-                        .size(50.dp)
-                        .clip(MaterialTheme.shapes.small),
-                    painter = rememberAsyncImagePainter(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(project.icon)
-                            .build()
-                    ),
+                        .size(60.dp)
+                        .clip(MaterialTheme.shapes.medium),
+                    painter = painterResource(id = R.drawable.app_icon),
                     contentScale = ContentScale.Crop,
                     contentDescription = "Project icon"
                 )
-                Spacer(modifier = Modifier.width(15.dp))
+                Spacer(modifier = Modifier.width(20.dp))
                 Column {
                     Text(
                         text = project.title,
@@ -65,15 +61,7 @@ fun HProjectCard(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.height(5.dp))
-                    Text(
-                        text = project.description,
-                        color = Grey,
-                        style = MaterialTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(30.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         Label(
                             title = project.platform,
@@ -87,7 +75,7 @@ fun HProjectCard(
                             contentColor = MaterialTheme.colors.primaryVariant
                         )
                     }
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
                     Text(
                         text = buildAnnotatedString {
                             withStyle(
