@@ -32,4 +32,5 @@ val dark_onError = Color(0xFFFFFFFF)
 
 // Common
 val Grey = Color(0xFFBDBDBD)
+val BackgroundGrey = Color(0xFFF0F0F0)
 val BackgroundShimmer = Color(0xFFA3A3A3)

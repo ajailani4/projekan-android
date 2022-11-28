@@ -29,10 +29,12 @@ import com.ajailani.projekan.util.Formatter
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun VProjectCard(
+    modifier: Modifier = Modifier,
     project: Project,
     onClick: () -> Unit
 ) {
     Card(
+        modifier = modifier,
         shape = MaterialTheme.shapes.large,
         elevation = 0.dp,
         onClick = onClick

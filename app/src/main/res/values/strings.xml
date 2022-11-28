@@ -21,5 +21,9 @@
     <string name="login_here">Login here</string>
     <string name="username_already_exists">Username already exists. Try another username</string>
 
+    <string name="hello">Hello</string>
+    <string name="this_week_deadlines">This Week Deadlines</string>
+    <string name="view_all">View all</string>
+    <string name="my_projects">My Projects</string>
     <string name="deadline">Deadline</string>
 </resources>
