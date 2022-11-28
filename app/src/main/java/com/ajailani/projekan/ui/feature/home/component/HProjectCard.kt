@@ -9,6 +9,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -18,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.ui.theme.Grey
 import com.ajailani.projekan.util.Formatter
@@ -32,13 +34,12 @@ fun HProjectCard(
     onClick: () -> Unit
 ) {
     Card(
-        modifier = Modifier.width(270.dp),
         elevation = 0.dp,
         onClick = onClick
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .width(280.dp)
                 .padding(15.dp)
         ) {
             Row {
@@ -54,12 +55,15 @@ fun HProjectCard(
                     contentScale = ContentScale.Crop,
                     contentDescription = "Project icon"
                 )
+                Spacer(modifier = Modifier.width(15.dp))
                 Column {
                     Text(
                         text = project.title,
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontWeight = FontWeight.SemiBold
-                        )
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(
@@ -76,7 +80,7 @@ fun HProjectCard(
                             backgroundColor = MaterialTheme.colors.secondary,
                             contentColor = MaterialTheme.colors.secondaryVariant
                         )
-                        Spacer(modifier = Modifier.width(5.dp))
+                        Spacer(modifier = Modifier.width(10.dp))
                         Label(
                             title = project.category,
                             backgroundColor = MaterialTheme.colors.primary,
