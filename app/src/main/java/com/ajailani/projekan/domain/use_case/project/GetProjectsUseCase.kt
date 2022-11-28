@@ -10,7 +10,7 @@ class GetProjectsUseCase @Inject constructor(
     operator fun invoke(
         page: Int,
         size: Int,
-        type: ProjectType
+        type: ProjectType? = null
     ) = projectRepository.getProjects(
         page = page,
         size = size,

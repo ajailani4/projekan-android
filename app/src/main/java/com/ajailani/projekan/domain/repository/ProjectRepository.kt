@@ -9,6 +9,6 @@ interface ProjectRepository {
     fun getProjects(
         page: Int,
         size: Int,
-        type: ProjectType
+        type: ProjectType?
     ): Flow<Resource<List<Project>>>
 }
