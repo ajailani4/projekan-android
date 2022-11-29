@@ -46,7 +46,6 @@ import com.ajailani.projekan.util.projects
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
     val deadlinesState = homeViewModel.deadlinesState
     val pagingProjects = homeViewModel.pagingProjects.collectAsLazyPagingItems()
@@ -66,6 +65,7 @@ fun HomeScreen(
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
+                .fillMaxSize()
                 .background(BackgroundGrey)
                 .padding(innerPadding)
         ) {
@@ -145,7 +145,7 @@ private fun Header(
                 }
                 Image(
                     modifier = Modifier
-                        .size(50.dp)
+                        .size(60.dp)
                         .clip(CircleShape),
                     painter = if (userProfile?.avatar != null) {
                         rememberAsyncImagePainter(
@@ -228,7 +228,7 @@ private fun ThisWeekDeadlinesSection(
             }
 
             is UIState.Success -> {
-                deadlinesState.data?.let {
+                deadlinesState.data?.let { projects ->
                     LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {
                         items(projects) { project ->
                             HProjectCard(
@@ -259,6 +259,8 @@ private fun ThisWeekDeadlinesSection(
                     }
                 }
             }
+
+            else -> {}
         }
     }
 }
