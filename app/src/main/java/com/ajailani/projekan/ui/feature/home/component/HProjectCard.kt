@@ -51,6 +51,7 @@ fun HProjectCard(
                     painter = rememberAsyncImagePainter(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(project.icon)
+                            .placeholder(R.drawable.ic_default_project)
                             .build()
                     ),
                     contentScale = ContentScale.Crop,
