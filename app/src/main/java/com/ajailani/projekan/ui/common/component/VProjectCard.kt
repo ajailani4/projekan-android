@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -18,6 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
 import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.ui.theme.Grey
@@ -30,7 +33,7 @@ import com.ajailani.projekan.util.Formatter
 @Composable
 fun VProjectCard(
     modifier: Modifier = Modifier,
-    project: Project?,
+    project: Project,
     onClick: () -> Unit
 ) {
     Card(
@@ -49,14 +52,18 @@ fun VProjectCard(
                     modifier = Modifier
                         .size(60.dp)
                         .clip(MaterialTheme.shapes.medium),
-                    painter = painterResource(id = R.drawable.app_icon),
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(project.icon)
+                            .build()
+                    ),
                     contentScale = ContentScale.Crop,
                     contentDescription = "Project icon"
                 )
                 Spacer(modifier = Modifier.width(20.dp))
                 Column {
                     Text(
-                        text = project?.title ?: "-",
+                        text = project.title,
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
@@ -66,13 +73,13 @@ fun VProjectCard(
                     Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         Label(
-                            title = project?.platform ?: "-",
+                            title = project.platform,
                             backgroundColor = MaterialTheme.colors.secondary,
                             contentColor = MaterialTheme.colors.secondaryVariant
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Label(
-                            title = project?.category ?: "-",
+                            title = project.category,
                             backgroundColor = MaterialTheme.colors.primary,
                             contentColor = MaterialTheme.colors.primaryVariant
                         )
@@ -94,7 +101,7 @@ fun VProjectCard(
                                     color = MaterialTheme.colors.onSurface
                                 )
                             ) {
-                                append(Formatter.formatDate(project?.deadline ?: "-"))
+                                append(Formatter.formatDate(project.deadline))
                             }
                         },
                         style = MaterialTheme.typography.body1.copy(
