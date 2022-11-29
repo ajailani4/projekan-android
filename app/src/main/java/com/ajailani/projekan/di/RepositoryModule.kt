@@ -7,6 +7,7 @@ import com.ajailani.projekan.data.repository.UserProfileRepositoryImpl
 import com.ajailani.projekan.domain.repository.AuthRepository
 import com.ajailani.projekan.domain.repository.ProjectRepository
 import com.ajailani.projekan.domain.repository.UserCredentialRepository
+import com.ajailani.projekan.domain.repository.UserProfileRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -33,5 +34,5 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindUserProfileRepository(
         userProfileRepositoryImpl: UserProfileRepositoryImpl
-    ): UserCredentialRepository
+    ): UserProfileRepository
 }

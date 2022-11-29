@@ -30,7 +30,7 @@ import com.ajailani.projekan.util.Formatter
 @Composable
 fun VProjectCard(
     modifier: Modifier = Modifier,
-    project: Project,
+    project: Project?,
     onClick: () -> Unit
 ) {
     Card(
@@ -56,7 +56,7 @@ fun VProjectCard(
                 Spacer(modifier = Modifier.width(20.dp))
                 Column {
                     Text(
-                        text = project.title,
+                        text = project?.title ?: "-",
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
@@ -66,13 +66,13 @@ fun VProjectCard(
                     Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         Label(
-                            title = project.platform,
+                            title = project?.platform ?: "-",
                             backgroundColor = MaterialTheme.colors.secondary,
                             contentColor = MaterialTheme.colors.secondaryVariant
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Label(
-                            title = project.category,
+                            title = project?.category ?: "-",
                             backgroundColor = MaterialTheme.colors.primary,
                             contentColor = MaterialTheme.colors.primaryVariant
                         )
@@ -94,7 +94,7 @@ fun VProjectCard(
                                     color = MaterialTheme.colors.onSurface
                                 )
                             ) {
-                                append(Formatter.formatDate(project.deadline))
+                                append(Formatter.formatDate(project?.deadline ?: "-"))
                             }
                         },
                         style = MaterialTheme.typography.body1.copy(
