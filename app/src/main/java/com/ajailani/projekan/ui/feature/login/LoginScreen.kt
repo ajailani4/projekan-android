@@ -1,7 +1,6 @@
 package com.ajailani.projekan.ui.feature.login
 
 import android.app.Activity
-import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -36,7 +35,8 @@ import kotlinx.coroutines.launch
 fun LoginScreen(
     loginViewModel: LoginViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToRegister: () -> Unit
+    onNavigateToRegister: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     val onEvent = loginViewModel::onEvent
     val loginState = loginViewModel.loginState
@@ -179,7 +179,7 @@ fun LoginScreen(
             }
 
             is UIState.Success -> {
-                Log.d("LoginStatus", "Success")
+                onNavigateToHome()
             }
 
             is UIState.Fail -> {

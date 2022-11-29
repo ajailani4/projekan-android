@@ -1,7 +1,6 @@
 package com.ajailani.projekan.ui.feature.register
 
 import android.app.Activity
-import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -36,7 +35,8 @@ import kotlinx.coroutines.launch
 fun RegisterScreen(
     registerViewModel: RegisterViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     val onEvent = registerViewModel::onEvent
     val registerState = registerViewModel.registerState
@@ -218,7 +218,7 @@ fun RegisterScreen(
             }
 
             is UIState.Success -> {
-                Log.d("RegisterStatus", "Success")
+                onNavigateToHome()
             }
 
             is UIState.Fail -> {

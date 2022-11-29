@@ -121,7 +121,7 @@ private fun Header(
                 Column {
                     userProfile?.let {
                         Text(
-                            text = "${stringResource(id = R.string.hello)}," +
+                            text = "${stringResource(id = R.string.hello)}, " +
                                     userProfile.name.split(" ")[0],
                             color = MaterialTheme.colors.onPrimary,
                             style = MaterialTheme.typography.subtitle1.copy(

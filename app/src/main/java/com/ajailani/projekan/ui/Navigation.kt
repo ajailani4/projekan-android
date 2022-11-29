@@ -33,6 +33,15 @@ fun Navigation(
                 },
                 onNavigateToRegister = {
                     navController.navigate(Screen.RegisterScreen.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.HomeScreen.route) {
+                        launchSingleTop = true
+
+                        popUpTo(Screen.WelcomeScreen.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -44,6 +53,15 @@ fun Navigation(
                 },
                 onNavigateToLogin = {
                     navController.navigate(Screen.LoginScreen.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.HomeScreen.route) {
+                        launchSingleTop = true
+
+                        popUpTo(Screen.WelcomeScreen.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
