@@ -38,7 +38,7 @@ import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.VProjectCard
 import com.ajailani.projekan.ui.feature.home.component.HProjectCard
-import com.ajailani.projekan.ui.theme.BackgroundGrey
+import com.ajailani.projekan.ui.theme.backgroundGrey
 
 @Composable
 fun HomeScreen(
@@ -64,7 +64,7 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BackgroundGrey)
+                .background(MaterialTheme.colors.backgroundGrey)
                 .padding(innerPadding)
         ) {
             item {
