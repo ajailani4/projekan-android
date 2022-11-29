@@ -112,12 +112,7 @@ private fun Header(
     ) {
         when (userProfileState) {
             UIState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                // Shimmer
             }
 
             is UIState.Success -> {
@@ -218,12 +213,7 @@ private fun ThisWeekDeadlinesSection(
 
         when (deadlinesState) {
             UIState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                // Shimmer
             }
 
             is UIState.Success -> {

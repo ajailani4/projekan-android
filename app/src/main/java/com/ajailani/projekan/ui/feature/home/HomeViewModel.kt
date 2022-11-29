@@ -56,6 +56,8 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getUserProfile() {
+        userProfileState = UIState.Loading
+
         viewModelScope.launch {
             getUserProfileUseCase().catch {
                 userProfileState = UIState.Error(it.localizedMessage)
@@ -70,6 +72,8 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun getDeadlines() {
+        deadlinesState = UIState.Loading
+
         viewModelScope.launch {
             getProjectsUseCase(
                 page = 1,
