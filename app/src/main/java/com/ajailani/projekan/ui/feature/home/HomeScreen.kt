@@ -36,11 +36,9 @@ import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.ui.common.UIState
-import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
 import com.ajailani.projekan.ui.common.component.VProjectCard
 import com.ajailani.projekan.ui.feature.home.component.HProjectCard
 import com.ajailani.projekan.ui.theme.BackgroundGrey
-import com.ajailani.projekan.util.projects
 
 @Composable
 fun HomeScreen(
@@ -128,7 +126,8 @@ private fun Header(
                 Column {
                     userProfile?.let {
                         Text(
-                            text = "${stringResource(id = R.string.hello)}, ${userProfile.name.split(" ")[0]}",
+                            text = "${stringResource(id = R.string.hello)}," +
+                                    userProfile.name.split(" ")[0],
                             color = MaterialTheme.colors.onPrimary,
                             style = MaterialTheme.typography.subtitle1.copy(
                                 fontWeight = FontWeight.SemiBold
@@ -145,7 +144,7 @@ private fun Header(
                 }
                 Image(
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(55.dp)
                         .clip(CircleShape),
                     painter = if (userProfile?.avatar != null) {
                         rememberAsyncImagePainter(
@@ -283,12 +282,14 @@ private fun LazyListScope.myProjectsSection(
     }
 
     items(pagingProjects) { project ->
-        VProjectCard(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            project = project,
-            onClick = {}
-        )
-        Spacer(modifier = Modifier.height(20.dp))
+        project?.let {
+            VProjectCard(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                project = project,
+                onClick = {}
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+        }
     }
 }
 
