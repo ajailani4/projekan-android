@@ -37,6 +37,7 @@ import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.VProjectCard
+import com.ajailani.projekan.ui.feature.home.component.DeadlinesShimmer
 import com.ajailani.projekan.ui.feature.home.component.HProjectCard
 import com.ajailani.projekan.ui.feature.home.component.HomeHeaderShimmer
 import com.ajailani.projekan.ui.theme.backgroundGrey
@@ -214,7 +215,7 @@ private fun ThisWeekDeadlinesSection(
 
         when (deadlinesState) {
             UIState.Loading -> {
-                // Shimmer
+                DeadlinesShimmer()
             }
 
             is UIState.Success -> {
