@@ -158,7 +158,7 @@ fun HProjectCardShimmer() {
                                     .background(color = BackgroundShimmer)
                                     .shimmer(shimmerInstance)
                             )
-                            Spacer(modifier = Modifier.height(5.dp))
+                            Spacer(modifier = Modifier.height(15.dp))
                             Box(
                                 modifier = Modifier
                                     .clip(MaterialTheme.shapes.small)
@@ -166,12 +166,12 @@ fun HProjectCardShimmer() {
                                     .background(color = BackgroundShimmer)
                                     .shimmer(shimmerInstance)
                             )
-                            Spacer(modifier = Modifier.height(30.dp))
+                            Spacer(modifier = Modifier.height(40.dp))
                             Row {
                                 Box(
                                     modifier = Modifier
                                         .clip(MaterialTheme.shapes.small)
-                                        .size(width = 40.dp, height = 15.dp)
+                                        .size(width = 40.dp, height = 20.dp)
                                         .background(color = BackgroundShimmer)
                                         .shimmer(shimmerInstance)
                                 )
@@ -179,12 +179,12 @@ fun HProjectCardShimmer() {
                                 Box(
                                     modifier = Modifier
                                         .clip(MaterialTheme.shapes.small)
-                                        .size(width = 40.dp, height = 15.dp)
+                                        .size(width = 40.dp, height = 20.dp)
                                         .background(color = BackgroundShimmer)
                                         .shimmer(shimmerInstance)
                                 )
                             }
-                            Spacer(modifier = Modifier.height(20.dp))
+                            Spacer(modifier = Modifier.height(25.dp))
                             Box(
                                 modifier = Modifier
                                     .clip(MaterialTheme.shapes.small)

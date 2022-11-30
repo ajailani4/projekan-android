@@ -32,7 +32,7 @@ fun HomeHeaderShimmer() {
                     .background(color = BackgroundShimmer)
                     .shimmer(shimmerInstance)
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             Box(
                 modifier = Modifier
                     .clip(MaterialTheme.shapes.small)
