@@ -12,6 +12,9 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -46,15 +49,27 @@ import com.ajailani.projekan.ui.feature.home.component.HProjectCardShimmer
 import com.ajailani.projekan.ui.feature.home.component.HomeHeaderShimmer
 import com.ajailani.projekan.ui.theme.backgroundGrey
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
+    val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
     val deadlinesState = homeViewModel.deadlinesState
     val pagingProjects = homeViewModel.pagingProjects.collectAsLazyPagingItems()
+    val pullRefreshing = homeViewModel.pullRefreshing
 
     val scaffoldState = rememberScaffoldState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = pullRefreshing,
+        onRefresh = {
+            onEvent(HomeEvent.OnPullRefresh(true))
+            onEvent(HomeEvent.GetUserProfile)
+            onEvent(HomeEvent.GetDeadlines)
+            onEvent(HomeEvent.GetProjects)
+        }
+    )
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -67,39 +82,54 @@ fun HomeScreen(
             }
         }
     ) { innerPadding ->
-        LazyColumn(
+        Box(
             modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.backgroundGrey)
                 .padding(innerPadding)
+                .pullRefresh(pullRefreshState)
         ) {
-            item {
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = MaterialTheme.colors.primary
-                ) {
-                    Column(modifier = Modifier.padding(vertical = 20.dp)) {
-                        Header(
-                            userProfileState = userProfileState,
-                            scaffoldState = scaffoldState
-                        )
-                        Spacer(modifier = Modifier.height(35.dp))
-                        ThisWeekDeadlinesSection(
-                            deadlinesState = deadlinesState,
-                            scaffoldState = scaffoldState,
-                            onViewAllClicked = {}
-                        )
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.backgroundGrey)
+            ) {
+                item {
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        color = MaterialTheme.colors.primary
+                    ) {
+                        Column(modifier = Modifier.padding(vertical = 20.dp)) {
+                            Header(
+                                onEvent = onEvent,
+                                userProfileState = userProfileState,
+                                scaffoldState = scaffoldState
+                            )
+                            Spacer(modifier = Modifier.height(35.dp))
+                            ThisWeekDeadlinesSection(
+                                onEvent = onEvent,
+                                deadlinesState = deadlinesState,
+                                scaffoldState = scaffoldState,
+                                onViewAllClicked = {}
+                            )
+                        }
                     }
                 }
+
+                item {
+                    Spacer(modifier = Modifier.height(25.dp))
+                }
+
+                myProjectsSection(
+                    onEvent = onEvent,
+                    pagingProjects = pagingProjects,
+                    scaffoldState = scaffoldState
+                )
             }
 
-            item {
-                Spacer(modifier = Modifier.height(25.dp))
-            }
-
-            myProjectsSection(
-                pagingProjects = pagingProjects,
-                scaffoldState = scaffoldState
+            PullRefreshIndicator(
+                modifier = Modifier.align(Alignment.TopCenter),
+                refreshing = pullRefreshing,
+                state = pullRefreshState,
+                contentColor = MaterialTheme.colors.primary
             )
         }
     }
@@ -107,6 +137,7 @@ fun HomeScreen(
 
 @Composable
 private fun Header(
+    onEvent: (HomeEvent) -> Unit,
     userProfileState: UIState<UserProfile>,
     scaffoldState: ScaffoldState
 ) {
@@ -122,6 +153,8 @@ private fun Header(
             }
 
             is UIState.Success -> {
+                onEvent(HomeEvent.OnPullRefresh(false))
+
                 val userProfile = userProfileState.data
 
                 Column {
@@ -161,6 +194,8 @@ private fun Header(
             }
 
             is UIState.Fail -> {
+                onEvent(HomeEvent.OnPullRefresh(false))
+
                 LaunchedEffect(scaffoldState) {
                     userProfileState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
@@ -169,6 +204,8 @@ private fun Header(
             }
 
             is UIState.Error -> {
+                onEvent(HomeEvent.OnPullRefresh(false))
+
                 LaunchedEffect(scaffoldState) {
                     userProfileState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
@@ -183,6 +220,7 @@ private fun Header(
 
 @Composable
 private fun ThisWeekDeadlinesSection(
+    onEvent: (HomeEvent) -> Unit,
     deadlinesState: UIState<List<Project>>,
     scaffoldState: ScaffoldState,
     onViewAllClicked: () -> Unit
@@ -223,6 +261,8 @@ private fun ThisWeekDeadlinesSection(
             }
 
             is UIState.Success -> {
+                onEvent(HomeEvent.OnPullRefresh(false))
+
                 deadlinesState.data?.let { projects ->
                     if (projects.isNotEmpty()) {
                         LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {
@@ -249,6 +289,8 @@ private fun ThisWeekDeadlinesSection(
             }
 
             is UIState.Fail -> {
+                onEvent(HomeEvent.OnPullRefresh(false))
+
                 LaunchedEffect(scaffoldState) {
                     deadlinesState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
@@ -257,6 +299,8 @@ private fun ThisWeekDeadlinesSection(
             }
 
             is UIState.Error -> {
+                onEvent(HomeEvent.OnPullRefresh(false))
+
                 LaunchedEffect(scaffoldState) {
                     deadlinesState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
@@ -270,6 +314,7 @@ private fun ThisWeekDeadlinesSection(
 }
 
 private fun LazyListScope.myProjectsSection(
+    onEvent: (HomeEvent) -> Unit,
     pagingProjects: LazyPagingItems<Project>,
     scaffoldState: ScaffoldState
 ) {
@@ -319,6 +364,8 @@ private fun LazyListScope.myProjectsSection(
 
             loadState.source.refresh is LoadState.NotLoading &&
                 loadState.append.endOfPaginationReached -> {
+                onEvent(HomeEvent.OnPullRefresh(false))
+
                 if (itemCount < 1) {
                     item {
                         CaptionImage(
@@ -331,6 +378,8 @@ private fun LazyListScope.myProjectsSection(
             }
 
             loadState.append is LoadState.Error -> {
+                onEvent(HomeEvent.OnPullRefresh(false))
+
                 item {
                     LaunchedEffect(scaffoldState) {
                         (loadState.append as LoadState.Error).error.localizedMessage?.let {

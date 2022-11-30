@@ -39,6 +39,9 @@ class HomeViewModel @Inject constructor(
     private var _pagingProjects = MutableStateFlow<PagingData<Project>>(PagingData.empty())
     val pagingProjects: StateFlow<PagingData<Project>> = _pagingProjects
 
+    var pullRefreshing by mutableStateOf(false)
+        private set
+
     init {
         onEvent(HomeEvent.GetUserProfile)
         onEvent(HomeEvent.GetDeadlines)
@@ -52,6 +55,8 @@ class HomeViewModel @Inject constructor(
             HomeEvent.GetDeadlines -> getDeadlines()
 
             HomeEvent.GetProjects -> getProjects()
+
+            is HomeEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
         }
     }
 
