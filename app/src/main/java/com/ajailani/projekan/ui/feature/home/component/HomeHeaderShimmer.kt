@@ -28,24 +28,24 @@ fun HomeHeaderShimmer() {
             Box(
                 modifier = Modifier
                     .clip(MaterialTheme.shapes.small)
-                    .background(color = BackgroundShimmer)
                     .size(width = 100.dp, height = 20.dp)
+                    .background(color = BackgroundShimmer)
                     .shimmer(shimmerInstance)
             )
             Spacer(modifier = Modifier.height(5.dp))
             Box(
                 modifier = Modifier
                     .clip(MaterialTheme.shapes.small)
-                    .background(color = BackgroundShimmer)
                     .size(width = 120.dp, height = 20.dp)
+                    .background(color = BackgroundShimmer)
                     .shimmer(shimmerInstance)
             )
         }
         Box(
             modifier = Modifier
                 .clip(CircleShape)
-                .background(color = BackgroundShimmer)
                 .size(55.dp)
+                .background(color = BackgroundShimmer)
                 .shimmer(shimmerInstance)
         )
     }
