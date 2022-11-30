@@ -38,6 +38,7 @@ import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.ui.common.UIState
+import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.VProjectCard
 import com.ajailani.projekan.ui.common.component.VProjectCardShimmer
 import com.ajailani.projekan.ui.feature.home.component.HProjectCard
@@ -223,17 +224,26 @@ private fun ThisWeekDeadlinesSection(
 
             is UIState.Success -> {
                 deadlinesState.data?.let { projects ->
-                    LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {
-                        items(projects) { project ->
-                            HProjectCard(
-                                project = project,
-                                onClick = {}
-                            )
+                    if (projects.isNotEmpty()) {
+                        LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {
+                            items(projects) { project ->
+                                HProjectCard(
+                                    project = project,
+                                    onClick = {}
+                                )
 
-                            if (project != projects.last()) {
-                                Spacer(modifier = Modifier.width(15.dp))
+                                if (project != projects.last()) {
+                                    Spacer(modifier = Modifier.width(15.dp))
+                                }
                             }
                         }
+                    } else {
+                        CaptionImage(
+                            modifier = Modifier.size(140.dp),
+                            image = painterResource(id = R.drawable.illustration_no_data),
+                            caption = stringResource(id = R.string.no_deadlines),
+                            captionColor = MaterialTheme.colors.onPrimary
+                        )
                     }
                 }
             }
@@ -304,6 +314,19 @@ private fun LazyListScope.myProjectsSection(
                             .wrapContentWidth(CenterHorizontally),
 
                     )
+                }
+            }
+
+            loadState.source.refresh is LoadState.NotLoading &&
+                loadState.append.endOfPaginationReached -> {
+                if (itemCount < 1) {
+                    item {
+                        CaptionImage(
+                            modifier = Modifier.size(200.dp),
+                            image = painterResource(id = R.drawable.illustration_add_project),
+                            caption = stringResource(id = R.string.no_projects)
+                        )
+                    }
                 }
             }
 

@@ -24,6 +24,8 @@
     <string name="hello">Hello</string>
     <string name="this_week_deadlines">This Week Deadlines</string>
     <string name="view_all">View all</string>
+    <string name="no_deadlines">You don\'t have deadlines</string>
     <string name="my_projects">My Projects</string>
+    <string name="no_projects">You don\'t have projects yet.\nLet\'s add a new project</string>
     <string name="deadline">Deadline</string>
 </resources>
