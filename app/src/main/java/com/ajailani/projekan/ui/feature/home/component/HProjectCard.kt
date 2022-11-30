@@ -67,7 +67,7 @@ fun HProjectCard(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.height(5.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = project.description,
                         color = Grey,

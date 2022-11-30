@@ -46,7 +46,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(30.dp))
             Image(
                 modifier = Modifier.size(250.dp),
-                painter = painterResource(id = R.drawable.clip_art_working),
+                painter = painterResource(id = R.drawable.illustration_working),
                 contentDescription = "Working clip art"
             )
             Spacer(modifier = Modifier.height(50.dp))
