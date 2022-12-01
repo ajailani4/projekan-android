@@ -18,12 +18,12 @@ import org.mockito.kotlin.doReturn
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class UserCredentialRepositoryTest {
-    
+
     @Mock
     private lateinit var preferencesDataStore: PreferencesDataStore
-    
+
     private lateinit var userCredentialRepository: UserCredentialRepository
-    
+
     @Before
     fun setUp() {
         userCredentialRepository = UserCredentialRepositoryImpl(preferencesDataStore)
@@ -40,6 +40,7 @@ class UserCredentialRepositoryTest {
 
             assertEquals("Access token should be 'abcd'", "abcd", actualAccessToken)
         }
+
     @Test
     fun `Get access token should be empty`() =
         runBlocking {

@@ -3,12 +3,10 @@ package com.ajailani.projekan.domain.use_case.auth
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.repository.AuthRepositoryFake
-import com.ajailani.projekan.domain.use_case.auth.LoginAccountUseCase
 import com.ajailani.projekan.util.ResourceType
 import com.ajailani.projekan.util.userCredential
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

@@ -4,14 +4,16 @@ import android.content.Context
 import com.ajailani.projekan.data.remote.data_source.UserProfileRemoteDataSource
 import com.ajailani.projekan.data.remote.dto.response.BaseResponse
 import com.ajailani.projekan.data.repository.UserProfileRepositoryImpl
+import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.domain.repository.UserProfileRepository
+import com.ajailani.projekan.util.userProfile
 import com.ajailani.projekan.util.userProfileDto
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,11 +21,6 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
 import retrofit2.Response
-import com.ajailani.projekan.R
-import com.ajailani.projekan.data.remote.dto.UserProfileDto
-import com.ajailani.projekan.domain.model.UserProfile
-import com.ajailani.projekan.util.userProfile
-import org.junit.Assert.assertEquals
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)

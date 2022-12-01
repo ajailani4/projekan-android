@@ -2,14 +2,18 @@ package com.ajailani.projekan.data
 
 import android.content.Context
 import com.ajailani.projekan.data.remote.data_source.AuthRemoteDataSource
+import com.ajailani.projekan.data.remote.dto.UserCredentialDto
 import com.ajailani.projekan.data.remote.dto.response.BaseResponse
 import com.ajailani.projekan.data.repository.AuthRepositoryImpl
+import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.repository.AuthRepository
 import com.ajailani.projekan.util.userCredential
 import com.ajailani.projekan.util.userCredentialDto
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -20,11 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import retrofit2.Response
-import com.ajailani.projekan.R
-import com.ajailani.projekan.data.remote.dto.UserCredentialDto
-import com.ajailani.projekan.domain.model.UserCredential
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.runTest
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
