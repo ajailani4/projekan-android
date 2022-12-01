@@ -21,4 +21,12 @@
     <string name="have_account">Sudah punya akun?</string>
     <string name="login_here">Masuk di sini</string>
     <string name="username_already_exists">Username sudah ada. Coba yang lain</string>
+
+    <string name="hello">Halo</string>
+    <string name="this_week_deadlines">Deadline Minggu Ini</string>
+    <string name="view_all">Lihat semua</string>
+    <string name="no_deadlines">Kamu tidak memiliki deadline</string>
+    <string name="my_projects">Proyek Saya</string>
+    <string name="no_projects">Kamu belum memiliki proyek.\nAyo tambahkan proyek baru</string>
+    <string name="deadline">Deadline</string>
 </resources>

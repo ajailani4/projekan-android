@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.ajailani.projekan.ui.feature.home.HomeScreen
 import com.ajailani.projekan.ui.feature.login.LoginScreen
 import com.ajailani.projekan.ui.feature.register.RegisterScreen
 import com.ajailani.projekan.ui.feature.welcome.WelcomeScreen
@@ -32,6 +33,15 @@ fun Navigation(
                 },
                 onNavigateToRegister = {
                     navController.navigate(Screen.RegisterScreen.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.HomeScreen.route) {
+                        launchSingleTop = true
+
+                        popUpTo(Screen.WelcomeScreen.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
@@ -43,12 +53,21 @@ fun Navigation(
                 },
                 onNavigateToLogin = {
                     navController.navigate(Screen.LoginScreen.route)
+                },
+                onNavigateToHome = {
+                    navController.navigate(Screen.HomeScreen.route) {
+                        launchSingleTop = true
+
+                        popUpTo(Screen.WelcomeScreen.route) {
+                            inclusive = true
+                        }
+                    }
                 }
             )
         }
 
         composable(Screen.HomeScreen.route) {
-
+            HomeScreen()
         }
     }
 }

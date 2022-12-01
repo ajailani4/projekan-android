@@ -1,7 +1,6 @@
 package com.ajailani.projekan.ui.feature.register
 
 import android.app.Activity
-import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -29,13 +28,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
+import com.ajailani.projekan.ui.theme.extraLarge
 import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
     registerViewModel: RegisterViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToLogin: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     val onEvent = registerViewModel::onEvent
     val registerState = registerViewModel.registerState
@@ -168,7 +169,7 @@ fun RegisterScreen(
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = MaterialTheme.shapes.large,
+                    shape = MaterialTheme.shapes.extraLarge,
                     onClick = {
                         if (name.isNotEmpty() && email.isNotEmpty() &&
                             username.isNotEmpty() && password.isNotEmpty()
@@ -217,7 +218,7 @@ fun RegisterScreen(
             }
 
             is UIState.Success -> {
-                Log.d("RegisterStatus", "Success")
+                onNavigateToHome()
             }
 
             is UIState.Fail -> {

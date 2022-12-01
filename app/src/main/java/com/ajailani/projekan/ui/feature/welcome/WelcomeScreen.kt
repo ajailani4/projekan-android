@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.theme.Grey
+import com.ajailani.projekan.ui.theme.extraLarge
 
 @Composable
 fun WelcomeScreen(
@@ -45,13 +46,13 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(30.dp))
             Image(
                 modifier = Modifier.size(250.dp),
-                painter = painterResource(id = R.drawable.clip_art_working),
+                painter = painterResource(id = R.drawable.illustration_working),
                 contentDescription = "Working clip art"
             )
             Spacer(modifier = Modifier.height(50.dp))
             Button(
                 modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.large,
+                shape = MaterialTheme.shapes.extraLarge,
                 onClick = onNavigateToLogin
             ) {
                 Text(
@@ -62,7 +63,7 @@ fun WelcomeScreen(
             Spacer(modifier = Modifier.height(15.dp))
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
-                shape = MaterialTheme.shapes.large,
+                shape = MaterialTheme.shapes.extraLarge,
                 colors = ButtonDefaults.outlinedButtonColors(backgroundColor = Color.Transparent),
                 border = BorderStroke(
                     width = 1.dp,

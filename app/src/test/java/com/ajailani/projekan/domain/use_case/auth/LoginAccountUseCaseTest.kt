@@ -3,15 +3,17 @@ package com.ajailani.projekan.domain.use_case.auth
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.repository.AuthRepositoryFake
-import com.ajailani.projekan.domain.use_case.auth.LoginAccountUseCase
 import com.ajailani.projekan.util.ResourceType
 import com.ajailani.projekan.util.userCredential
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class LoginAccountUseCaseTest {
     private lateinit var authRepositoryFake: AuthRepositoryFake
     private lateinit var loginAccountUseCase: LoginAccountUseCase
@@ -24,7 +26,7 @@ class LoginAccountUseCaseTest {
 
     @Test
     fun `Login should return success`() =
-        runBlocking {
+        runTest(UnconfinedTestDispatcher()) {
             authRepositoryFake.setResourceType(ResourceType.Success)
 
             val actualResource = loginAccountUseCase(
@@ -41,7 +43,7 @@ class LoginAccountUseCaseTest {
 
     @Test
     fun `Login should return fail`() =
-        runBlocking {
+        runTest(UnconfinedTestDispatcher()) {
             authRepositoryFake.setResourceType(ResourceType.Error)
 
             val actualResource = loginAccountUseCase(

@@ -1,7 +1,6 @@
 package com.ajailani.projekan.ui.feature.login
 
 import android.app.Activity
-import android.util.Log
 import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -29,13 +28,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
+import com.ajailani.projekan.ui.theme.extraLarge
 import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel = hiltViewModel(),
     onNavigateUp: () -> Unit,
-    onNavigateToRegister: () -> Unit
+    onNavigateToRegister: () -> Unit,
+    onNavigateToHome: () -> Unit
 ) {
     val onEvent = loginViewModel::onEvent
     val loginState = loginViewModel.loginState
@@ -131,7 +132,7 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.height(30.dp))
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    shape = MaterialTheme.shapes.large,
+                    shape = MaterialTheme.shapes.extraLarge,
                     onClick = {
                         if (username.isNotEmpty() && password.isNotEmpty()) {
                             onEvent(LoginEvent.LogIn)
@@ -178,7 +179,7 @@ fun LoginScreen(
             }
 
             is UIState.Success -> {
-                Log.d("LoginStatus", "Success")
+                onNavigateToHome()
             }
 
             is UIState.Fail -> {

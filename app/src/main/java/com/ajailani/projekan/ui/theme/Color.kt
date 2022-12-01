@@ -1,14 +1,15 @@
 package com.ajailani.projekan.ui.theme
 
+import androidx.compose.material.Colors
 import androidx.compose.ui.graphics.Color
 
 // Light Theme
 val light_primary = Color(0xFFFB9241)
 val light_onPrimary = Color(0xFFFFFFFF)
-val light_primaryVariant = Color(0xFFCC6F27)
+val light_primaryVariant = Color(0xFFB86322)
 val light_secondary = Color(0xFF2EC56C)
 val light_onSecondary = Color(0xFFFFFFFF)
-val light_secondaryVariant = Color(0xFF279C57)
+val light_secondaryVariant = Color(0xFF157E40)
 val light_background = Color(0xFFFFFFFF)
 val light_onBackground = Color(0xFF000000)
 val light_surface = Color(0xFFFFFFFF)
@@ -17,18 +18,22 @@ val light_error = Color(0xFFCF082B)
 val light_onError = Color(0xFFFFFFFF)
 
 // Dark Theme
-val dark_primary = Color(0xFFE07210)
+val dark_primary = Color(0xFFFB9241)
 val dark_onPrimary = Color(0xFFFFFFFF)
-val dark_primaryVariant = Color(0xFFCC6F27)
-val dark_secondary = Color(0xFF00933F)
+val dark_primaryVariant = Color(0xFFB86322)
+val dark_secondary = Color(0xFF2EC56C)
 val dark_onSecondary = Color(0xFFFFFFFF)
-val dark_secondaryVariant = Color(0xFF279C57)
-val dark_background = Color(0xFF242222)
+val dark_secondaryVariant = Color(0xFF157E40)
+val dark_background = Color(0xFF121212)
 val dark_onBackground = Color(0xFFFFFFFF)
 val dark_surface = Color(0xFF2F2F2F)
 val dark_onSurface = Color(0xFFFFFFFF)
 val dark_error = Color(0xFFCF082B)
 val dark_onError = Color(0xFFFFFFFF)
+
+// Additional
+val Colors.backgroundGrey: Color
+    get() = if (isLight) Color(0xFFF0F0F0) else Color(0xFF121212)
 
 // Common
 val Grey = Color(0xFFBDBDBD)

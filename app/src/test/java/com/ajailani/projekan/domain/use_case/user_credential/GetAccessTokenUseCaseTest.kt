@@ -1,12 +1,15 @@
 package com.ajailani.projekan.domain.use_case.user_credential
 
 import com.ajailani.projekan.domain.repository.UserCredentialRepositoryFake
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class GetAccessTokenUseCaseTest {
     private lateinit var userCredentialRepositoryFake: UserCredentialRepositoryFake
     private lateinit var getAccessTokenUseCase: GetAccessTokenUseCase
@@ -19,7 +22,7 @@ class GetAccessTokenUseCaseTest {
 
     @Test
     fun `Get access token should not be empty`() =
-        runBlocking {
+        runTest(UnconfinedTestDispatcher()) {
             userCredentialRepositoryFake.saveAccessToken("abcd")
 
             val actualResult = getAccessTokenUseCase().first()
@@ -29,7 +32,7 @@ class GetAccessTokenUseCaseTest {
 
     @Test
     fun `Get access token should be empty`() =
-        runBlocking {
+        runTest(UnconfinedTestDispatcher()) {
             userCredentialRepositoryFake.saveAccessToken("")
 
             val actualResult = getAccessTokenUseCase().first()

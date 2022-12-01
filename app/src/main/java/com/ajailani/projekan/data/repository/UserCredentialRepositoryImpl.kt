@@ -2,7 +2,6 @@ package com.ajailani.projekan.data.repository
 
 import com.ajailani.projekan.data.local.PreferencesDataStore
 import com.ajailani.projekan.domain.repository.UserCredentialRepository
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class UserCredentialRepositoryImpl @Inject constructor(

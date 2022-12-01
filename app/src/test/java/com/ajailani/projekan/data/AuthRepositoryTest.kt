@@ -2,14 +2,18 @@ package com.ajailani.projekan.data
 
 import android.content.Context
 import com.ajailani.projekan.data.remote.data_source.AuthRemoteDataSource
+import com.ajailani.projekan.data.remote.dto.UserCredentialDto
 import com.ajailani.projekan.data.remote.dto.response.BaseResponse
 import com.ajailani.projekan.data.repository.AuthRepositoryImpl
+import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.repository.AuthRepository
 import com.ajailani.projekan.util.userCredential
 import com.ajailani.projekan.util.userCredentialDto
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -20,9 +24,6 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import retrofit2.Response
-import com.ajailani.projekan.R
-import com.ajailani.projekan.data.remote.dto.UserCredentialDto
-import com.ajailani.projekan.domain.model.UserCredential
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -46,7 +47,7 @@ class AuthRepositoryTest {
 
     @Test
     fun `Login should return success`() =
-        runBlocking {
+        runTest(UnconfinedTestDispatcher()) {
             val response = Response.success(
                 200,
                 BaseResponse(
@@ -72,13 +73,12 @@ class AuthRepositoryTest {
 
     @Test
     fun `Login should return fail`() =
-        runBlocking {
+        runTest(UnconfinedTestDispatcher()) {
             val response = Response.error<Unit>(
                 401,
                 "".toResponseBody()
             )
 
-            doReturn(null).`when`(context).getString(R.string.incorrect_username_or_pass)
             doReturn(response).`when`(authRemoteDataSource).login(any())
 
             val actualResource = authRepository.login(
@@ -87,7 +87,7 @@ class AuthRepositoryTest {
             ).first()
 
             assertEquals(
-                "Resource should be fail",
+                "Resource should be error",
                 Resource.Error<UserCredential>(),
                 actualResource
             )
@@ -129,7 +129,6 @@ class AuthRepositoryTest {
                 "".toResponseBody()
             )
 
-            doReturn(null).`when`(context).getString(R.string.username_already_exists)
             doReturn(response).`when`(authRemoteDataSource).register(any())
 
             val actualResource = authRepository.register(
@@ -140,7 +139,7 @@ class AuthRepositoryTest {
             ).first()
 
             assertEquals(
-                "Resource should be success",
+                "Resource should be error",
                 Resource.Error<UserCredentialDto>(),
                 actualResource
             )
