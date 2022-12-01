@@ -23,6 +23,8 @@ import retrofit2.Response
 import com.ajailani.projekan.R
 import com.ajailani.projekan.data.remote.dto.UserCredentialDto
 import com.ajailani.projekan.domain.model.UserCredential
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -46,7 +48,7 @@ class AuthRepositoryTest {
 
     @Test
     fun `Login should return success`() =
-        runBlocking {
+        runTest(UnconfinedTestDispatcher()) {
             val response = Response.success(
                 200,
                 BaseResponse(
@@ -72,7 +74,7 @@ class AuthRepositoryTest {
 
     @Test
     fun `Login should return fail`() =
-        runBlocking {
+        runTest(UnconfinedTestDispatcher()) {
             val response = Response.error<Unit>(
                 401,
                 "".toResponseBody()
