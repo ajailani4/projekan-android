@@ -52,7 +52,8 @@ import com.ajailani.projekan.ui.theme.backgroundGrey
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToProjectList: () -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
@@ -84,14 +85,12 @@ fun HomeScreen(
     ) { innerPadding ->
         Box(
             modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.backgroundGrey)
                 .padding(innerPadding)
                 .pullRefresh(pullRefreshState)
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.backgroundGrey)
-            ) {
+            LazyColumn {
                 item {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
@@ -108,7 +107,7 @@ fun HomeScreen(
                                 onEvent = onEvent,
                                 deadlinesState = deadlinesState,
                                 scaffoldState = scaffoldState,
-                                onViewAllClicked = {}
+                                onViewAllClicked = onNavigateToProjectList
                             )
                         }
                     }
@@ -389,10 +388,3 @@ private fun LazyListScope.myProjectsSection(
         }
     }
 }
-
-@Preview
-@Composable
-fun PreviewHomeScreen() {
-    HomeScreen()
-}
-
