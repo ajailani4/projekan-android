@@ -3,7 +3,7 @@ package com.ajailani.projekan.data.remote.data_source
 import com.ajailani.projekan.data.remote.api_service.ProjectService
 import javax.inject.Inject
 
-class PlantRemoteDataSource @Inject constructor(
+class ProjectRemoteDataSource @Inject constructor(
     private val projectService: ProjectService
 ) {
     suspend fun getProjects(

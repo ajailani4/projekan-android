@@ -8,7 +8,7 @@ import com.ajailani.projekan.R
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.data.mapper.toProject
 import com.ajailani.projekan.data.remote.data_source.PagingDataSource
-import com.ajailani.projekan.data.remote.data_source.PlantRemoteDataSource
+import com.ajailani.projekan.data.remote.data_source.ProjectRemoteDataSource
 import com.ajailani.projekan.domain.repository.ProjectRepository
 import com.ajailani.projekan.util.ProjectType
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ProjectRepositoryImpl @Inject constructor(
-    private val projectRemoteDataSource: PlantRemoteDataSource,
+    private val projectRemoteDataSource: ProjectRemoteDataSource,
     @ApplicationContext private val context: Context
 ) : ProjectRepository {
     override fun getProjects(
