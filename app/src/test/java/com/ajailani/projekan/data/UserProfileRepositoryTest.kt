@@ -76,7 +76,6 @@ class UserProfileRepositoryTest {
                 "".toResponseBody()
             )
 
-            doReturn(null).`when`(context).getString(R.string.something_wrong_happened)
             doReturn(response).`when`(userProfileRemoteDataSource).getProfile()
 
             val actualResource = userProfileRepository.getUserProfile().first()

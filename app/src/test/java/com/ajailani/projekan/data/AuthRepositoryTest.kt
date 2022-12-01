@@ -80,7 +80,6 @@ class AuthRepositoryTest {
                 "".toResponseBody()
             )
 
-            doReturn(null).`when`(context).getString(R.string.incorrect_username_or_pass)
             doReturn(response).`when`(authRemoteDataSource).login(any())
 
             val actualResource = authRepository.login(
@@ -131,7 +130,6 @@ class AuthRepositoryTest {
                 "".toResponseBody()
             )
 
-            doReturn(null).`when`(context).getString(R.string.username_already_exists)
             doReturn(response).`when`(authRemoteDataSource).register(any())
 
             val actualResource = authRepository.register(
