@@ -356,14 +356,12 @@ private fun LazyListScope.myProjectsSection(
                     CircularProgressIndicator(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .wrapContentWidth(CenterHorizontally),
-
+                            .wrapContentWidth(CenterHorizontally)
                     )
                 }
             }
 
-            loadState.source.refresh is LoadState.NotLoading &&
-                loadState.append.endOfPaginationReached -> {
+            loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
 
                 if (itemCount < 1) {

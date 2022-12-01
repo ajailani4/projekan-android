@@ -5,10 +5,8 @@ import com.ajailani.projekan.R
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.data.mapper.toUserProfile
 import com.ajailani.projekan.data.remote.data_source.UserProfileRemoteDataSource
-import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.domain.repository.UserProfileRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
