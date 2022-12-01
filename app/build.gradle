@@ -77,7 +77,7 @@ dependencies {
 
     // Paging
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
-    implementation "androidx.paging:paging-compose:1.0.0-alpha17"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha14"
 
     // Preferences DataStore
     implementation("androidx.datastore:datastore-preferences:1.0.0")
@@ -95,6 +95,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:3.0.0'
     testImplementation "org.mockito.kotlin:mockito-kotlin:4.0.0"
 
+    androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
