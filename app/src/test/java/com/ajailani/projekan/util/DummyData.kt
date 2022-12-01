@@ -1,6 +1,7 @@
 package com.ajailani.projekan.util
 
 import com.ajailani.projekan.data.remote.dto.UserCredentialDto
+import com.ajailani.projekan.data.remote.dto.UserProfileDto
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.model.UserProfile
@@ -11,6 +12,13 @@ val userCredentialDto = UserCredentialDto(
 )
 
 val userCredential = UserCredential(accessToken = "abcd")
+
+val userProfileDto = UserProfileDto(
+    username = "george",
+    name = "George",
+    email = "george@email.com",
+    avatar = "image.jpg"
+)
 
 val userProfile = UserProfile(
     name = "George",
