@@ -89,7 +89,7 @@ class AuthRepositoryTest {
             ).first()
 
             assertEquals(
-                "Resource should be fail",
+                "Resource should be error",
                 Resource.Error<UserCredential>(),
                 actualResource
             )
@@ -142,7 +142,7 @@ class AuthRepositoryTest {
             ).first()
 
             assertEquals(
-                "Resource should be success",
+                "Resource should be error",
                 Resource.Error<UserCredentialDto>(),
                 actualResource
             )

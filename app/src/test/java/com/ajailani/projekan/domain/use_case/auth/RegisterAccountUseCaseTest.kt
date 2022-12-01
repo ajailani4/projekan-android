@@ -58,7 +58,7 @@ class RegisterAccountUseCaseTest {
             ).first()
 
             assertEquals(
-                "Resource should be success",
+                "Resource should be error",
                 Resource.Error<UserCredential>(),
                 actualResource
             )
