@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getProjectsUseCase(
                 page = 1,
-                size = 5,
+                size = 7,
                 type = ProjectType.DEADLINE
             ).catch {
                 deadlinesState = UIState.Error(it.localizedMessage)
@@ -96,11 +96,9 @@ class HomeViewModel @Inject constructor(
 
     private fun getProjects() {
         viewModelScope.launch {
-            getPagingProjectsUseCase()
-                .cachedIn(viewModelScope)
-                .collect {
-                    _pagingProjects.value = it
-                }
+            getPagingProjectsUseCase().cachedIn(viewModelScope).collect {
+                _pagingProjects.value = it
+            }
         }
     }
 }

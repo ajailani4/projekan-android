@@ -48,11 +48,13 @@ import com.ajailani.projekan.ui.feature.home.component.HProjectCard
 import com.ajailani.projekan.ui.feature.home.component.HProjectCardShimmer
 import com.ajailani.projekan.ui.feature.home.component.HomeHeaderShimmer
 import com.ajailani.projekan.ui.theme.backgroundGrey
+import com.ajailani.projekan.util.ProjectType
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToProjectList: (ProjectType) -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
@@ -84,14 +86,12 @@ fun HomeScreen(
     ) { innerPadding ->
         Box(
             modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.backgroundGrey)
                 .padding(innerPadding)
                 .pullRefresh(pullRefreshState)
         ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.backgroundGrey)
-            ) {
+            LazyColumn {
                 item {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
@@ -108,7 +108,7 @@ fun HomeScreen(
                                 onEvent = onEvent,
                                 deadlinesState = deadlinesState,
                                 scaffoldState = scaffoldState,
-                                onViewAllClicked = {}
+                                onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) }
                             )
                         }
                     }
@@ -347,7 +347,7 @@ private fun LazyListScope.myProjectsSection(
         when {
             loadState.refresh is LoadState.Loading -> {
                 item {
-                    VProjectCardShimmer()
+                    VProjectCardShimmer(modifier = Modifier.padding(horizontal = 20.dp))
                 }
             }
 
@@ -389,10 +389,3 @@ private fun LazyListScope.myProjectsSection(
         }
     }
 }
-
-@Preview
-@Composable
-fun PreviewHomeScreen() {
-    HomeScreen()
-}
-
