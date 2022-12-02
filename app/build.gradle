@@ -27,7 +27,8 @@ android {
             buildConfigField("String", "BASE_URL", "\"https://projekan-backend.fly.dev/api/v1/\"")
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "BASE_URL", "\"https://projekan-backend.fly.dev/api/v1/\"")
         }
