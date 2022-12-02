@@ -347,7 +347,7 @@ private fun LazyListScope.myProjectsSection(
         when {
             loadState.refresh is LoadState.Loading -> {
                 item {
-                    VProjectCardShimmer()
+                    VProjectCardShimmer(modifier = Modifier.padding(horizontal = 20.dp))
                 }
             }
 

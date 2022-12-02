@@ -120,14 +120,12 @@ fun VProjectCard(
 }
 
 @Composable
-fun VProjectCardShimmer() {
+fun VProjectCardShimmer(modifier: Modifier = Modifier) {
     val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.View)
 
-    for (i in 1..2) {
+    for (i in 1..3) {
         Card(
-            modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .shimmer(shimmerInstance),
+            modifier = modifier.shimmer(shimmerInstance),
             shape = MaterialTheme.shapes.large,
             elevation = 0.dp
         ) {
