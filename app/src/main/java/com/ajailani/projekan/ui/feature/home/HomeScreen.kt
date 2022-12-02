@@ -48,12 +48,13 @@ import com.ajailani.projekan.ui.feature.home.component.HProjectCard
 import com.ajailani.projekan.ui.feature.home.component.HProjectCardShimmer
 import com.ajailani.projekan.ui.feature.home.component.HomeHeaderShimmer
 import com.ajailani.projekan.ui.theme.backgroundGrey
+import com.ajailani.projekan.util.ProjectType
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToProjectList: () -> Unit
+    onNavigateToProjectList: (ProjectType) -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
@@ -107,7 +108,7 @@ fun HomeScreen(
                                 onEvent = onEvent,
                                 deadlinesState = deadlinesState,
                                 scaffoldState = scaffoldState,
-                                onViewAllClicked = onNavigateToProjectList
+                                onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) }
                             )
                         }
                     }

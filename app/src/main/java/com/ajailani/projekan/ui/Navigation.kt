@@ -2,8 +2,10 @@ package com.ajailani.projekan.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.ajailani.projekan.ui.feature.home.HomeScreen
 import com.ajailani.projekan.ui.feature.login.LoginScreen
 import com.ajailani.projekan.ui.feature.project_list.ProjectListScreen
@@ -16,7 +18,7 @@ fun Navigation(
     startDestination: String
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
-        composable(Screen.WelcomeScreen.route) {
+        composable(route = Screen.WelcomeScreen.route) {
             WelcomeScreen(
                 onNavigateToLogin = {
                     navController.navigate(Screen.LoginScreen.route)
@@ -27,7 +29,7 @@ fun Navigation(
             )
         }
 
-        composable(Screen.LoginScreen.route) {
+        composable(route = Screen.LoginScreen.route) {
             LoginScreen(
                 onNavigateUp = {
                     navController.navigateUp()
@@ -47,7 +49,7 @@ fun Navigation(
             )
         }
 
-        composable(Screen.RegisterScreen.route) {
+        composable(route = Screen.RegisterScreen.route) {
             RegisterScreen(
                 onNavigateUp = {
                     navController.navigateUp()
@@ -67,16 +69,31 @@ fun Navigation(
             )
         }
 
-        composable(Screen.HomeScreen.route) {
+        composable(route = Screen.HomeScreen.route) {
             HomeScreen(
-                onNavigateToProjectList = {
-                    navController.navigate(Screen.ProjectListScreen.route)
+                onNavigateToProjectList = { projectType ->
+                    navController.navigate(
+                        Screen.ProjectListScreen.route + "?projectType=${projectType}"
+                    )
                 }
             )
         }
 
-        composable(Screen.ProjectListScreen.route) {
-            ProjectListScreen()
+        composable(
+            route = Screen.ProjectListScreen.route + "?projectType={projectType}",
+            arguments = listOf(
+                navArgument("projectType") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
+            ProjectListScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
         }
     }
 }

@@ -29,7 +29,7 @@ val Typography = Typography(
     h6 = TextStyle(
         fontFamily = montserratFamily,
         fontWeight = FontWeight.Medium,
-        fontSize = 20.sp
+        fontSize = 18.sp
     ),
     subtitle1 = TextStyle(
         fontFamily = poppinsFamily,
