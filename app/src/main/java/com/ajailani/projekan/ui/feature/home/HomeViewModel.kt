@@ -80,7 +80,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getProjectsUseCase(
                 page = 1,
-                size = 5,
+                size = 7,
                 type = ProjectType.DEADLINE
             ).catch {
                 deadlinesState = UIState.Error(it.localizedMessage)
