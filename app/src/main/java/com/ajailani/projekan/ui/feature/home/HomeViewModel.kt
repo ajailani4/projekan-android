@@ -96,11 +96,9 @@ class HomeViewModel @Inject constructor(
 
     private fun getProjects() {
         viewModelScope.launch {
-            getPagingProjectsUseCase()
-                .cachedIn(viewModelScope)
-                .collect {
-                    _pagingProjects.value = it
-                }
+            getPagingProjectsUseCase().cachedIn(viewModelScope).collect {
+                _pagingProjects.value = it
+            }
         }
     }
 }

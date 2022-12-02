@@ -48,11 +48,9 @@ class ProjectListViewModel @Inject constructor(
         viewModelScope.launch {
             getPagingProjectsUseCase(
                 if (projectType != null) ProjectType.valueOf(projectType) else null
-            )
-                .cachedIn(viewModelScope)
-                .collect {
-                    _pagingProjects.value = it
-                }
+            ).cachedIn(viewModelScope).collect {
+                _pagingProjects.value = it
+            }
         }
     }
 }
