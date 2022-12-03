@@ -1,6 +1,5 @@
 package com.ajailani.projekan.ui.common.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -21,10 +20,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.ajailani.projekan.R
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.ui.theme.BackgroundShimmer
 import com.ajailani.projekan.ui.theme.Grey
 import com.ajailani.projekan.util.Formatter
@@ -33,13 +31,13 @@ import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
 
 /**
- * A card for displaying [Project] in vertical list
+ * A card for displaying [ProjectItem] in vertical list
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun VProjectCard(
     modifier: Modifier = Modifier,
-    project: Project,
+    projectItem: ProjectItem,
     onClick: () -> Unit
 ) {
     Card(
@@ -59,7 +57,7 @@ fun VProjectCard(
                         .size(60.dp)
                         .clip(MaterialTheme.shapes.medium),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(project.icon)
+                        .data(projectItem.icon)
                         .build(),
                     placeholder = painterResource(id = R.drawable.ic_default_project),
                     contentScale = ContentScale.Crop,
@@ -68,7 +66,7 @@ fun VProjectCard(
                 Spacer(modifier = Modifier.width(20.dp))
                 Column {
                     Text(
-                        text = project.title,
+                        text = projectItem.title,
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
@@ -78,13 +76,13 @@ fun VProjectCard(
                     Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         Label(
-                            title = project.platform,
+                            title = projectItem.platform,
                             backgroundColor = MaterialTheme.colors.secondary,
                             contentColor = MaterialTheme.colors.secondaryVariant
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Label(
-                            title = project.category,
+                            title = projectItem.category,
                             backgroundColor = MaterialTheme.colors.primary,
                             contentColor = MaterialTheme.colors.primaryVariant
                         )
@@ -106,7 +104,7 @@ fun VProjectCard(
                                     color = MaterialTheme.colors.onSurface
                                 )
                             ) {
-                                append(Formatter.formatDate(project.deadline))
+                                append(Formatter.formatDate(projectItem.deadline))
                             }
                         },
                         style = MaterialTheme.typography.body1.copy(

@@ -28,7 +28,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -38,7 +37,7 @@ import androidx.paging.compose.items
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.ajailani.projekan.R
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
@@ -221,7 +220,7 @@ private fun Header(
 @Composable
 private fun ThisWeekDeadlinesSection(
     onEvent: (HomeEvent) -> Unit,
-    deadlinesState: UIState<List<Project>>,
+    deadlinesState: UIState<List<ProjectItem>>,
     scaffoldState: ScaffoldState,
     onViewAllClicked: () -> Unit
 ) {
@@ -266,13 +265,13 @@ private fun ThisWeekDeadlinesSection(
                 deadlinesState.data?.let { projects ->
                     if (projects.isNotEmpty()) {
                         LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {
-                            items(projects) { project ->
+                            items(projects) { projectItem ->
                                 HProjectCard(
-                                    project = project,
+                                    projectItem = projectItem,
                                     onClick = {}
                                 )
 
-                                if (project != projects.last()) {
+                                if (projectItem != projects.last()) {
                                     Spacer(modifier = Modifier.width(15.dp))
                                 }
                             }
@@ -315,7 +314,7 @@ private fun ThisWeekDeadlinesSection(
 
 private fun LazyListScope.myProjectsSection(
     onEvent: (HomeEvent) -> Unit,
-    pagingProjects: LazyPagingItems<Project>,
+    pagingProjects: LazyPagingItems<ProjectItem>,
     scaffoldState: ScaffoldState
 ) {
     item {
@@ -331,11 +330,11 @@ private fun LazyListScope.myProjectsSection(
         Spacer(modifier = Modifier.height(15.dp))
     }
 
-    items(pagingProjects) { project ->
-        project?.let {
+    items(pagingProjects) { projectItem ->
+        projectItem?.let {
             VProjectCard(
                 modifier = Modifier.padding(horizontal = 20.dp),
-                project = project,
+                projectItem = projectItem,
                 onClick = {}
             )
             Spacer(modifier = Modifier.height(20.dp))

@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.ajailani.projekan.data.Resource
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.domain.use_case.project.GetPagingProjectsUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectsUseCase
@@ -31,11 +31,11 @@ class HomeViewModel @Inject constructor(
     var userProfileState by mutableStateOf<UIState<UserProfile>>(UIState.Idle)
         private set
 
-    var deadlinesState by mutableStateOf<UIState<List<Project>>>(UIState.Idle)
+    var deadlinesState by mutableStateOf<UIState<List<ProjectItem>>>(UIState.Idle)
         private set
 
-    private var _pagingProjects = MutableStateFlow<PagingData<Project>>(PagingData.empty())
-    val pagingProjects: StateFlow<PagingData<Project>> = _pagingProjects
+    private var _pagingProjects = MutableStateFlow<PagingData<ProjectItem>>(PagingData.empty())
+    val pagingProjects: StateFlow<PagingData<ProjectItem>> = _pagingProjects
 
     var pullRefreshing by mutableStateOf(false)
         private set

@@ -1,6 +1,5 @@
 package com.ajailani.projekan.ui.feature.home.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -19,10 +18,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.ajailani.projekan.R
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.ui.common.component.Label
 import com.ajailani.projekan.ui.theme.BackgroundShimmer
 import com.ajailani.projekan.ui.theme.Grey
@@ -32,12 +30,12 @@ import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
 
 /**
- * A card for displaying [Project] in horizontal list
+ * A card for displaying [ProjectItem] in horizontal list
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HProjectCard(
-    project: Project,
+    projectItem: ProjectItem,
     onClick: () -> Unit
 ) {
     Card(
@@ -56,7 +54,7 @@ fun HProjectCard(
                         .size(50.dp)
                         .clip(MaterialTheme.shapes.small),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(project.icon)
+                        .data(projectItem.icon)
                         .build(),
                     placeholder = painterResource(id = R.drawable.ic_default_project),
                     contentScale = ContentScale.Crop,
@@ -65,7 +63,7 @@ fun HProjectCard(
                 Spacer(modifier = Modifier.width(15.dp))
                 Column {
                     Text(
-                        text = project.title,
+                        text = projectItem.title,
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
@@ -74,7 +72,7 @@ fun HProjectCard(
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = project.description,
+                        text = projectItem.description,
                         color = Grey,
                         style = MaterialTheme.typography.body1,
                         maxLines = 1,
@@ -83,13 +81,13 @@ fun HProjectCard(
                     Spacer(modifier = Modifier.height(30.dp))
                     Row {
                         Label(
-                            title = project.platform,
+                            title = projectItem.platform,
                             backgroundColor = MaterialTheme.colors.secondary,
                             contentColor = MaterialTheme.colors.secondaryVariant
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Label(
-                            title = project.category,
+                            title = projectItem.category,
                             backgroundColor = MaterialTheme.colors.primary,
                             contentColor = MaterialTheme.colors.primaryVariant
                         )
@@ -111,7 +109,7 @@ fun HProjectCard(
                                     color = MaterialTheme.colors.onSurface
                                 )
                             ) {
-                                append(Formatter.formatDate(project.deadline))
+                                append(Formatter.formatDate(projectItem.deadline))
                             }
                         },
                         style = MaterialTheme.typography.body1.copy(

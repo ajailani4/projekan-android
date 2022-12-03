@@ -1,10 +1,10 @@
 package com.ajailani.projekan.data.mapper
 
-import com.ajailani.projekan.data.remote.dto.ProjectDto
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.data.remote.dto.ProjectItemDto
+import com.ajailani.projekan.domain.model.ProjectItem
 
-fun ProjectDto.toProject() =
-    Project(
+fun ProjectItemDto.toProject() =
+    ProjectItem(
         id = id,
         title = title,
         description = description,

@@ -1,10 +1,10 @@
 package com.ajailani.projekan.domain.use_case.project
 
 import com.ajailani.projekan.data.Resource
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.repository.ProjectRepositoryFake
 import com.ajailani.projekan.util.ResourceType
-import com.ajailani.projekan.util.projects
+import com.ajailani.projekan.util.projectItems
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -36,7 +36,7 @@ class GetProjectsUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Success(projects),
+                Resource.Success(projectItems),
                 actualResource
             )
         }
@@ -53,7 +53,7 @@ class GetProjectsUseCaseTest {
 
             assertEquals(
                 "Resource should be error",
-                Resource.Error<List<Project>>(),
+                Resource.Error<List<ProjectItem>>(),
                 actualResource
             )
         }

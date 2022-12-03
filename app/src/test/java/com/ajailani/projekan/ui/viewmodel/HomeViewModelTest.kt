@@ -3,7 +3,7 @@ package com.ajailani.projekan.ui.viewmodel
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import com.ajailani.projekan.data.Resource
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.domain.use_case.project.GetPagingProjectsUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectsUseCase
@@ -100,7 +100,7 @@ class HomeViewModelTest {
     @Test
     fun `Get deadlines should return success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success(projects))
+            val resource = flowOf(Resource.Success(projectItems))
 
             doReturn(resource).`when`(getProjectsUseCase)(
                 page = anyInt(),
@@ -124,7 +124,7 @@ class HomeViewModelTest {
     @Test
     fun `Get deadlines should return fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<List<Project>>())
+            val resource = flowOf(Resource.Error<List<ProjectItem>>())
 
             doReturn(resource).`when`(getProjectsUseCase)(
                 page = anyInt(),
@@ -147,7 +147,7 @@ class HomeViewModelTest {
     @Test
     fun `Get projects should return success`() {
         testCoroutineRule.runTest {
-            val pagingData = flowOf(PagingData.from(projects))
+            val pagingData = flowOf(PagingData.from(projectItems))
 
             doReturn(pagingData).`when`(getPagingProjectsUseCase)(type = isNull())
 
@@ -162,7 +162,7 @@ class HomeViewModelTest {
 
             differ.submitData(pagingProjects)
 
-            assertEquals("Should be success", projects, differ.snapshot().items)
+            assertEquals("Should be success", projectItems, differ.snapshot().items)
         }
     }
 }

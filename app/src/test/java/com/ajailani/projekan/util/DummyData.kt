@@ -1,9 +1,9 @@
 package com.ajailani.projekan.util
 
-import com.ajailani.projekan.data.remote.dto.ProjectDto
+import com.ajailani.projekan.data.remote.dto.ProjectItemDto
 import com.ajailani.projekan.data.remote.dto.UserCredentialDto
 import com.ajailani.projekan.data.remote.dto.UserProfileDto
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserCredential
 import com.ajailani.projekan.domain.model.UserProfile
 
@@ -26,8 +26,8 @@ val userProfile = UserProfile(
     avatar = "image.jpg"
 )
 
-val projectsDto = listOf(
-    ProjectDto(
+val projectItemsDto = listOf(
+    ProjectItemDto(
         id = "1",
         title = "Projekan",
         description = "Project management app",
@@ -36,7 +36,7 @@ val projectsDto = listOf(
         deadline = "2022-12-05",
         icon = "icon.png"
     ),
-    ProjectDto(
+    ProjectItemDto(
         id = "2",
         title = "Projekan 2",
         description = "Project management app",
@@ -47,8 +47,8 @@ val projectsDto = listOf(
     )
 )
 
-val projects = listOf(
-    Project(
+val projectItems = listOf(
+    ProjectItem(
         id = "1",
         title = "Projekan",
         description = "Project management app",
@@ -57,7 +57,7 @@ val projects = listOf(
         deadline = "2022-12-05",
         icon = "icon.png"
     ),
-    Project(
+    ProjectItem(
         id = "2",
         title = "Projekan 2",
         description = "Project management app",

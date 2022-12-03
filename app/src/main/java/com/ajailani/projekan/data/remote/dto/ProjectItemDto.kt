@@ -1,6 +1,6 @@
 package com.ajailani.projekan.data.remote.dto
 
-data class ProjectDto(
+data class ProjectItemDto(
     val id: String,
     val title: String,
     val description: String,

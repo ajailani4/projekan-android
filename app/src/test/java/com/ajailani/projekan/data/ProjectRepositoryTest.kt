@@ -4,10 +4,10 @@ import android.content.Context
 import com.ajailani.projekan.data.remote.data_source.ProjectRemoteDataSource
 import com.ajailani.projekan.data.remote.dto.response.BaseResponse
 import com.ajailani.projekan.data.repository.ProjectRepositoryImpl
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.repository.ProjectRepository
-import com.ajailani.projekan.util.projects
-import com.ajailani.projekan.util.projectsDto
+import com.ajailani.projekan.util.projectItems
+import com.ajailani.projekan.util.projectItemsDto
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -52,7 +52,7 @@ class ProjectRepositoryTest {
                 BaseResponse(
                     code = 200,
                     status = "OK",
-                    data = projectsDto
+                    data = projectItemsDto
                 )
             )
 
@@ -70,7 +70,7 @@ class ProjectRepositoryTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Success(projects),
+                Resource.Success(projectItems),
                 actualResource
             )
         }
@@ -78,7 +78,7 @@ class ProjectRepositoryTest {
     @Test
     fun `Get projects should return fail`() =
         runTest(UnconfinedTestDispatcher()) {
-            val response = Response.error<List<Project>>(
+            val response = Response.error<List<ProjectItem>>(
                 400,
                 "".toResponseBody()
             )
@@ -97,7 +97,7 @@ class ProjectRepositoryTest {
 
             assertEquals(
                 "Resource should be error",
-                Resource.Error<List<Project>>(),
+                Resource.Error<List<ProjectItem>>(),
                 actualResource
             )
         }

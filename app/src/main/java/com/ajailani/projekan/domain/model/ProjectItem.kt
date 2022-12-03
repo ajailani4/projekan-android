@@ -1,6 +1,6 @@
 package com.ajailani.projekan.domain.model
 
-data class Project(
+data class ProjectItem(
     val id: String,
     val title: String,
     val description: String,

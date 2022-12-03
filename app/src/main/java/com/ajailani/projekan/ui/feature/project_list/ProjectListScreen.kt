@@ -24,7 +24,6 @@ import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.VProjectCard
 import com.ajailani.projekan.ui.common.component.VProjectCardShimmer
-import com.ajailani.projekan.ui.feature.home.HomeEvent
 import com.ajailani.projekan.ui.theme.backgroundGrey
 import com.ajailani.projekan.util.ProjectType
 
@@ -84,10 +83,10 @@ fun ProjectListScreen(
                 .pullRefresh(pullRefreshState)
         ) {
             LazyColumn(contentPadding = PaddingValues(20.dp)) {
-                items(pagingProjects) { project ->
-                    project?.let {
+                items(pagingProjects) { projectItem ->
+                    projectItem?.let {
                         VProjectCard(
-                            project = project,
+                            projectItem = projectItem,
                             onClick = {}
                         )
                         Spacer(modifier = Modifier.height(20.dp))
