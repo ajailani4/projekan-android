@@ -74,7 +74,6 @@ fun HProjectCard(
                     Text(
                         text = projectItem.description,
                         color = Grey,
-                        style = MaterialTheme.typography.body1,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )

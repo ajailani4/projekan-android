@@ -161,7 +161,6 @@ private fun Header(
                         Text(
                             text = "${stringResource(id = R.string.hello)}, " +
                                     userProfile.name.split(" ")[0],
-                            color = MaterialTheme.colors.onPrimary,
                             style = MaterialTheme.typography.subtitle1.copy(
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -170,9 +169,7 @@ private fun Header(
 
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(
-                        text = stringResource(id = R.string.manage_your_projects),
-                        color = MaterialTheme.colors.onPrimary,
-                        style = MaterialTheme.typography.body1
+                        text = stringResource(id = R.string.manage_your_projects)
                     )
                 }
                 Image(
@@ -234,7 +231,6 @@ private fun ThisWeekDeadlinesSection(
         ) {
             Text(
                 text = stringResource(id = R.string.this_week_deadlines),
-                color = MaterialTheme.colors.onPrimary,
                 style = MaterialTheme.typography.h4
             )
             ClickableText(
@@ -321,7 +317,6 @@ private fun LazyListScope.myProjectsSection(
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
             text = stringResource(id = R.string.my_projects),
-            color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.h4
         )
     }

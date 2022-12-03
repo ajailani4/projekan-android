@@ -76,7 +76,6 @@ fun RegisterScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.register),
-                    color = MaterialTheme.colors.onBackground,
                     style = MaterialTheme.typography.h1
                 )
                 Spacer(modifier = Modifier.height(60.dp))
