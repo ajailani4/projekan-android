@@ -3,6 +3,8 @@ package com.ajailani.projekan.ui.feature.project_detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
@@ -23,6 +25,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.component.Label
+import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
+import com.ajailani.projekan.ui.feature.project_detail.component.tasks
 import com.ajailani.projekan.ui.theme.Blue
 import com.ajailani.projekan.ui.theme.Grey
 import com.ajailani.projekan.ui.theme.Yellow
@@ -58,7 +62,7 @@ fun ProjectDetailScreen(
                     IconButton(onClick = {}) {
                         Icon(
                             imageVector = Icons.Default.MoreVert,
-                            contentDescription = "Project more"
+                            contentDescription = "Project more option icon"
                         )
                     }
                 }
@@ -71,87 +75,109 @@ fun ProjectDetailScreen(
                 .background(color = MaterialTheme.colors.backgroundGrey)
                 .padding(innerPadding)
         ) {
-            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                Column(
-                    modifier = Modifier
-                        .background(color = MaterialTheme.colors.surface)
-                        .padding(20.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
+            LazyColumn {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .background(color = MaterialTheme.colors.surface)
+                            .padding(20.dp)
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Image(
-                                modifier = Modifier
-                                    .size(60.dp)
-                                    .clip(MaterialTheme.shapes.medium),
-                                painter = painterResource(id = R.drawable.app_icon),
-                                contentDescription = "Project icon"
-                            )
-                            Spacer(modifier = Modifier.width(20.dp))
-                            Text(
-                                text = "Projekan",
-                                color = MaterialTheme.colors.onSurface,
-                                style = MaterialTheme.typography.h3
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Image(
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .clip(MaterialTheme.shapes.medium),
+                                    painter = painterResource(id = R.drawable.app_icon),
+                                    contentDescription = "Project icon"
+                                )
+                                Spacer(modifier = Modifier.width(20.dp))
+                                Text(
+                                    text = "Projekan",
+                                    color = MaterialTheme.colors.onSurface,
+                                    style = MaterialTheme.typography.h3
+                                )
+                            }
+                            Label(
+                                title = "In Progress",
+                                backgroundColor = Yellow,
+                                textColor = Color.White
                             )
                         }
-                        Label(
-                            title = "In Progress",
-                            backgroundColor = Yellow,
-                            textColor = Color.White
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Text(
+                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eget varius massa, tempor pretium nunc. Maecenas luctus condimentum ultrices.",
+                            color = MaterialTheme.colors.onSurface
                         )
-                    }
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eget varius massa, tempor pretium nunc. Maecenas luctus condimentum ultrices.",
-                        color = MaterialTheme.colors.onSurface
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row {
-                        Label(
-                            title = "Mobile",
-                            backgroundColor = MaterialTheme.colors.secondary,
-                            textColor = MaterialTheme.colors.secondaryVariant
-                        )
-                        Spacer(modifier = Modifier.width(10.dp))
-                        Label(
-                            title = "Application",
-                            backgroundColor = MaterialTheme.colors.primary,
-                            textColor = MaterialTheme.colors.primaryVariant
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(15.dp))
-                    Text(
-                        text = buildAnnotatedString {
-                            withStyle(
-                                SpanStyle(
-                                    color = Grey
-                                )
-                            ) {
-                                append(stringResource(id = R.string.deadline))
-                                append(": ")
-                            }
+                        Spacer(modifier = Modifier.height(20.dp))
+                        Row {
+                            Label(
+                                title = "Mobile",
+                                backgroundColor = MaterialTheme.colors.secondary,
+                                textColor = MaterialTheme.colors.secondaryVariant
+                            )
+                            Spacer(modifier = Modifier.width(10.dp))
+                            Label(
+                                title = "Application",
+                                backgroundColor = MaterialTheme.colors.primary,
+                                textColor = MaterialTheme.colors.primaryVariant
+                            )
+                        }
+                        Spacer(modifier = Modifier.height(15.dp))
+                        Text(
+                            text = buildAnnotatedString {
+                                withStyle(
+                                    SpanStyle(
+                                        color = Grey
+                                    )
+                                ) {
+                                    append(stringResource(id = R.string.deadline))
+                                    append(": ")
+                                }
 
-                            withStyle(
-                                SpanStyle(
-                                    color = MaterialTheme.colors.onSurface
-                                )
-                            ) {
-                                append(Formatter.formatDate("2022-12-12"))
-                            }
-                        },
-                        style = MaterialTheme.typography.body1.copy(
-                            fontWeight = FontWeight.Medium
+                                withStyle(
+                                    SpanStyle(
+                                        color = MaterialTheme.colors.onSurface
+                                    )
+                                ) {
+                                    append(Formatter.formatDate("2022-12-12"))
+                                }
+                            },
+                            style = MaterialTheme.typography.body1.copy(
+                                fontWeight = FontWeight.Medium
+                            )
                         )
+                    }
+                }
+
+                item {
+                    Spacer(modifier = Modifier.height(25.dp))
+                }
+
+                item {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        text = stringResource(id = R.string.tasks),
+                        style = MaterialTheme.typography.h4
                     )
                 }
-                Spacer(modifier = Modifier.height(25.dp))
-                Text(
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                    text = stringResource(id = R.string.tasks),
-                    style = MaterialTheme.typography.h4
-                )
+
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                }
+
+                items(tasks) { taskItem ->
+                    TaskItemCard(
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        taskItem = taskItem,
+                        onChecked = {},
+                        onMoreClicked = {}
+                    )
+                    Spacer(modifier = Modifier.height(15.dp))
+                }
             }
         }
     }
