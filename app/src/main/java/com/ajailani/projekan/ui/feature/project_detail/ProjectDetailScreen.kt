@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -157,28 +158,32 @@ fun ProjectDetailScreen(
                     Spacer(modifier = Modifier.height(25.dp))
                 }
 
-                item {
-                    Text(
-                        modifier = Modifier.padding(horizontal = 20.dp),
-                        text = stringResource(id = R.string.tasks),
-                        style = MaterialTheme.typography.h4
-                    )
-                }
-
-                item {
-                    Spacer(modifier = Modifier.height(20.dp))
-                }
-
-                items(tasks) { taskItem ->
-                    TaskItemCard(
-                        modifier = Modifier.padding(horizontal = 20.dp),
-                        taskItem = taskItem,
-                        onChecked = {},
-                        onMoreClicked = {}
-                    )
-                    Spacer(modifier = Modifier.height(15.dp))
-                }
+                tasksSection()
             }
         }
+    }
+}
+
+private fun LazyListScope.tasksSection() {
+    item {
+        Text(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            text = stringResource(id = R.string.tasks),
+            style = MaterialTheme.typography.h3
+        )
+    }
+
+    item {
+        Spacer(modifier = Modifier.height(15.dp))
+    }
+
+    items(tasks) { taskItem ->
+        TaskItemCard(
+            modifier = Modifier.padding(horizontal = 20.dp),
+            taskItem = taskItem,
+            onChecked = {},
+            onMoreClicked = {}
+        )
+        Spacer(modifier = Modifier.height(15.dp))
     }
 }
