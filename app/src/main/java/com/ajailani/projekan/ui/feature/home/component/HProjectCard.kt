@@ -83,13 +83,13 @@ fun HProjectCard(
                         Label(
                             title = projectItem.platform,
                             backgroundColor = MaterialTheme.colors.secondary,
-                            contentColor = MaterialTheme.colors.secondaryVariant
+                            textColor = MaterialTheme.colors.secondaryVariant
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Label(
                             title = projectItem.category,
                             backgroundColor = MaterialTheme.colors.primary,
-                            contentColor = MaterialTheme.colors.primaryVariant
+                            textColor = MaterialTheme.colors.primaryVariant
                         )
                     }
                     Spacer(modifier = Modifier.height(20.dp))

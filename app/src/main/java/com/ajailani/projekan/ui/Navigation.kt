@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.ajailani.projekan.ui.feature.home.HomeScreen
 import com.ajailani.projekan.ui.feature.login.LoginScreen
+import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailScreen
 import com.ajailani.projekan.ui.feature.project_list.ProjectListScreen
 import com.ajailani.projekan.ui.feature.register.RegisterScreen
 import com.ajailani.projekan.ui.feature.welcome.WelcomeScreen
@@ -90,6 +91,14 @@ fun Navigation(
             )
         ) {
             ProjectListScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        composable(route = Screen.ProjectDetailScreen.route) {
+            ProjectDetailScreen(
                 onNavigateUp = {
                     navController.navigateUp()
                 }

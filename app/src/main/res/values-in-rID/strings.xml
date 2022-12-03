@@ -29,4 +29,7 @@
     <string name="my_projects">Proyek Saya</string>
     <string name="no_projects">Kamu belum memiliki proyek.\nAyo tambahkan proyek baru</string>
     <string name="deadline">Deadline</string>
+
+    <string name="project_detail">Detail Proyek</string>
+    <string name="tasks">Tugas</string>
 </resources>

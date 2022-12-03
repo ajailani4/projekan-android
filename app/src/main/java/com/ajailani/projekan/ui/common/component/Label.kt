@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -15,7 +16,8 @@ import androidx.compose.ui.unit.dp
 fun Label(
     title: String,
     backgroundColor: Color,
-    contentColor: Color
+    textColor: Color,
+    textStyle: TextStyle = MaterialTheme.typography.body2
 ) {
     Surface(
         shape = MaterialTheme.shapes.small,
@@ -24,8 +26,8 @@ fun Label(
         Column(modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)) {
             Text(
                 text = title,
-                color = contentColor,
-                style = MaterialTheme.typography.body2.copy(
+                color = textColor,
+                style = textStyle.copy(
                     fontWeight = FontWeight.Medium
                 )
             )
