@@ -15,4 +15,6 @@ class ProjectRemoteDataSource @Inject constructor(
         size = size,
         type = type
     )
+
+    suspend fun getProjectDetail(id: String) = projectService.getProjectDetail(id)
 }

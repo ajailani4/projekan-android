@@ -1,9 +1,10 @@
-package com.ajailani.projekan.domain.model
+package com.ajailani.projekan.data.remote.dto
 
 import com.ajailani.projekan.util.TaskStatus
 import com.squareup.moshi.Json
 
-data class TaskItem(
+data class TaskItemDto(
+    @field:Json(name = "_id")
     val id: String,
     val projectId: String,
     val title: String,
