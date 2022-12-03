@@ -34,7 +34,7 @@ import com.valentinilk.shimmer.shimmer
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HProjectCard(
+fun HProjectItemCard(
     projectItem: ProjectItem,
     onClick: () -> Unit
 ) {
@@ -122,7 +122,7 @@ fun HProjectCard(
 }
 
 @Composable
-fun HProjectCardShimmer() {
+fun HProjectItemCardShimmer() {
     val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.View)
 
     LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {

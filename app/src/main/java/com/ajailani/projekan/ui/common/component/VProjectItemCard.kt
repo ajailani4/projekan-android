@@ -35,7 +35,7 @@ import com.valentinilk.shimmer.shimmer
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun VProjectCard(
+fun VProjectItemCard(
     modifier: Modifier = Modifier,
     projectItem: ProjectItem,
     onClick: () -> Unit
@@ -118,7 +118,7 @@ fun VProjectCard(
 }
 
 @Composable
-fun VProjectCardShimmer(modifier: Modifier = Modifier) {
+fun VProjectItemCardShimmer(modifier: Modifier = Modifier) {
     val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.View)
 
     for (i in 1..3) {

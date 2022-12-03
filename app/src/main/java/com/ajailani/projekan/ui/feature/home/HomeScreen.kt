@@ -41,10 +41,10 @@ import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
-import com.ajailani.projekan.ui.common.component.VProjectCard
-import com.ajailani.projekan.ui.common.component.VProjectCardShimmer
-import com.ajailani.projekan.ui.feature.home.component.HProjectCard
-import com.ajailani.projekan.ui.feature.home.component.HProjectCardShimmer
+import com.ajailani.projekan.ui.common.component.VProjectItemCard
+import com.ajailani.projekan.ui.common.component.VProjectItemCardShimmer
+import com.ajailani.projekan.ui.feature.home.component.HProjectItemCard
+import com.ajailani.projekan.ui.feature.home.component.HProjectItemCardShimmer
 import com.ajailani.projekan.ui.feature.home.component.HomeHeaderShimmer
 import com.ajailani.projekan.ui.theme.backgroundGrey
 import com.ajailani.projekan.util.ProjectType
@@ -252,7 +252,7 @@ private fun ThisWeekDeadlinesSection(
 
         when (deadlinesState) {
             UIState.Loading -> {
-                HProjectCardShimmer()
+                HProjectItemCardShimmer()
             }
 
             is UIState.Success -> {
@@ -262,7 +262,7 @@ private fun ThisWeekDeadlinesSection(
                     if (projects.isNotEmpty()) {
                         LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {
                             items(projects) { projectItem ->
-                                HProjectCard(
+                                HProjectItemCard(
                                     projectItem = projectItem,
                                     onClick = {}
                                 )
@@ -327,7 +327,7 @@ private fun LazyListScope.myProjectsSection(
 
     items(pagingProjects) { projectItem ->
         projectItem?.let {
-            VProjectCard(
+            VProjectItemCard(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 projectItem = projectItem,
                 onClick = {}
@@ -341,7 +341,7 @@ private fun LazyListScope.myProjectsSection(
         when {
             loadState.refresh is LoadState.Loading -> {
                 item {
-                    VProjectCardShimmer(modifier = Modifier.padding(horizontal = 20.dp))
+                    VProjectItemCardShimmer(modifier = Modifier.padding(horizontal = 20.dp))
                 }
             }
 

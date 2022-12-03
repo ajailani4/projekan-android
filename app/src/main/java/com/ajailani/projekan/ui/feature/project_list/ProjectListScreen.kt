@@ -22,8 +22,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.component.CaptionImage
-import com.ajailani.projekan.ui.common.component.VProjectCard
-import com.ajailani.projekan.ui.common.component.VProjectCardShimmer
+import com.ajailani.projekan.ui.common.component.VProjectItemCard
+import com.ajailani.projekan.ui.common.component.VProjectItemCardShimmer
 import com.ajailani.projekan.ui.theme.backgroundGrey
 import com.ajailani.projekan.util.ProjectType
 
@@ -85,7 +85,7 @@ fun ProjectListScreen(
             LazyColumn(contentPadding = PaddingValues(20.dp)) {
                 items(pagingProjects) { projectItem ->
                     projectItem?.let {
-                        VProjectCard(
+                        VProjectItemCard(
                             projectItem = projectItem,
                             onClick = {}
                         )
@@ -98,7 +98,7 @@ fun ProjectListScreen(
                     when {
                         loadState.refresh is LoadState.Loading -> {
                             item {
-                                VProjectCardShimmer()
+                                VProjectItemCardShimmer()
                             }
                         }
 
