@@ -31,7 +31,8 @@ import com.ajailani.projekan.util.ProjectType
 @Composable
 fun ProjectListScreen(
     projectListViewModel: ProjectListViewModel = hiltViewModel(),
-    onNavigateUp: () -> Unit
+    onNavigateUp: () -> Unit,
+    onNavigateToProjectDetail: (String) -> Unit
 ) {
     val onEvent = projectListViewModel::onEvent
     val projectType = projectListViewModel.projectType
@@ -87,7 +88,7 @@ fun ProjectListScreen(
                     projectItem?.let {
                         VProjectItemCard(
                             projectItem = projectItem,
-                            onClick = {}
+                            onClick = { onNavigateToProjectDetail(projectItem.id) }
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                     }

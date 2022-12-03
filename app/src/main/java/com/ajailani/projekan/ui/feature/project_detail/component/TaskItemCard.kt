@@ -77,24 +77,3 @@ fun TaskItemCard(
         }
     }
 }
-
-val tasks = listOf(
-    TaskItem(
-        id = "1",
-        projectId = "123",
-        title = "Task one",
-        status = TaskStatus.DONE
-    ),
-    TaskItem(
-        id = "2",
-        projectId = "123",
-        title = "Task two",
-        status = TaskStatus.UNDONE
-    ),
-    TaskItem(
-        id = "3",
-        projectId = "123",
-        title = "Task three",
-        status = TaskStatus.UNDONE
-    )
-)

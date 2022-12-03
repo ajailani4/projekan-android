@@ -74,7 +74,12 @@ fun Navigation(
             HomeScreen(
                 onNavigateToProjectList = { projectType ->
                     navController.navigate(
-                        Screen.ProjectListScreen.route + "?projectType=${projectType}"
+                        Screen.ProjectListScreen.route + "?projectType=$projectType"
+                    )
+                },
+                onNavigateToProjectDetail = { projectId ->
+                    navController.navigate(
+                        Screen.ProjectDetailScreen.route + "?projectId=$projectId"
                     )
                 }
             )
@@ -93,11 +98,23 @@ fun Navigation(
             ProjectListScreen(
                 onNavigateUp = {
                     navController.navigateUp()
+                },
+                onNavigateToProjectDetail = { projectId ->
+                    navController.navigate(
+                        Screen.ProjectDetailScreen.route + "?projectId=$projectId"
+                    )
                 }
             )
         }
 
-        composable(route = Screen.ProjectDetailScreen.route) {
+        composable(
+            route = Screen.ProjectDetailScreen.route + "?projectId={projectId}",
+            arguments = listOf(
+                navArgument("projectId") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
             ProjectDetailScreen(
                 onNavigateUp = {
                     navController.navigateUp()

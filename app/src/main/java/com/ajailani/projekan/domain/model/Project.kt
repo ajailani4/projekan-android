@@ -12,5 +12,5 @@ data class Project(
     val icon: String,
     val progress: Int,
     val status: ProjectStatus,
-    val tasks: List<TaskItem>
+    val tasks: List<TaskItem>?
 )

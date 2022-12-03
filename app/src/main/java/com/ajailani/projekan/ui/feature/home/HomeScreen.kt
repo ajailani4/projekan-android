@@ -53,7 +53,8 @@ import com.ajailani.projekan.util.ProjectType
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToProjectList: (ProjectType) -> Unit
+    onNavigateToProjectList: (ProjectType) -> Unit,
+    onNavigateToProjectDetail: (String) -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
@@ -106,8 +107,9 @@ fun HomeScreen(
                         ThisWeekDeadlinesSection(
                             onEvent = onEvent,
                             deadlinesState = deadlinesState,
-                            scaffoldState = scaffoldState,
-                            onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) }
+                            onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) },
+                            onNavigateToProjectDetail = onNavigateToProjectDetail,
+                            scaffoldState = scaffoldState
                         )
                     }
                 }
@@ -119,6 +121,7 @@ fun HomeScreen(
                 myProjectsSection(
                     onEvent = onEvent,
                     pagingProjects = pagingProjects,
+                    onNavigateToProjectDetail = onNavigateToProjectDetail,
                     scaffoldState = scaffoldState
                 )
             }
@@ -219,8 +222,9 @@ private fun Header(
 private fun ThisWeekDeadlinesSection(
     onEvent: (HomeEvent) -> Unit,
     deadlinesState: UIState<List<ProjectItem>>,
-    scaffoldState: ScaffoldState,
-    onViewAllClicked: () -> Unit
+    onViewAllClicked: () -> Unit,
+    onNavigateToProjectDetail: (String) -> Unit,
+    scaffoldState: ScaffoldState
 ) {
     Column {
         Row(
@@ -266,7 +270,7 @@ private fun ThisWeekDeadlinesSection(
                             items(projects) { projectItem ->
                                 HProjectItemCard(
                                     projectItem = projectItem,
-                                    onClick = {}
+                                    onClick = { onNavigateToProjectDetail(projectItem.id) }
                                 )
 
                                 if (projectItem != projects.last()) {
@@ -313,6 +317,7 @@ private fun ThisWeekDeadlinesSection(
 private fun LazyListScope.myProjectsSection(
     onEvent: (HomeEvent) -> Unit,
     pagingProjects: LazyPagingItems<ProjectItem>,
+    onNavigateToProjectDetail: (String) -> Unit,
     scaffoldState: ScaffoldState
 ) {
     item {
@@ -332,7 +337,7 @@ private fun LazyListScope.myProjectsSection(
             VProjectItemCard(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 projectItem = projectItem,
-                onClick = {}
+                onClick = { onNavigateToProjectDetail(projectItem.id) }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }

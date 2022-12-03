@@ -31,5 +31,8 @@
     <string name="deadline">Deadline</string>
 
     <string name="project_detail">Detail Proyek</string>
+    <string name="todo">To-Do</string>
+    <string name="in_progress">In Progress</string>
+    <string name="done">Done</string>
     <string name="tasks">Tugas</string>
 </resources>
