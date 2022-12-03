@@ -92,24 +92,23 @@ fun HomeScreen(
         ) {
             LazyColumn {
                 item {
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colors.primary
+                    Column(
+                        modifier = Modifier
+                            .background(color = MaterialTheme.colors.primary)
+                            .padding(vertical = 20.dp)
                     ) {
-                        Column(modifier = Modifier.padding(vertical = 20.dp)) {
-                            Header(
-                                onEvent = onEvent,
-                                userProfileState = userProfileState,
-                                scaffoldState = scaffoldState
-                            )
-                            Spacer(modifier = Modifier.height(35.dp))
-                            ThisWeekDeadlinesSection(
-                                onEvent = onEvent,
-                                deadlinesState = deadlinesState,
-                                scaffoldState = scaffoldState,
-                                onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) }
-                            )
-                        }
+                        Header(
+                            onEvent = onEvent,
+                            userProfileState = userProfileState,
+                            scaffoldState = scaffoldState
+                        )
+                        Spacer(modifier = Modifier.height(35.dp))
+                        ThisWeekDeadlinesSection(
+                            onEvent = onEvent,
+                            deadlinesState = deadlinesState,
+                            scaffoldState = scaffoldState,
+                            onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) }
+                        )
                     }
                 }
 
@@ -161,6 +160,7 @@ private fun Header(
                         Text(
                             text = "${stringResource(id = R.string.hello)}, " +
                                     userProfile.name.split(" ")[0],
+                            color = MaterialTheme.colors.onPrimary,
                             style = MaterialTheme.typography.subtitle1.copy(
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -169,7 +169,8 @@ private fun Header(
 
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(
-                        text = stringResource(id = R.string.manage_your_projects)
+                        text = stringResource(id = R.string.manage_your_projects),
+                        color = MaterialTheme.colors.onPrimary,
                     )
                 }
                 Image(
@@ -231,7 +232,8 @@ private fun ThisWeekDeadlinesSection(
         ) {
             Text(
                 text = stringResource(id = R.string.this_week_deadlines),
-                style = MaterialTheme.typography.h4
+                color = MaterialTheme.colors.onPrimary,
+                style = MaterialTheme.typography.h3
             )
             ClickableText(
                 text = buildAnnotatedString {
@@ -317,7 +319,7 @@ private fun LazyListScope.myProjectsSection(
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
             text = stringResource(id = R.string.my_projects),
-            style = MaterialTheme.typography.h4
+            style = MaterialTheme.typography.h3
         )
     }
 
