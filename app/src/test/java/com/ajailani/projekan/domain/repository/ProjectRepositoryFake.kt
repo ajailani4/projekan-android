@@ -5,7 +5,7 @@ import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.util.ProjectType
 import com.ajailani.projekan.util.ResourceType
-import com.ajailani.projekan.util.projectItems
+import com.ajailani.projekan.util.projects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -18,7 +18,7 @@ class ProjectRepositoryFake : ProjectRepository {
         type: ProjectType?
     ): Flow<Resource<List<ProjectItem>>> =
         when (resourceType) {
-            ResourceType.Success -> flowOf(Resource.Success(projectItems))
+            ResourceType.Success -> flowOf(Resource.Success(projects))
 
             ResourceType.Error -> flowOf(Resource.Error(null))
         }

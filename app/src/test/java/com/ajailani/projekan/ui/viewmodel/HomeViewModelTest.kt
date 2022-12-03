@@ -100,7 +100,7 @@ class HomeViewModelTest {
     @Test
     fun `Get deadlines should return success`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Success(projectItems))
+            val resource = flowOf(Resource.Success(projects))
 
             doReturn(resource).`when`(getProjectsUseCase)(
                 page = anyInt(),
@@ -147,7 +147,7 @@ class HomeViewModelTest {
     @Test
     fun `Get projects should return success`() {
         testCoroutineRule.runTest {
-            val pagingData = flowOf(PagingData.from(projectItems))
+            val pagingData = flowOf(PagingData.from(projects))
 
             doReturn(pagingData).`when`(getPagingProjectsUseCase)(type = isNull())
 
@@ -162,7 +162,7 @@ class HomeViewModelTest {
 
             differ.submitData(pagingProjects)
 
-            assertEquals("Should be success", projectItems, differ.snapshot().items)
+            assertEquals("Should be success", projects, differ.snapshot().items)
         }
     }
 }

@@ -6,8 +6,8 @@ import com.ajailani.projekan.data.remote.dto.response.BaseResponse
 import com.ajailani.projekan.data.repository.ProjectRepositoryImpl
 import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.repository.ProjectRepository
-import com.ajailani.projekan.util.projectItems
-import com.ajailani.projekan.util.projectItemsDto
+import com.ajailani.projekan.util.projects
+import com.ajailani.projekan.util.projectsDto
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -52,7 +52,7 @@ class ProjectRepositoryTest {
                 BaseResponse(
                     code = 200,
                     status = "OK",
-                    data = projectItemsDto
+                    data = projectsDto
                 )
             )
 
@@ -70,7 +70,7 @@ class ProjectRepositoryTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Success(projectItems),
+                Resource.Success(projects),
                 actualResource
             )
         }

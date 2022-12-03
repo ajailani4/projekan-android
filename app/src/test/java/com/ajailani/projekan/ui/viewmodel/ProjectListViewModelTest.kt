@@ -49,7 +49,7 @@ class ProjectListViewModelTest {
     @Test
     fun `Get projects should return success`() {
         testCoroutineRule.runTest {
-            val pagingData = flowOf(PagingData.from(projectItems))
+            val pagingData = flowOf(PagingData.from(projects))
 
             doReturn(pagingData).`when`(getPagingProjectsUseCase)(type = any())
 
@@ -64,7 +64,7 @@ class ProjectListViewModelTest {
 
             differ.submitData(pagingProjects)
 
-            assertEquals("Should be success", projectItems, differ.snapshot().items)
+            assertEquals("Should be success", projects, differ.snapshot().items)
         }
     }
 }

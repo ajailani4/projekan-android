@@ -26,7 +26,7 @@ val userProfile = UserProfile(
     avatar = "image.jpg"
 )
 
-val projectItemsDto = listOf(
+val projectsDto = listOf(
     ProjectItemDto(
         id = "1",
         title = "Projekan",
@@ -47,7 +47,7 @@ val projectItemsDto = listOf(
     )
 )
 
-val projectItems = listOf(
+val projects = listOf(
     ProjectItem(
         id = "1",
         title = "Projekan",

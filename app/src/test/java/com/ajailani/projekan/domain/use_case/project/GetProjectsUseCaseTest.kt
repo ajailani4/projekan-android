@@ -4,7 +4,7 @@ import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.repository.ProjectRepositoryFake
 import com.ajailani.projekan.util.ResourceType
-import com.ajailani.projekan.util.projectItems
+import com.ajailani.projekan.util.projects
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -36,7 +36,7 @@ class GetProjectsUseCaseTest {
 
             assertEquals(
                 "Resource should be success",
-                Resource.Success(projectItems),
+                Resource.Success(projects),
                 actualResource
             )
         }
