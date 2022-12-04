@@ -1,8 +1,6 @@
 package com.ajailani.projekan.util
 
-import com.ajailani.projekan.data.remote.dto.ProjectItemDto
-import com.ajailani.projekan.data.remote.dto.UserCredentialDto
-import com.ajailani.projekan.data.remote.dto.UserProfileDto
+import com.ajailani.projekan.data.remote.dto.*
 import com.ajailani.projekan.domain.model.*
 
 val userCredentialDto = UserCredentialDto(
@@ -66,6 +64,21 @@ val projects = listOf(
     )
 )
 
+val tasksDto = listOf(
+    TaskItemDto(
+        id = "1",
+        projectId = "a1b2c3",
+        title = "Task 1",
+        status = TaskStatus.DONE
+    ),
+    TaskItemDto(
+        id = "2",
+        projectId = "a1b2c3",
+        title = "Task 2",
+        status = TaskStatus.UNDONE
+    )
+)
+
 val tasks = listOf(
     TaskItem(
         id = "1",
@@ -79,6 +92,19 @@ val tasks = listOf(
         title = "Task 2",
         status = TaskStatus.UNDONE
     )
+)
+
+val projectDto = ProjectDto(
+    id = "1",
+    title = "Projekan",
+    description = "Project management app",
+    platform = "Mobile",
+    category = "Application",
+    deadline = "2022-12-05",
+    icon = "icon.png",
+    progress = 50,
+    status = ProjectStatus.IN_PROGRESS,
+    tasks = tasksDto
 )
 
 val project = Project(
