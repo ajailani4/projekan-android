@@ -1,7 +1,6 @@
 package com.ajailani.projekan.domain.model
 
 import com.ajailani.projekan.util.TaskStatus
-import com.squareup.moshi.Json
 
 data class TaskItem(
     val id: String,
