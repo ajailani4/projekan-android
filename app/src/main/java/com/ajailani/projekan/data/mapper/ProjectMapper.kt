@@ -11,5 +11,10 @@ fun ProjectDto.toProject() =
         platform = platform,
         category = category,
         deadline = deadline,
-        icon = icon
+        icon = icon,
+        progress = progress,
+        status = status,
+        tasks = tasks.map { taskItemDto ->
+            taskItemDto.toTaskItem()
+        }
     )

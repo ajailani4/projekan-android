@@ -3,7 +3,7 @@ package com.ajailani.projekan.ui.viewmodel
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import com.ajailani.projekan.data.Resource
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.domain.use_case.project.GetPagingProjectsUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectsUseCase
@@ -124,7 +124,7 @@ class HomeViewModelTest {
     @Test
     fun `Get deadlines should return fail`() {
         testCoroutineRule.runTest {
-            val resource = flowOf(Resource.Error<List<Project>>())
+            val resource = flowOf(Resource.Error<List<ProjectItem>>())
 
             doReturn(resource).`when`(getProjectsUseCase)(
                 page = anyInt(),

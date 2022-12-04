@@ -5,7 +5,10 @@ import com.ajailani.projekan.data.remote.data_source.ProjectRemoteDataSource
 import com.ajailani.projekan.data.remote.dto.response.BaseResponse
 import com.ajailani.projekan.data.repository.ProjectRepositoryImpl
 import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.repository.ProjectRepository
+import com.ajailani.projekan.util.project
+import com.ajailani.projekan.util.projectDto
 import com.ajailani.projekan.util.projects
 import com.ajailani.projekan.util.projectsDto
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -78,7 +81,7 @@ class ProjectRepositoryTest {
     @Test
     fun `Get projects should return fail`() =
         runTest(UnconfinedTestDispatcher()) {
-            val response = Response.error<List<Project>>(
+            val response = Response.error<List<ProjectItem>>(
                 400,
                 "".toResponseBody()
             )
@@ -97,7 +100,49 @@ class ProjectRepositoryTest {
 
             assertEquals(
                 "Resource should be error",
-                Resource.Error<List<Project>>(),
+                Resource.Error<List<ProjectItem>>(),
+                actualResource
+            )
+        }
+
+    @Test
+    fun `Get project detail should return success`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.success(
+                200,
+                BaseResponse(
+                    code = 200,
+                    status = "OK",
+                    data = projectDto
+                )
+            )
+
+            doReturn(response).`when`(projectRemoteDataSource).getProjectDetail(anyString())
+
+            val actualResource = projectRepository.getProjectDetail("a1b2c3").first()
+
+            assertEquals(
+                "Resource should be success",
+                Resource.Success(project),
+                actualResource
+            )
+        }
+
+    @Test
+    fun `Get project detail should return fail`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.error<Project>(
+                400,
+                "".toResponseBody()
+            )
+
+            doReturn(response).`when`(projectRemoteDataSource).getProjectDetail(anyString())
+
+            val actualResource = projectRepository.getProjectDetail("a1b2c3").first()
+
+            assertEquals(
+                "Resource should be error",
+                Resource.Error<Project>(),
                 actualResource
             )
         }

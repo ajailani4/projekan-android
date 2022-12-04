@@ -1,10 +1,11 @@
-package com.ajailani.projekan.ui.feature.home.component
+package com.ajailani.projekan.ui.common.component
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,11 +20,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.ajailani.projekan.R
-import com.ajailani.projekan.domain.model.Project
-import com.ajailani.projekan.ui.common.component.Label
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.ui.theme.BackgroundShimmer
 import com.ajailani.projekan.ui.theme.Grey
 import com.ajailani.projekan.util.Formatter
@@ -32,69 +31,63 @@ import com.valentinilk.shimmer.rememberShimmer
 import com.valentinilk.shimmer.shimmer
 
 /**
- * A card for displaying [Project] in horizontal list
+ * A card for displaying [ProjectItem] in vertical list
  */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HProjectCard(
-    project: Project,
+fun VProjectItemCard(
+    modifier: Modifier = Modifier,
+    projectItem: ProjectItem,
     onClick: () -> Unit
 ) {
     Card(
+        modifier = modifier,
         shape = MaterialTheme.shapes.large,
         elevation = 0.dp,
         onClick = onClick
     ) {
         Column(
             modifier = Modifier
-                .width(280.dp)
+                .fillMaxWidth()
                 .padding(15.dp)
         ) {
             Row {
                 AsyncImage(
                     modifier = Modifier
-                        .size(50.dp)
-                        .clip(MaterialTheme.shapes.small),
+                        .size(60.dp)
+                        .clip(MaterialTheme.shapes.medium),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(project.icon)
+                        .data(projectItem.icon)
                         .build(),
                     placeholder = painterResource(id = R.drawable.ic_default_project),
                     contentScale = ContentScale.Crop,
                     contentDescription = "Project icon"
                 )
-                Spacer(modifier = Modifier.width(15.dp))
+                Spacer(modifier = Modifier.width(20.dp))
                 Column {
                     Text(
-                        text = project.title,
+                        text = projectItem.title,
                         style = MaterialTheme.typography.subtitle1.copy(
                             fontWeight = FontWeight.SemiBold
                         ),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.height(2.dp))
-                    Text(
-                        text = project.description,
-                        color = Grey,
-                        style = MaterialTheme.typography.body1,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(modifier = Modifier.height(30.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Row {
                         Label(
-                            title = project.platform,
+                            title = projectItem.platform,
                             backgroundColor = MaterialTheme.colors.secondary,
-                            contentColor = MaterialTheme.colors.secondaryVariant
+                            textColor = MaterialTheme.colors.secondaryVariant
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Label(
-                            title = project.category,
+                            title = projectItem.category,
                             backgroundColor = MaterialTheme.colors.primary,
-                            contentColor = MaterialTheme.colors.primaryVariant
+                            textColor = MaterialTheme.colors.primaryVariant
                         )
                     }
-                    Spacer(modifier = Modifier.height(20.dp))
+                    Spacer(modifier = Modifier.height(15.dp))
                     Text(
                         text = buildAnnotatedString {
                             withStyle(
@@ -111,7 +104,7 @@ fun HProjectCard(
                                     color = MaterialTheme.colors.onSurface
                                 )
                             ) {
-                                append(Formatter.formatDate(project.deadline))
+                                append(Formatter.formatDate(projectItem.deadline))
                             }
                         },
                         style = MaterialTheme.typography.body1.copy(
@@ -125,77 +118,67 @@ fun HProjectCard(
 }
 
 @Composable
-fun HProjectCardShimmer() {
+fun VProjectItemCardShimmer(modifier: Modifier = Modifier) {
     val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.View)
 
-    LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {
-        items(2) {
-            Card(
-                modifier = Modifier.shimmer(shimmerInstance),
-                shape = MaterialTheme.shapes.large,
-                elevation = 0.dp
+    for (i in 1..3) {
+        Card(
+            modifier = modifier.shimmer(shimmerInstance),
+            shape = MaterialTheme.shapes.large,
+            elevation = 0.dp
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
             ) {
-                Column(
-                    modifier = Modifier
-                        .width(280.dp)
-                        .padding(15.dp)
-                ) {
-                    Row {
+                Row {
+                    Box(
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.small)
+                            .size(50.dp)
+                            .background(color = BackgroundShimmer)
+                            .shimmer(shimmerInstance)
+                    )
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Column {
                         Box(
                             modifier = Modifier
                                 .clip(MaterialTheme.shapes.small)
-                                .size(50.dp)
+                                .size(width = 100.dp, height = 20.dp)
                                 .background(color = BackgroundShimmer)
                                 .shimmer(shimmerInstance)
                         )
-                        Spacer(modifier = Modifier.width(15.dp))
-                        Column {
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Row {
                             Box(
                                 modifier = Modifier
                                     .clip(MaterialTheme.shapes.small)
-                                    .size(width = 100.dp, height = 20.dp)
+                                    .size(width = 40.dp, height = 15.dp)
                                     .background(color = BackgroundShimmer)
                                     .shimmer(shimmerInstance)
                             )
-                            Spacer(modifier = Modifier.height(15.dp))
+                            Spacer(modifier = Modifier.width(10.dp))
                             Box(
                                 modifier = Modifier
                                     .clip(MaterialTheme.shapes.small)
-                                    .size(width = 120.dp, height = 20.dp)
-                                    .background(color = BackgroundShimmer)
-                                    .shimmer(shimmerInstance)
-                            )
-                            Spacer(modifier = Modifier.height(40.dp))
-                            Row {
-                                Box(
-                                    modifier = Modifier
-                                        .clip(MaterialTheme.shapes.small)
-                                        .size(width = 40.dp, height = 20.dp)
-                                        .background(color = BackgroundShimmer)
-                                        .shimmer(shimmerInstance)
-                                )
-                                Spacer(modifier = Modifier.width(10.dp))
-                                Box(
-                                    modifier = Modifier
-                                        .clip(MaterialTheme.shapes.small)
-                                        .size(width = 40.dp, height = 20.dp)
-                                        .background(color = BackgroundShimmer)
-                                        .shimmer(shimmerInstance)
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(25.dp))
-                            Box(
-                                modifier = Modifier
-                                    .clip(MaterialTheme.shapes.small)
-                                    .size(width = 100.dp, height = 20.dp)
+                                    .size(width = 40.dp, height = 15.dp)
                                     .background(color = BackgroundShimmer)
                                     .shimmer(shimmerInstance)
                             )
                         }
+                        Spacer(modifier = Modifier.height(15.dp))
+                        Box(
+                            modifier = Modifier
+                                .clip(MaterialTheme.shapes.small)
+                                .size(width = 100.dp, height = 20.dp)
+                                .background(color = BackgroundShimmer)
+                                .shimmer(shimmerInstance)
+                        )
                     }
                 }
             }
-            Spacer(modifier = Modifier.width(15.dp))
         }
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }

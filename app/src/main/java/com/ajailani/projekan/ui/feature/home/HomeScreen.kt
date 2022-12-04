@@ -28,7 +28,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
@@ -38,14 +37,14 @@ import androidx.paging.compose.items
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.ajailani.projekan.R
-import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
-import com.ajailani.projekan.ui.common.component.VProjectCard
-import com.ajailani.projekan.ui.common.component.VProjectCardShimmer
-import com.ajailani.projekan.ui.feature.home.component.HProjectCard
-import com.ajailani.projekan.ui.feature.home.component.HProjectCardShimmer
+import com.ajailani.projekan.ui.common.component.VProjectItemCard
+import com.ajailani.projekan.ui.common.component.VProjectItemCardShimmer
+import com.ajailani.projekan.ui.feature.home.component.HProjectItemCard
+import com.ajailani.projekan.ui.feature.home.component.HProjectItemCardShimmer
 import com.ajailani.projekan.ui.feature.home.component.HomeHeaderShimmer
 import com.ajailani.projekan.ui.theme.backgroundGrey
 import com.ajailani.projekan.util.ProjectType
@@ -54,7 +53,8 @@ import com.ajailani.projekan.util.ProjectType
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
-    onNavigateToProjectList: (ProjectType) -> Unit
+    onNavigateToProjectList: (ProjectType) -> Unit,
+    onNavigateToProjectDetail: (String) -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
@@ -93,24 +93,24 @@ fun HomeScreen(
         ) {
             LazyColumn {
                 item {
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = MaterialTheme.colors.primary
+                    Column(
+                        modifier = Modifier
+                            .background(color = MaterialTheme.colors.primary)
+                            .padding(vertical = 20.dp)
                     ) {
-                        Column(modifier = Modifier.padding(vertical = 20.dp)) {
-                            Header(
-                                onEvent = onEvent,
-                                userProfileState = userProfileState,
-                                scaffoldState = scaffoldState
-                            )
-                            Spacer(modifier = Modifier.height(35.dp))
-                            ThisWeekDeadlinesSection(
-                                onEvent = onEvent,
-                                deadlinesState = deadlinesState,
-                                scaffoldState = scaffoldState,
-                                onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) }
-                            )
-                        }
+                        Header(
+                            onEvent = onEvent,
+                            userProfileState = userProfileState,
+                            scaffoldState = scaffoldState
+                        )
+                        Spacer(modifier = Modifier.height(35.dp))
+                        ThisWeekDeadlinesSection(
+                            onEvent = onEvent,
+                            deadlinesState = deadlinesState,
+                            onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) },
+                            onNavigateToProjectDetail = onNavigateToProjectDetail,
+                            scaffoldState = scaffoldState
+                        )
                     }
                 }
 
@@ -121,6 +121,7 @@ fun HomeScreen(
                 myProjectsSection(
                     onEvent = onEvent,
                     pagingProjects = pagingProjects,
+                    onNavigateToProjectDetail = onNavigateToProjectDetail,
                     scaffoldState = scaffoldState
                 )
             }
@@ -173,7 +174,6 @@ private fun Header(
                     Text(
                         text = stringResource(id = R.string.manage_your_projects),
                         color = MaterialTheme.colors.onPrimary,
-                        style = MaterialTheme.typography.body1
                     )
                 }
                 Image(
@@ -221,9 +221,10 @@ private fun Header(
 @Composable
 private fun ThisWeekDeadlinesSection(
     onEvent: (HomeEvent) -> Unit,
-    deadlinesState: UIState<List<Project>>,
-    scaffoldState: ScaffoldState,
-    onViewAllClicked: () -> Unit
+    deadlinesState: UIState<List<ProjectItem>>,
+    onViewAllClicked: () -> Unit,
+    onNavigateToProjectDetail: (String) -> Unit,
+    scaffoldState: ScaffoldState
 ) {
     Column {
         Row(
@@ -236,7 +237,7 @@ private fun ThisWeekDeadlinesSection(
             Text(
                 text = stringResource(id = R.string.this_week_deadlines),
                 color = MaterialTheme.colors.onPrimary,
-                style = MaterialTheme.typography.h4
+                style = MaterialTheme.typography.h3
             )
             ClickableText(
                 text = buildAnnotatedString {
@@ -257,7 +258,7 @@ private fun ThisWeekDeadlinesSection(
 
         when (deadlinesState) {
             UIState.Loading -> {
-                HProjectCardShimmer()
+                HProjectItemCardShimmer()
             }
 
             is UIState.Success -> {
@@ -266,13 +267,13 @@ private fun ThisWeekDeadlinesSection(
                 deadlinesState.data?.let { projects ->
                     if (projects.isNotEmpty()) {
                         LazyRow(contentPadding = PaddingValues(horizontal = 20.dp)) {
-                            items(projects) { project ->
-                                HProjectCard(
-                                    project = project,
-                                    onClick = {}
+                            items(projects) { projectItem ->
+                                HProjectItemCard(
+                                    projectItem = projectItem,
+                                    onClick = { onNavigateToProjectDetail(projectItem.id) }
                                 )
 
-                                if (project != projects.last()) {
+                                if (projectItem != projects.last()) {
                                     Spacer(modifier = Modifier.width(15.dp))
                                 }
                             }
@@ -315,15 +316,15 @@ private fun ThisWeekDeadlinesSection(
 
 private fun LazyListScope.myProjectsSection(
     onEvent: (HomeEvent) -> Unit,
-    pagingProjects: LazyPagingItems<Project>,
+    pagingProjects: LazyPagingItems<ProjectItem>,
+    onNavigateToProjectDetail: (String) -> Unit,
     scaffoldState: ScaffoldState
 ) {
     item {
         Text(
             modifier = Modifier.padding(horizontal = 20.dp),
             text = stringResource(id = R.string.my_projects),
-            color = MaterialTheme.colors.onBackground,
-            style = MaterialTheme.typography.h4
+            style = MaterialTheme.typography.h3
         )
     }
 
@@ -331,12 +332,12 @@ private fun LazyListScope.myProjectsSection(
         Spacer(modifier = Modifier.height(15.dp))
     }
 
-    items(pagingProjects) { project ->
-        project?.let {
-            VProjectCard(
+    items(pagingProjects) { projectItem ->
+        projectItem?.let {
+            VProjectItemCard(
                 modifier = Modifier.padding(horizontal = 20.dp),
-                project = project,
-                onClick = {}
+                projectItem = projectItem,
+                onClick = { onNavigateToProjectDetail(projectItem.id) }
             )
             Spacer(modifier = Modifier.height(20.dp))
         }
@@ -347,7 +348,7 @@ private fun LazyListScope.myProjectsSection(
         when {
             loadState.refresh is LoadState.Loading -> {
                 item {
-                    VProjectCardShimmer(modifier = Modifier.padding(horizontal = 20.dp))
+                    VProjectItemCardShimmer(modifier = Modifier.padding(horizontal = 20.dp))
                 }
             }
 

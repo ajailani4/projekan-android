@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.ajailani.projekan.ui.feature.home.HomeScreen
 import com.ajailani.projekan.ui.feature.login.LoginScreen
+import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailScreen
 import com.ajailani.projekan.ui.feature.project_list.ProjectListScreen
 import com.ajailani.projekan.ui.feature.register.RegisterScreen
 import com.ajailani.projekan.ui.feature.welcome.WelcomeScreen
@@ -73,7 +74,12 @@ fun Navigation(
             HomeScreen(
                 onNavigateToProjectList = { projectType ->
                     navController.navigate(
-                        Screen.ProjectListScreen.route + "?projectType=${projectType}"
+                        Screen.ProjectListScreen.route + "?projectType=$projectType"
+                    )
+                },
+                onNavigateToProjectDetail = { projectId ->
+                    navController.navigate(
+                        Screen.ProjectDetailScreen.route + "?projectId=$projectId"
                     )
                 }
             )
@@ -90,6 +96,26 @@ fun Navigation(
             )
         ) {
             ProjectListScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                },
+                onNavigateToProjectDetail = { projectId ->
+                    navController.navigate(
+                        Screen.ProjectDetailScreen.route + "?projectId=$projectId"
+                    )
+                }
+            )
+        }
+
+        composable(
+            route = Screen.ProjectDetailScreen.route + "?projectId={projectId}",
+            arguments = listOf(
+                navArgument("projectId") {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            ProjectDetailScreen(
                 onNavigateUp = {
                     navController.navigateUp()
                 }

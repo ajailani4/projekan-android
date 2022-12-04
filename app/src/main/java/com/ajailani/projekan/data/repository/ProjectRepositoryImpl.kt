@@ -57,4 +57,15 @@ class ProjectRepositoryImpl @Inject constructor(
         ).flow.map {
             it.map { projectDto -> projectDto.toProject() }
         }
+
+    override fun getProjectDetail(id: String) =
+        flow {
+            val response = projectRemoteDataSource.getProjectDetail(id)
+
+            when (response.code()) {
+                200 -> emit(Resource.Success(response.body()?.data?.toProject()))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
 }

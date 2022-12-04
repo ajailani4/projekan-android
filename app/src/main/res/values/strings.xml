@@ -28,4 +28,10 @@
     <string name="my_projects">My Projects</string>
     <string name="no_projects">You don\'t have projects yet.\nLet\'s add a new project</string>
     <string name="deadline">Deadline</string>
+    
+    <string name="project_detail">Project Detail</string>
+    <string name="todo">To-Do</string>
+    <string name="in_progress">In Progress</string>
+    <string name="done">Done</string>
+    <string name="tasks">Tasks</string>
 </resources>

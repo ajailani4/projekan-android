@@ -1,11 +1,7 @@
 package com.ajailani.projekan.util
 
-import com.ajailani.projekan.data.remote.dto.ProjectDto
-import com.ajailani.projekan.data.remote.dto.UserCredentialDto
-import com.ajailani.projekan.data.remote.dto.UserProfileDto
-import com.ajailani.projekan.domain.model.Project
-import com.ajailani.projekan.domain.model.UserCredential
-import com.ajailani.projekan.domain.model.UserProfile
+import com.ajailani.projekan.data.remote.dto.*
+import com.ajailani.projekan.domain.model.*
 
 val userCredentialDto = UserCredentialDto(
     username = "george",
@@ -27,7 +23,7 @@ val userProfile = UserProfile(
 )
 
 val projectsDto = listOf(
-    ProjectDto(
+    ProjectItemDto(
         id = "1",
         title = "Projekan",
         description = "Project management app",
@@ -36,7 +32,7 @@ val projectsDto = listOf(
         deadline = "2022-12-05",
         icon = "icon.png"
     ),
-    ProjectDto(
+    ProjectItemDto(
         id = "2",
         title = "Projekan 2",
         description = "Project management app",
@@ -48,7 +44,7 @@ val projectsDto = listOf(
 )
 
 val projects = listOf(
-    Project(
+    ProjectItem(
         id = "1",
         title = "Projekan",
         description = "Project management app",
@@ -57,7 +53,7 @@ val projects = listOf(
         deadline = "2022-12-05",
         icon = "icon.png"
     ),
-    Project(
+    ProjectItem(
         id = "2",
         title = "Projekan 2",
         description = "Project management app",
@@ -66,4 +62,60 @@ val projects = listOf(
         deadline = "2022-12-05",
         icon = "icon.png"
     )
+)
+
+val tasksDto = listOf(
+    TaskItemDto(
+        id = "1",
+        projectId = "a1b2c3",
+        title = "Task 1",
+        status = TaskStatus.DONE
+    ),
+    TaskItemDto(
+        id = "2",
+        projectId = "a1b2c3",
+        title = "Task 2",
+        status = TaskStatus.UNDONE
+    )
+)
+
+val tasks = listOf(
+    TaskItem(
+        id = "1",
+        projectId = "a1b2c3",
+        title = "Task 1",
+        status = TaskStatus.DONE
+    ),
+    TaskItem(
+        id = "2",
+        projectId = "a1b2c3",
+        title = "Task 2",
+        status = TaskStatus.UNDONE
+    )
+)
+
+val projectDto = ProjectDto(
+    id = "1",
+    title = "Projekan",
+    description = "Project management app",
+    platform = "Mobile",
+    category = "Application",
+    deadline = "2022-12-05",
+    icon = "icon.png",
+    progress = 50,
+    status = ProjectStatus.IN_PROGRESS,
+    tasks = tasksDto
+)
+
+val project = Project(
+    id = "1",
+    title = "Projekan",
+    description = "Project management app",
+    platform = "Mobile",
+    category = "Application",
+    deadline = "2022-12-05",
+    icon = "icon.png",
+    progress = 50,
+    status = ProjectStatus.IN_PROGRESS,
+    tasks = tasks
 )

@@ -22,9 +22,8 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.component.CaptionImage
-import com.ajailani.projekan.ui.common.component.VProjectCard
-import com.ajailani.projekan.ui.common.component.VProjectCardShimmer
-import com.ajailani.projekan.ui.feature.home.HomeEvent
+import com.ajailani.projekan.ui.common.component.VProjectItemCard
+import com.ajailani.projekan.ui.common.component.VProjectItemCardShimmer
 import com.ajailani.projekan.ui.theme.backgroundGrey
 import com.ajailani.projekan.util.ProjectType
 
@@ -32,7 +31,8 @@ import com.ajailani.projekan.util.ProjectType
 @Composable
 fun ProjectListScreen(
     projectListViewModel: ProjectListViewModel = hiltViewModel(),
-    onNavigateUp: () -> Unit
+    onNavigateUp: () -> Unit,
+    onNavigateToProjectDetail: (String) -> Unit
 ) {
     val onEvent = projectListViewModel::onEvent
     val projectType = projectListViewModel.projectType
@@ -84,11 +84,11 @@ fun ProjectListScreen(
                 .pullRefresh(pullRefreshState)
         ) {
             LazyColumn(contentPadding = PaddingValues(20.dp)) {
-                items(pagingProjects) { project ->
-                    project?.let {
-                        VProjectCard(
-                            project = project,
-                            onClick = {}
+                items(pagingProjects) { projectItem ->
+                    projectItem?.let {
+                        VProjectItemCard(
+                            projectItem = projectItem,
+                            onClick = { onNavigateToProjectDetail(projectItem.id) }
                         )
                         Spacer(modifier = Modifier.height(20.dp))
                     }
@@ -99,7 +99,7 @@ fun ProjectListScreen(
                     when {
                         loadState.refresh is LoadState.Loading -> {
                             item {
-                                VProjectCardShimmer()
+                                VProjectItemCardShimmer()
                             }
                         }
 
