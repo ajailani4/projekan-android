@@ -1,5 +1,6 @@
 package com.ajailani.projekan.ui.feature.project_detail
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -7,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -22,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,12 +35,8 @@ import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.TaskItem
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.Label
-import com.ajailani.projekan.ui.feature.home.HomeEvent
 import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
-import com.ajailani.projekan.ui.theme.Blue
-import com.ajailani.projekan.ui.theme.Grey
-import com.ajailani.projekan.ui.theme.Yellow
-import com.ajailani.projekan.ui.theme.backgroundGrey
+import com.ajailani.projekan.ui.theme.*
 import com.ajailani.projekan.util.Formatter
 import com.ajailani.projekan.util.ProjectStatus
 
@@ -77,6 +77,14 @@ fun ProjectDetailScreen(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {}) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add task icon"
+                )
+            }
         }
     ) { innerPadding ->
         Box(
@@ -144,43 +152,70 @@ fun ProjectDetailScreen(
                                         color = MaterialTheme.colors.onSurface
                                     )
                                     Spacer(modifier = Modifier.height(20.dp))
-                                    Row {
-                                        Label(
-                                            title = project.platform,
-                                            backgroundColor = MaterialTheme.colors.secondary,
-                                            textColor = MaterialTheme.colors.secondaryVariant
-                                        )
-                                        Spacer(modifier = Modifier.width(10.dp))
-                                        Label(
-                                            title = project.category,
-                                            backgroundColor = MaterialTheme.colors.primary,
-                                            textColor = MaterialTheme.colors.primaryVariant
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.height(15.dp))
-                                    Text(
-                                        text = buildAnnotatedString {
-                                            withStyle(
-                                                SpanStyle(
-                                                    color = Grey
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween
+                                    ) {
+                                        Column {
+                                            Row {
+                                                Label(
+                                                    title = project.platform,
+                                                    backgroundColor = MaterialTheme.colors.secondary,
+                                                    textColor = MaterialTheme.colors.secondaryVariant
                                                 )
-                                            ) {
-                                                append(stringResource(id = R.string.deadline))
-                                                append(": ")
+                                                Spacer(modifier = Modifier.width(10.dp))
+                                                Label(
+                                                    title = project.category,
+                                                    backgroundColor = MaterialTheme.colors.primary,
+                                                    textColor = MaterialTheme.colors.primaryVariant
+                                                )
                                             }
+                                            Spacer(modifier = Modifier.height(15.dp))
+                                            Text(
+                                                text = buildAnnotatedString {
+                                                    withStyle(
+                                                        SpanStyle(
+                                                            color = Grey
+                                                        )
+                                                    ) {
+                                                        append(stringResource(id = R.string.deadline))
+                                                        append(": ")
+                                                    }
 
-                                            withStyle(
-                                                SpanStyle(
-                                                    color = MaterialTheme.colors.onSurface
+                                                    withStyle(
+                                                        SpanStyle(
+                                                            color = MaterialTheme.colors.onSurface
+                                                        )
+                                                    ) {
+                                                        append(Formatter.formatDate(project.deadline))
+                                                    }
+                                                },
+                                                style = MaterialTheme.typography.body1.copy(
+                                                    fontWeight = FontWeight.Medium
                                                 )
-                                            ) {
-                                                append(Formatter.formatDate(project.deadline))
+                                            )
+                                        }
+                                        Box(contentAlignment = Alignment.Center) {
+                                            Text(
+                                                text = "${project.progress}%",
+                                                color = MaterialTheme.colors.primary,
+                                                fontWeight = FontWeight.SemiBold,
+                                                style = MaterialTheme.typography.body1
+                                            )
+                                            Canvas(modifier = Modifier.size(60.dp)) {
+                                                drawCircle(
+                                                    color = LightGrey,
+                                                    radius = size.minDimension / 2.0f - (7.dp.toPx() / 2),
+                                                    style = Stroke(width = 7.dp.toPx())
+                                                )
                                             }
-                                        },
-                                        style = MaterialTheme.typography.body1.copy(
-                                            fontWeight = FontWeight.Medium
-                                        )
-                                    )
+                                            CircularProgressIndicator(
+                                                modifier = Modifier.size(60.dp),
+                                                progress = project.progress.toFloat() / 100f,
+                                                strokeWidth = 7.dp
+                                            )
+                                        }
+                                    }
                                 }
                             }
 
