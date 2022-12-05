@@ -1,5 +1,6 @@
 package com.ajailani.projekan.ui.feature.home
 
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,7 +18,7 @@ import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.util.ProjectType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,15 +36,17 @@ class HomeViewModel @Inject constructor(
         private set
 
     private var _pagingProjects = MutableStateFlow<PagingData<ProjectItem>>(PagingData.empty())
-    val pagingProjects: StateFlow<PagingData<ProjectItem>> = _pagingProjects
+    val pagingProjects = _pagingProjects.asStateFlow()
 
     var pullRefreshing by mutableStateOf(false)
         private set
 
+    val lazyListState = LazyListState()
+
     init {
-        onEvent(HomeEvent.GetUserProfile)
-        onEvent(HomeEvent.GetDeadlines)
-        onEvent(HomeEvent.GetProjects)
+        getUserProfile()
+        getDeadlines()
+        getProjects()
     }
 
     fun onEvent(event: HomeEvent) {

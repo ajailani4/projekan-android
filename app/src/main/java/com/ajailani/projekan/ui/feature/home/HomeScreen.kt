@@ -3,10 +3,7 @@ package com.ajailani.projekan.ui.feature.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
@@ -61,6 +58,7 @@ fun HomeScreen(
     val deadlinesState = homeViewModel.deadlinesState
     val pagingProjects = homeViewModel.pagingProjects.collectAsLazyPagingItems()
     val pullRefreshing = homeViewModel.pullRefreshing
+    val lazyListState = if (pagingProjects.itemCount > 0) homeViewModel.lazyListState else rememberLazyListState()
 
     val scaffoldState = rememberScaffoldState()
     val pullRefreshState = rememberPullRefreshState(
@@ -91,7 +89,7 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .pullRefresh(pullRefreshState)
         ) {
-            LazyColumn {
+            LazyColumn(state = lazyListState) {
                 item {
                     Column(
                         modifier = Modifier
