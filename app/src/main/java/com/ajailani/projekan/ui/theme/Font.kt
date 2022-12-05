@@ -11,8 +11,8 @@ val montserratFamily = FontFamily(
         weight = FontWeight.Bold
     ),
     Font(
-        resId = R.font.montserrat_medium,
-        weight = FontWeight.Medium
+        resId = R.font.montserrat_semibold,
+        weight = FontWeight.SemiBold
     )
 )
 
