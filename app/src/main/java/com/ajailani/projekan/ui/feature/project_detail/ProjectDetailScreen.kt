@@ -34,7 +34,9 @@ import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.TaskItem
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.Label
+import com.ajailani.projekan.ui.feature.project_detail.component.ProjectDetailShimmer
 import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
+import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCardShimmer
 import com.ajailani.projekan.ui.theme.*
 import com.ajailani.projekan.util.Formatter
 import com.ajailani.projekan.util.ProjectStatus
@@ -95,7 +97,11 @@ fun ProjectDetailScreen(
             LazyColumn {
                 when (projectDetailState) {
                     UIState.Loading -> {
-                        // Shimmer
+                        item {
+                            ProjectDetailShimmer()
+                            Spacer(modifier = Modifier.height(25.dp))
+                            TaskItemCardShimmer(modifier = Modifier.padding(horizontal = 20.dp))
+                        }
                     }
 
                     is UIState.Success -> {
