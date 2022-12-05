@@ -33,6 +33,7 @@ import coil.request.ImageRequest
 import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.TaskItem
 import com.ajailani.projekan.ui.common.UIState
+import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.Label
 import com.ajailani.projekan.ui.feature.project_detail.component.ProjectDetailShimmer
 import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
@@ -272,13 +273,23 @@ private fun LazyListScope.tasksSection(tasks: List<TaskItem>) {
         Spacer(modifier = Modifier.height(15.dp))
     }
 
-    items(tasks) { taskItem ->
-        TaskItemCard(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            taskItem = taskItem,
-            onChecked = {},
-            onMoreClicked = {}
-        )
-        Spacer(modifier = Modifier.height(15.dp))
+    if (tasks.isNotEmpty()) {
+        items(tasks) { taskItem ->
+            TaskItemCard(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                taskItem = taskItem,
+                onChecked = {},
+                onMoreClicked = {}
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+        }
+    } else {
+        item {
+            CaptionImage(
+                modifier = Modifier.size(200.dp),
+                image = painterResource(id = R.drawable.illustration_add_note),
+                caption = stringResource(id = R.string.no_tasks)
+            )
+        }
     }
 }
