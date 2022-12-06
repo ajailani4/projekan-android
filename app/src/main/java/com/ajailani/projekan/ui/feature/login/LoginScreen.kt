@@ -22,6 +22,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -74,6 +75,7 @@ fun LoginScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.login),
+                    textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.h1
                 )
                 Spacer(modifier = Modifier.height(60.dp))
@@ -146,6 +148,7 @@ fun LoginScreen(
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
+                        textAlign = TextAlign.Center,
                         text = stringResource(id = R.string.login)
                     )
                 }
