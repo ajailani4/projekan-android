@@ -36,4 +36,12 @@
     <string name="done">Done</string>
     <string name="tasks">Tugas</string>
     <string name="no_tasks">Proyek ini belum memiliki tugas.\nAyo tambahkan tugas baru</string>
+
+    <string name="add_project">Tambah Proyek</string>
+    <string name="edit_project">Edit Proyek</string>
+    <string name="project_icon">Ikon Proyek</string>
+    <string name="title">Judul</string>
+    <string name="description">Deskripsi</string>
+    <string name="platform">Platform</string>
+    <string name="category">Kategori</string>
 </resources>

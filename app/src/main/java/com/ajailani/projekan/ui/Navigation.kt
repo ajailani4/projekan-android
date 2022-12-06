@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.ajailani.projekan.ui.feature.add_edit_project.AddEditProjectScreen
 import com.ajailani.projekan.ui.feature.home.HomeScreen
 import com.ajailani.projekan.ui.feature.login.LoginScreen
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailScreen
@@ -116,6 +117,14 @@ fun Navigation(
             )
         ) {
             ProjectDetailScreen(
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        composable(route = Screen.AddEditProjectScreen.route) {
+            AddEditProjectScreen(
                 onNavigateUp = {
                     navController.navigateUp()
                 }

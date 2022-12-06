@@ -125,7 +125,7 @@ fun ProjectDetailScreen(
                                                 model = ImageRequest.Builder(LocalContext.current)
                                                     .data(project.icon)
                                                     .build(),
-                                                placeholder = painterResource(id = R.drawable.ic_default_project),
+                                                placeholder = painterResource(id = R.drawable.img_default_project_icon),
                                                 contentScale = ContentScale.Crop,
                                                 contentDescription = "Project icon"
                                             )
@@ -137,7 +137,7 @@ fun ProjectDetailScreen(
                                             )
                                         }
                                         Label(
-                                            title = stringResource(
+                                            text = stringResource(
                                                 id = when (project.status) {
                                                     ProjectStatus.TODO -> R.string.todo
                                                     ProjectStatus.IN_PROGRESS -> R.string.in_progress
@@ -165,13 +165,13 @@ fun ProjectDetailScreen(
                                         Column {
                                             Row {
                                                 Label(
-                                                    title = project.platform,
+                                                    text = project.platform,
                                                     backgroundColor = MaterialTheme.colors.secondary,
                                                     textColor = MaterialTheme.colors.secondaryVariant
                                                 )
                                                 Spacer(modifier = Modifier.width(10.dp))
                                                 Label(
-                                                    title = project.category,
+                                                    text = project.category,
                                                     backgroundColor = MaterialTheme.colors.primary,
                                                     textColor = MaterialTheme.colors.primaryVariant
                                                 )
