@@ -1,4 +1,4 @@
-package com.ajailani.projekan.ui.common.component
+package com.ajailani.projekan.ui.feature.add_edit_project.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -50,23 +50,4 @@ fun OutlinedChip(
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewOutlinedChip() {
-    OutlinedChip(
-        text = "Android",
-        onClick = {}
-    )
-}
-
-@Preview
-@Composable
-fun PreviewSelectedOutlinedChip() {
-    OutlinedChip(
-        text = "Android",
-        isSelected = true,
-        onClick = {}
-    )
 }

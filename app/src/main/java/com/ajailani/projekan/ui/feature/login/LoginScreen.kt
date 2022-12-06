@@ -50,9 +50,6 @@ fun LoginScreen(
 
     val context = LocalContext.current
 
-    (context as Activity).window
-        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
     Scaffold(scaffoldState = scaffoldState) { innerPadding ->
         Column(
             modifier = Modifier
@@ -148,8 +145,8 @@ fun LoginScreen(
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
-                        textAlign = TextAlign.Center,
-                        text = stringResource(id = R.string.login)
+                        text = stringResource(id = R.string.login),
+                        textAlign = TextAlign.Center
                     )
                 }
                 Spacer(modifier = Modifier.height(15.dp))
