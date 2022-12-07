@@ -51,7 +51,8 @@ import com.ajailani.projekan.util.ProjectType
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
     onNavigateToProjectList: (ProjectType) -> Unit,
-    onNavigateToProjectDetail: (String) -> Unit
+    onNavigateToProjectDetail: (String) -> Unit,
+    onNavigateToAddEditProject: () -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
@@ -74,7 +75,7 @@ fun HomeScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = onNavigateToAddEditProject) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Add project icon"

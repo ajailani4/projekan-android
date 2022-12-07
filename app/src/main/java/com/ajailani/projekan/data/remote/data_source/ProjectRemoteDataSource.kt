@@ -31,18 +31,20 @@ class ProjectRemoteDataSource @Inject constructor(
         platform: String,
         category: String,
         deadline: String,
-        icon: File
+        icon: File?
     ): Response<BaseResponse<Any>> {
         val titlePart = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val descriptionPart = description.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val platformPart = platform.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val categoryPart = category.toRequestBody("multipart/form-data".toMediaTypeOrNull())
         val deadlinePart = deadline.toRequestBody("multipart/form-data".toMediaTypeOrNull())
-        val iconPart = MultipartBody.Part.createFormData(
-            "icon",
-            icon.name,
-            icon.asRequestBody("image/*".toMediaTypeOrNull())
-        )
+        val iconPart = icon?.let {
+            MultipartBody.Part.createFormData(
+                "icon",
+                icon.name,
+                icon.asRequestBody("image/*".toMediaTypeOrNull())
+            )
+        }
 
         return projectService.addProject(
             title = titlePart,

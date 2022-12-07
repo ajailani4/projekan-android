@@ -82,6 +82,11 @@ fun Navigation(
                     navController.navigate(
                         Screen.ProjectDetailScreen.route + "?projectId=$projectId"
                     )
+                },
+                onNavigateToAddEditProject = {
+                    navController.navigate(
+                        Screen.AddEditProjectScreen.route
+                    )
                 }
             )
         }

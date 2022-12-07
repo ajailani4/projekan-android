@@ -27,6 +27,6 @@ interface ProjectRepository {
         platform: String,
         category: String,
         deadline: String,
-        icon: File
+        icon: File?
     ): Flow<Resource<Any>>
 }

@@ -34,6 +34,6 @@ interface ProjectService {
         @Part("platform") platform: RequestBody,
         @Part("category") category: RequestBody,
         @Part("deadline") deadline: RequestBody,
-        @Part icon: MultipartBody.Part
+        @Part icon: MultipartBody.Part?
     ): Response<BaseResponse<Any>>
 }

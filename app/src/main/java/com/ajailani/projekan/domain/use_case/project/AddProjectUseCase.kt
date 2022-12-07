@@ -13,7 +13,7 @@ class AddProjectUseCase @Inject constructor(
         platform: String,
         category: String,
         deadline: String,
-        icon: File
+        icon: File?
     ) = projectRepository.addProject(
         title = title,
         description = description,
