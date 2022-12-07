@@ -8,6 +8,14 @@ class Constants {
 
     object List {
         val platforms = listOf("Android", "Cross-platform", "Web", "Desktop", "Others")
-        val categories = listOf("Application", "UI/UX Design", "Website", "Prototype", "Others")
+        val categories = listOf(
+            "Application",
+            "UI/UX Design",
+            "Website",
+            "Prototype",
+            "Design",
+            "Video",
+            "Others"
+        )
     }
 }
