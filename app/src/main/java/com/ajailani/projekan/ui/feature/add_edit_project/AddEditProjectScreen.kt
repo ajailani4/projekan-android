@@ -174,8 +174,7 @@ fun AddEditProjectScreen(
                     modifier = Modifier.fillMaxWidth(),
                     value = description,
                     onValueChange = { onEvent(AddEditProjectEvent.OnDescriptionChanged(it)) },
-                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
-                    singleLine = true
+                    colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent)
                 )
                 Spacer(modifier = Modifier.height(30.dp))
                 Text(
