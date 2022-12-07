@@ -29,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ajailani.projekan.R
+import com.ajailani.projekan.ui.common.SharedViewModel
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
 import com.ajailani.projekan.ui.feature.add_edit_project.component.OutlinedChip
@@ -44,6 +45,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun AddEditProjectScreen(
     addProjectViewModel: AddProjectViewModel = hiltViewModel(),
+    sharedViewModel: SharedViewModel,
     onNavigateUp: () -> Unit
 ) {
     val onEvent = addProjectViewModel::onEvent
@@ -54,6 +56,8 @@ fun AddEditProjectScreen(
     val category = addProjectViewModel.category
     val deadline = addProjectViewModel.deadline
     val icon = addProjectViewModel.icon
+
+    val onReloadedChanged = sharedViewModel::onReloadedChanged
 
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
@@ -265,6 +269,7 @@ fun AddEditProjectScreen(
             }
 
             is UIState.Success -> {
+                onReloadedChanged(true)
                 onNavigateUp()
             }
 

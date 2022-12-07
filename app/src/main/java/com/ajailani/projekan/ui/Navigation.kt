@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.ajailani.projekan.ui.common.SharedViewModel
 import com.ajailani.projekan.ui.feature.add_edit_project.AddEditProjectScreen
 import com.ajailani.projekan.ui.feature.home.HomeScreen
 import com.ajailani.projekan.ui.feature.login.LoginScreen
@@ -17,7 +18,8 @@ import com.ajailani.projekan.ui.feature.welcome.WelcomeScreen
 @Composable
 fun Navigation(
     navController: NavHostController,
-    startDestination: String
+    startDestination: String,
+    sharedViewModel: SharedViewModel
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.WelcomeScreen.route) {
@@ -73,6 +75,7 @@ fun Navigation(
 
         composable(route = Screen.HomeScreen.route) {
             HomeScreen(
+                sharedViewModel = sharedViewModel,
                 onNavigateToProjectList = { projectType ->
                     navController.navigate(
                         Screen.ProjectListScreen.route + "?projectType=$projectType"
@@ -130,6 +133,7 @@ fun Navigation(
 
         composable(route = Screen.AddEditProjectScreen.route) {
             AddEditProjectScreen(
+                sharedViewModel = sharedViewModel,
                 onNavigateUp = {
                     navController.navigateUp()
                 }
