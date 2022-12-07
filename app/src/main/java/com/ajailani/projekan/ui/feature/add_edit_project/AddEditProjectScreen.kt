@@ -44,18 +44,18 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun AddEditProjectScreen(
-    addProjectViewModel: AddProjectViewModel = hiltViewModel(),
+    addEditProjectViewModel: AddEditProjectViewModel = hiltViewModel(),
     sharedViewModel: SharedViewModel,
     onNavigateUp: () -> Unit
 ) {
-    val onEvent = addProjectViewModel::onEvent
-    val addProjectState = addProjectViewModel.addProjectState
-    val title = addProjectViewModel.title
-    val description = addProjectViewModel.description
-    val platform = addProjectViewModel.platform
-    val category = addProjectViewModel.category
-    val deadline = addProjectViewModel.deadline
-    val icon = addProjectViewModel.icon
+    val onEvent = addEditProjectViewModel::onEvent
+    val addProjectState = addEditProjectViewModel.addProjectState
+    val title = addEditProjectViewModel.title
+    val description = addEditProjectViewModel.description
+    val platform = addEditProjectViewModel.platform
+    val category = addEditProjectViewModel.category
+    val deadline = addEditProjectViewModel.deadline
+    val icon = addEditProjectViewModel.icon
 
     val onReloadedChanged = sharedViewModel::onReloadedChanged
 
@@ -73,7 +73,7 @@ fun AddEditProjectScreen(
                 if (inputStream != null) {
                     coroutineScope.launch {
                         onEvent(
-                            AddProjectEvent.OnIconChanged(
+                            AddEditProjectEvent.OnIconChanged(
                                 Compressor.compress(
                                     context,
                                     context.convertInputStreamToFile(inputStream)
@@ -161,7 +161,7 @@ fun AddEditProjectScreen(
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = title,
-                    onValueChange = { onEvent(AddProjectEvent.OnTitleChanged(it)) },
+                    onValueChange = { onEvent(AddEditProjectEvent.OnTitleChanged(it)) },
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                     singleLine = true
                 )
@@ -173,7 +173,7 @@ fun AddEditProjectScreen(
                 TextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = description,
-                    onValueChange = { onEvent(AddProjectEvent.OnDescriptionChanged(it)) },
+                    onValueChange = { onEvent(AddEditProjectEvent.OnDescriptionChanged(it)) },
                     colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
                     singleLine = true
                 )
@@ -188,7 +188,7 @@ fun AddEditProjectScreen(
                         OutlinedChip(
                             text = it,
                             isSelected = it == platform,
-                            onClick = { onEvent(AddProjectEvent.OnPlatformChanged(it)) }
+                            onClick = { onEvent(AddEditProjectEvent.OnPlatformChanged(it)) }
                         )
                     }
                 }
@@ -203,7 +203,7 @@ fun AddEditProjectScreen(
                         OutlinedChip(
                             text = it,
                             isSelected = it == category,
-                            onClick = { onEvent(AddProjectEvent.OnCategoryChanged(it)) }
+                            onClick = { onEvent(AddEditProjectEvent.OnCategoryChanged(it)) }
                         )
                     }
                 }
@@ -217,7 +217,7 @@ fun AddEditProjectScreen(
                         .fillMaxWidth()
                         .clickable {
                             context.showDatePicker {
-                                onEvent(AddProjectEvent.OnDeadlineChanged(it))
+                                onEvent(AddEditProjectEvent.OnDeadlineChanged(it))
                             }
                         },
                     value = if (deadline != "") Formatter.formatDate(deadline) else "",
@@ -243,7 +243,7 @@ fun AddEditProjectScreen(
                         if (title.isNotEmpty() && description.isNotEmpty() &&
                             platform.isNotEmpty() && category.isNotEmpty() && deadline.isNotEmpty()
                         ) {
-                            onEvent(AddProjectEvent.AddProject)
+                            onEvent(AddEditProjectEvent.AddEditProject)
                         } else {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(

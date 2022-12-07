@@ -15,7 +15,7 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class AddProjectViewModel @Inject constructor(
+class AddEditProjectViewModel @Inject constructor(
     private val addProjectUseCase: AddProjectUseCase
 ) : ViewModel() {
     var addProjectState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
@@ -39,21 +39,21 @@ class AddProjectViewModel @Inject constructor(
     var icon by mutableStateOf<Any?>(null)
         private set
 
-    fun onEvent(event: AddProjectEvent) {
+    fun onEvent(event: AddEditProjectEvent) {
         when (event) {
-            AddProjectEvent.AddProject -> addProject()
+            AddEditProjectEvent.AddEditProject -> addProject()
 
-            is AddProjectEvent.OnTitleChanged -> title = event.title
+            is AddEditProjectEvent.OnTitleChanged -> title = event.title
 
-            is AddProjectEvent.OnDescriptionChanged -> description = event.description
+            is AddEditProjectEvent.OnDescriptionChanged -> description = event.description
 
-            is AddProjectEvent.OnPlatformChanged -> platform = event.platform
+            is AddEditProjectEvent.OnPlatformChanged -> platform = event.platform
 
-            is AddProjectEvent.OnCategoryChanged -> category = event.category
+            is AddEditProjectEvent.OnCategoryChanged -> category = event.category
 
-            is AddProjectEvent.OnDeadlineChanged -> deadline = event.deadline
+            is AddEditProjectEvent.OnDeadlineChanged -> deadline = event.deadline
 
-            is AddProjectEvent.OnIconChanged -> icon = event.icon
+            is AddEditProjectEvent.OnIconChanged -> icon = event.icon
         }
     }
 
