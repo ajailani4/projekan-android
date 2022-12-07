@@ -117,7 +117,10 @@ fun ProjectDetailScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Row(
+                                            modifier = Modifier.weight(1f),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
                                             AsyncImage(
                                                 modifier = Modifier
                                                     .size(60.dp)
@@ -136,6 +139,7 @@ fun ProjectDetailScreen(
                                                 style = MaterialTheme.typography.h3
                                             )
                                         }
+                                        Spacer(modifier = Modifier.width(5.dp))
                                         Label(
                                             text = stringResource(
                                                 id = when (project.status) {

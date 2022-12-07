@@ -16,12 +16,14 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Label(
+    modifier: Modifier = Modifier,
     text: String,
     backgroundColor: Color,
     textColor: Color,
     textStyle: TextStyle = MaterialTheme.typography.body2
 ) {
     Surface(
+        modifier = modifier,
         shape = MaterialTheme.shapes.small,
         color = backgroundColor
     ) {
