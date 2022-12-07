@@ -44,4 +44,5 @@
     <string name="platform">Platform</string>
     <string name="category">Category</string>
     <string name="save">Save</string>
+    <string name="photo_size_is_too_large">Photo size is too large</string>
 </resources>

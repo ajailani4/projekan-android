@@ -45,4 +45,5 @@
     <string name="platform">Platform</string>
     <string name="category">Kategori</string>
     <string name="save">Simpan</string>
+    <string name="photo_size_is_too_large">Ukuran foto terlalu besar</string>
 </resources>
