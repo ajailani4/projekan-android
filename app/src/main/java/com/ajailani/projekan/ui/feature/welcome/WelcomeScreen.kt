@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.theme.Grey
@@ -34,12 +35,14 @@ fun WelcomeScreen(
             Text(
                 modifier = Modifier.padding(top = 50.dp),
                 text = stringResource(id = R.string.welcome_to_projekan),
+                textAlign = TextAlign.Center,
                 color = MaterialTheme.colors.onBackground,
                 style = MaterialTheme.typography.h1
             )
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = stringResource(id = R.string.manage_your_projects),
+                textAlign = TextAlign.Center,
                 color = Grey,
                 style = MaterialTheme.typography.body1
             )
@@ -57,6 +60,7 @@ fun WelcomeScreen(
             ) {
                 Text(
                     modifier = Modifier.padding(5.dp),
+                    textAlign = TextAlign.Center,
                     text = stringResource(id = R.string.login)
                 )
             }
@@ -74,6 +78,7 @@ fun WelcomeScreen(
                 Text(
                     modifier = Modifier.padding(5.dp),
                     text = stringResource(id = R.string.register),
+                    textAlign = TextAlign.Center,
                     color = MaterialTheme.colors.primary
                 )
             }

@@ -28,7 +28,7 @@ val Typography = Typography(
     ),
     h6 = TextStyle(
         fontFamily = montserratFamily,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 18.sp
     ),
     subtitle1 = TextStyle(

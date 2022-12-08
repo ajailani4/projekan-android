@@ -34,4 +34,15 @@
     <string name="in_progress">In Progress</string>
     <string name="done">Done</string>
     <string name="tasks">Tasks</string>
+    <string name="no_tasks">This project doesn\'t have tasks yet.\nLet\'s add a new task</string>
+    
+    <string name="add_project">Add Project</string>
+    <string name="edit_project">Edit Project</string>
+    <string name="project_icon">Project Icon</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="platform">Platform</string>
+    <string name="category">Category</string>
+    <string name="save">Save</string>
+    <string name="photo_size_is_too_large">Photo size is too large</string>
 </resources>

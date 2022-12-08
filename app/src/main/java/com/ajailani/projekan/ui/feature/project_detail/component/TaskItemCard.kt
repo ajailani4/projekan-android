@@ -1,5 +1,6 @@
 package com.ajailani.projekan.ui.feature.project_detail.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -9,11 +10,16 @@ import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.domain.model.TaskItem
+import com.ajailani.projekan.ui.theme.BackgroundShimmer
 import com.ajailani.projekan.ui.theme.Grey
 import com.ajailani.projekan.util.TaskStatus
+import com.valentinilk.shimmer.ShimmerBounds
+import com.valentinilk.shimmer.rememberShimmer
+import com.valentinilk.shimmer.shimmer
 
 @Composable
 fun TaskItemCard(
@@ -74,5 +80,54 @@ fun TaskItemCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun TaskItemCardShimmer(modifier: Modifier = Modifier) {
+    val shimmerInstance = rememberShimmer(shimmerBounds = ShimmerBounds.View)
+
+    for (i in 1..3) {
+        Card(
+            modifier = modifier.shimmer(shimmerInstance),
+            shape = MaterialTheme.shapes.large,
+            elevation = 0.dp
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clip(MaterialTheme.shapes.small)
+                        .size(width = 200.dp, height = 20.dp)
+                        .background(color = BackgroundShimmer)
+                        .shimmer(shimmerInstance)
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.small)
+                            .size(24.dp)
+                            .background(color = BackgroundShimmer)
+                            .shimmer(shimmerInstance)
+                    )
+                    Spacer(modifier = Modifier.width(7.dp))
+                    Box(
+                        modifier = Modifier
+                            .clip(MaterialTheme.shapes.small)
+                            .size(24.dp)
+                            .background(color = BackgroundShimmer)
+                            .shimmer(shimmerInstance)
+                    )
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }

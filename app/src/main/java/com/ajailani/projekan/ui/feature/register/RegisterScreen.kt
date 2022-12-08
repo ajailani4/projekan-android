@@ -1,7 +1,5 @@
 package com.ajailani.projekan.ui.feature.register
 
-import android.app.Activity
-import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
@@ -22,6 +20,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,9 +50,6 @@ fun RegisterScreen(
 
     val context = LocalContext.current
 
-    (context as Activity).window
-        .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
     Scaffold(scaffoldState = scaffoldState) { innerPadding ->
         Column(
             modifier = Modifier
@@ -76,6 +72,7 @@ fun RegisterScreen(
             ) {
                 Text(
                     text = stringResource(id = R.string.register),
+                    textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.h1
                 )
                 Spacer(modifier = Modifier.height(60.dp))
@@ -185,7 +182,8 @@ fun RegisterScreen(
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
-                        text = stringResource(id = R.string.register)
+                        text = stringResource(id = R.string.register),
+                        textAlign = TextAlign.Center
                     )
                 }
                 Spacer(modifier = Modifier.height(15.dp))

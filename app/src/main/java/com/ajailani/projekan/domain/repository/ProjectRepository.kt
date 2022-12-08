@@ -6,6 +6,7 @@ import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.util.ProjectType
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 interface ProjectRepository {
     fun getProjects(
@@ -19,4 +20,13 @@ interface ProjectRepository {
     ): Flow<PagingData<ProjectItem>>
 
     fun getProjectDetail(id: String): Flow<Resource<Project>>
+
+    fun addProject(
+        title: String,
+        description: String,
+        platform: String,
+        category: String,
+        deadline: String,
+        icon: File?
+    ): Flow<Resource<Any>>
 }

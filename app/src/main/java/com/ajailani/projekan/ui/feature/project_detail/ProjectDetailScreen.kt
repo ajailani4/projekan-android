@@ -33,8 +33,11 @@ import coil.request.ImageRequest
 import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.TaskItem
 import com.ajailani.projekan.ui.common.UIState
+import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.Label
+import com.ajailani.projekan.ui.feature.project_detail.component.ProjectDetailShimmer
 import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
+import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCardShimmer
 import com.ajailani.projekan.ui.theme.*
 import com.ajailani.projekan.util.Formatter
 import com.ajailani.projekan.util.ProjectStatus
@@ -95,7 +98,11 @@ fun ProjectDetailScreen(
             LazyColumn {
                 when (projectDetailState) {
                     UIState.Loading -> {
-                        // Shimmer
+                        item {
+                            ProjectDetailShimmer()
+                            Spacer(modifier = Modifier.height(25.dp))
+                            TaskItemCardShimmer(modifier = Modifier.padding(horizontal = 20.dp))
+                        }
                     }
 
                     is UIState.Success -> {
@@ -110,7 +117,10 @@ fun ProjectDetailScreen(
                                         modifier = Modifier.fillMaxWidth(),
                                         horizontalArrangement = Arrangement.SpaceBetween
                                     ) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Row(
+                                            modifier = Modifier.weight(1f),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
                                             AsyncImage(
                                                 modifier = Modifier
                                                     .size(60.dp)
@@ -118,7 +128,7 @@ fun ProjectDetailScreen(
                                                 model = ImageRequest.Builder(LocalContext.current)
                                                     .data(project.icon)
                                                     .build(),
-                                                placeholder = painterResource(id = R.drawable.ic_default_project),
+                                                placeholder = painterResource(id = R.drawable.img_default_project_icon),
                                                 contentScale = ContentScale.Crop,
                                                 contentDescription = "Project icon"
                                             )
@@ -129,8 +139,9 @@ fun ProjectDetailScreen(
                                                 style = MaterialTheme.typography.h3
                                             )
                                         }
+                                        Spacer(modifier = Modifier.width(5.dp))
                                         Label(
-                                            title = stringResource(
+                                            text = stringResource(
                                                 id = when (project.status) {
                                                     ProjectStatus.TODO -> R.string.todo
                                                     ProjectStatus.IN_PROGRESS -> R.string.in_progress
@@ -158,13 +169,13 @@ fun ProjectDetailScreen(
                                         Column {
                                             Row {
                                                 Label(
-                                                    title = project.platform,
+                                                    text = project.platform,
                                                     backgroundColor = MaterialTheme.colors.secondary,
                                                     textColor = MaterialTheme.colors.secondaryVariant
                                                 )
                                                 Spacer(modifier = Modifier.width(10.dp))
                                                 Label(
-                                                    title = project.category,
+                                                    text = project.category,
                                                     backgroundColor = MaterialTheme.colors.primary,
                                                     textColor = MaterialTheme.colors.primaryVariant
                                                 )
@@ -266,13 +277,23 @@ private fun LazyListScope.tasksSection(tasks: List<TaskItem>) {
         Spacer(modifier = Modifier.height(15.dp))
     }
 
-    items(tasks) { taskItem ->
-        TaskItemCard(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            taskItem = taskItem,
-            onChecked = {},
-            onMoreClicked = {}
-        )
-        Spacer(modifier = Modifier.height(15.dp))
+    if (tasks.isNotEmpty()) {
+        items(tasks) { taskItem ->
+            TaskItemCard(
+                modifier = Modifier.padding(horizontal = 20.dp),
+                taskItem = taskItem,
+                onChecked = {},
+                onMoreClicked = {}
+            )
+            Spacer(modifier = Modifier.height(15.dp))
+        }
+    } else {
+        item {
+            CaptionImage(
+                modifier = Modifier.size(200.dp),
+                image = painterResource(id = R.drawable.illustration_add_note),
+                caption = stringResource(id = R.string.no_tasks)
+            )
+        }
     }
 }

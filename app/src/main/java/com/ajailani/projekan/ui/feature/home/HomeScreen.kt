@@ -3,10 +3,7 @@ package com.ajailani.projekan.ui.feature.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
@@ -39,6 +36,7 @@ import coil.request.ImageRequest
 import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserProfile
+import com.ajailani.projekan.ui.common.SharedViewModel
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.VProjectItemCard
@@ -53,14 +51,21 @@ import com.ajailani.projekan.util.ProjectType
 @Composable
 fun HomeScreen(
     homeViewModel: HomeViewModel = hiltViewModel(),
+    sharedViewModel: SharedViewModel,
     onNavigateToProjectList: (ProjectType) -> Unit,
-    onNavigateToProjectDetail: (String) -> Unit
+    onNavigateToProjectDetail: (String) -> Unit,
+    onNavigateToAddEditProject: () -> Unit
 ) {
     val onEvent = homeViewModel::onEvent
     val userProfileState = homeViewModel.userProfileState
     val deadlinesState = homeViewModel.deadlinesState
     val pagingProjects = homeViewModel.pagingProjects.collectAsLazyPagingItems()
     val pullRefreshing = homeViewModel.pullRefreshing
+    val lazyListState =
+        if (pagingProjects.itemCount > 0) homeViewModel.lazyListState else rememberLazyListState()
+
+    val reloaded = sharedViewModel.reloaded
+    val onReloadedChanged = sharedViewModel::onReloadedChanged
 
     val scaffoldState = rememberScaffoldState()
     val pullRefreshState = rememberPullRefreshState(
@@ -76,7 +81,7 @@ fun HomeScreen(
     Scaffold(
         scaffoldState = scaffoldState,
         floatingActionButton = {
-            FloatingActionButton(onClick = {}) {
+            FloatingActionButton(onClick = onNavigateToAddEditProject) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Add project icon"
@@ -91,7 +96,7 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .pullRefresh(pullRefreshState)
         ) {
-            LazyColumn {
+            LazyColumn(state = lazyListState) {
                 item {
                     Column(
                         modifier = Modifier
@@ -101,12 +106,14 @@ fun HomeScreen(
                         Header(
                             onEvent = onEvent,
                             userProfileState = userProfileState,
+                            onReloadedChanged = onReloadedChanged,
                             scaffoldState = scaffoldState
                         )
                         Spacer(modifier = Modifier.height(35.dp))
                         ThisWeekDeadlinesSection(
                             onEvent = onEvent,
                             deadlinesState = deadlinesState,
+                            onReloadedChanged = onReloadedChanged,
                             onViewAllClicked = { onNavigateToProjectList(ProjectType.DEADLINE) },
                             onNavigateToProjectDetail = onNavigateToProjectDetail,
                             scaffoldState = scaffoldState
@@ -121,6 +128,7 @@ fun HomeScreen(
                 myProjectsSection(
                     onEvent = onEvent,
                     pagingProjects = pagingProjects,
+                    onReloadedChanged = onReloadedChanged,
                     onNavigateToProjectDetail = onNavigateToProjectDetail,
                     scaffoldState = scaffoldState
                 )
@@ -133,6 +141,13 @@ fun HomeScreen(
                 contentColor = MaterialTheme.colors.primary
             )
         }
+
+        // Observe reloaded state from SharedViewModel
+        if (reloaded) {
+            onEvent(HomeEvent.GetUserProfile)
+            onEvent(HomeEvent.GetDeadlines)
+            onEvent(HomeEvent.GetProjects)
+        }
     }
 }
 
@@ -140,6 +155,7 @@ fun HomeScreen(
 private fun Header(
     onEvent: (HomeEvent) -> Unit,
     userProfileState: UIState<UserProfile>,
+    onReloadedChanged: (Boolean) -> Unit,
     scaffoldState: ScaffoldState
 ) {
     Row(
@@ -155,6 +171,7 @@ private fun Header(
 
             is UIState.Success -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 val userProfile = userProfileState.data
 
@@ -222,6 +239,7 @@ private fun Header(
 private fun ThisWeekDeadlinesSection(
     onEvent: (HomeEvent) -> Unit,
     deadlinesState: UIState<List<ProjectItem>>,
+    onReloadedChanged: (Boolean) -> Unit,
     onViewAllClicked: () -> Unit,
     onNavigateToProjectDetail: (String) -> Unit,
     scaffoldState: ScaffoldState
@@ -263,6 +281,7 @@ private fun ThisWeekDeadlinesSection(
 
             is UIState.Success -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 deadlinesState.data?.let { projects ->
                     if (projects.isNotEmpty()) {
@@ -317,6 +336,7 @@ private fun ThisWeekDeadlinesSection(
 private fun LazyListScope.myProjectsSection(
     onEvent: (HomeEvent) -> Unit,
     pagingProjects: LazyPagingItems<ProjectItem>,
+    onReloadedChanged: (Boolean) -> Unit,
     onNavigateToProjectDetail: (String) -> Unit,
     scaffoldState: ScaffoldState
 ) {
@@ -364,6 +384,7 @@ private fun LazyListScope.myProjectsSection(
 
             loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 if (itemCount < 1) {
                     item {

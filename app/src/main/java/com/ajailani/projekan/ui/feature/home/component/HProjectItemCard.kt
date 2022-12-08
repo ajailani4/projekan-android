@@ -56,7 +56,7 @@ fun HProjectItemCard(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(projectItem.icon)
                         .build(),
-                    placeholder = painterResource(id = R.drawable.ic_default_project),
+                    placeholder = painterResource(id = R.drawable.img_default_project_icon),
                     contentScale = ContentScale.Crop,
                     contentDescription = "Project icon"
                 )
@@ -80,13 +80,13 @@ fun HProjectItemCard(
                     Spacer(modifier = Modifier.height(30.dp))
                     Row {
                         Label(
-                            title = projectItem.platform,
+                            text = projectItem.platform,
                             backgroundColor = MaterialTheme.colors.secondary,
                             textColor = MaterialTheme.colors.secondaryVariant
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Label(
-                            title = projectItem.category,
+                            text = projectItem.category,
                             backgroundColor = MaterialTheme.colors.primary,
                             textColor = MaterialTheme.colors.primaryVariant
                         )
