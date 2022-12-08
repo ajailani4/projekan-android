@@ -25,6 +25,7 @@ import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.isNull
 import retrofit2.Response
 
 @ExperimentalCoroutinesApi
@@ -144,6 +145,88 @@ class ProjectRepositoryTest {
                 "Resource should be error",
                 Resource.Error<Project>(),
                 actualResource
+            )
+        }
+
+    @Test
+    fun `Add project should return success`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.success(
+                201,
+                BaseResponse(
+                    code = 201,
+                    status = "OK",
+                    data = null
+                )
+            )
+
+            doReturn(response).`when`(projectRemoteDataSource).addProject(
+                title = anyString(),
+                description = anyString(),
+                platform = anyString(),
+                category = anyString(),
+                deadline = anyString(),
+                icon = isNull()
+            )
+
+            val actualResource = projectRepository.addProject(
+                title = "Projekan",
+                description = "Project management app",
+                platform = "Mobile",
+                category = "Application",
+                deadline = "2022-12-05",
+                icon = null
+            ).first()
+
+            val isSuccess = when (actualResource) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be success",
+                true,
+                isSuccess
+            )
+        }
+
+    @Test
+    fun `Add project should return fail`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.error<Any>(
+                400,
+                "".toResponseBody()
+            )
+
+            doReturn(response).`when`(projectRemoteDataSource).addProject(
+                title = anyString(),
+                description = anyString(),
+                platform = anyString(),
+                category = anyString(),
+                deadline = anyString(),
+                icon = isNull()
+            )
+
+            val actualResource = projectRepository.addProject(
+                title = "Projekan",
+                description = "Project management app",
+                platform = "Mobile",
+                category = "Application",
+                deadline = "2022-12-05",
+                icon = null
+            ).first()
+
+            val isSuccess = when (actualResource) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be error",
+                false,
+                isSuccess
             )
         }
 }
