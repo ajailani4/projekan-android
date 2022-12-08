@@ -1,7 +1,7 @@
 package com.ajailani.projekan.ui.feature.add_edit_project
 
 sealed class AddEditProjectEvent {
-    object AddEditProject : AddEditProjectEvent()
+    object AddProject : AddEditProjectEvent()
     data class OnTitleChanged(val title: String) : AddEditProjectEvent()
     data class OnDescriptionChanged(val description: String) : AddEditProjectEvent()
     data class OnPlatformChanged(val platform: String) : AddEditProjectEvent()

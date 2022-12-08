@@ -41,7 +41,7 @@ class AddEditProjectViewModel @Inject constructor(
 
     fun onEvent(event: AddEditProjectEvent) {
         when (event) {
-            AddEditProjectEvent.AddEditProject -> addProject()
+            AddEditProjectEvent.AddProject -> addProject()
 
             is AddEditProjectEvent.OnTitleChanged -> title = event.title
 

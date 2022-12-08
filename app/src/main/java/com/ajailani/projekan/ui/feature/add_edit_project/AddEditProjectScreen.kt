@@ -242,7 +242,7 @@ fun AddEditProjectScreen(
                         if (title.isNotEmpty() && description.isNotEmpty() &&
                             platform.isNotEmpty() && category.isNotEmpty() && deadline.isNotEmpty()
                         ) {
-                            onEvent(AddEditProjectEvent.AddEditProject)
+                            onEvent(AddEditProjectEvent.AddProject)
                         } else {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(
