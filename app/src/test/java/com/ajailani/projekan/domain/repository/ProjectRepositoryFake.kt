@@ -10,6 +10,7 @@ import com.ajailani.projekan.util.project
 import com.ajailani.projekan.util.projects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import java.io.File
 
 class ProjectRepositoryFake : ProjectRepository {
     private lateinit var resourceType: ResourceType
@@ -32,6 +33,20 @@ class ProjectRepositoryFake : ProjectRepository {
     override fun getProjectDetail(id: String): Flow<Resource<Project>> =
         when (resourceType) {
             ResourceType.Success -> flowOf(Resource.Success(project))
+
+            ResourceType.Error -> flowOf(Resource.Error(null))
+        }
+
+    override fun addProject(
+        title: String,
+        description: String,
+        platform: String,
+        category: String,
+        deadline: String,
+        icon: File?
+    ): Flow<Resource<Any>> =
+        when (resourceType) {
+            ResourceType.Success -> flowOf(Resource.Success(Any()))
 
             ResourceType.Error -> flowOf(Resource.Error(null))
         }
