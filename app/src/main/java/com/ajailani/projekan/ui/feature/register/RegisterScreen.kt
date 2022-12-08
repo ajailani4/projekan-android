@@ -1,7 +1,5 @@
 package com.ajailani.projekan.ui.feature.register
 
-import android.app.Activity
-import android.view.WindowManager
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText

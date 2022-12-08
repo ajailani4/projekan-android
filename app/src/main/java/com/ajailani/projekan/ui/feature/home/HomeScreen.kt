@@ -61,7 +61,8 @@ fun HomeScreen(
     val deadlinesState = homeViewModel.deadlinesState
     val pagingProjects = homeViewModel.pagingProjects.collectAsLazyPagingItems()
     val pullRefreshing = homeViewModel.pullRefreshing
-    val lazyListState = if (pagingProjects.itemCount > 0) homeViewModel.lazyListState else rememberLazyListState()
+    val lazyListState =
+        if (pagingProjects.itemCount > 0) homeViewModel.lazyListState else rememberLazyListState()
 
     val reloaded = sharedViewModel.reloaded
     val onReloadedChanged = sharedViewModel::onReloadedChanged

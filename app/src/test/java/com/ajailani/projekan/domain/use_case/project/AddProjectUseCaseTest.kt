@@ -3,13 +3,11 @@ package com.ajailani.projekan.domain.use_case.project
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.repository.ProjectRepositoryFake
 import com.ajailani.projekan.util.ResourceType
-import com.ajailani.projekan.util.project
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
