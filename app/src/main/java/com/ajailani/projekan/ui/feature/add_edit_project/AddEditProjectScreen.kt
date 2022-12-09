@@ -49,6 +49,8 @@ fun AddEditProjectScreen(
     onNavigateUp: () -> Unit
 ) {
     val onEvent = addEditProjectViewModel::onEvent
+    val projectId = addEditProjectViewModel.projectId
+    val projectDetailState = addEditProjectViewModel.projectDetailState
     val addProjectState = addEditProjectViewModel.addProjectState
     val title = addEditProjectViewModel.title
     val description = addEditProjectViewModel.description
@@ -93,7 +95,13 @@ fun AddEditProjectScreen(
                 elevation = 0.dp,
                 title = {
                     Text(
-                        text = stringResource(id = R.string.add_project)
+                        text = stringResource(
+                            id = if (projectId == null) {
+                                R.string.add_project
+                            } else {
+                                R.string.edit_project
+                            }
+                        )
                     )
                 },
                 backgroundColor = MaterialTheme.colors.surface,
@@ -258,6 +266,46 @@ fun AddEditProjectScreen(
                         textAlign = TextAlign.Center
                     )
                 }
+            }
+        }
+
+        // Observe plant detail state if projectId is not null
+        if (projectId != null) {
+            when (projectDetailState) {
+                UIState.Loading -> {
+                    ProgressBarWithBackground()
+                }
+
+                is UIState.Success -> {
+                    projectDetailState.data?.let { project ->
+                        onEvent(AddEditProjectEvent.OnIconChanged(project.icon))
+                        onEvent(AddEditProjectEvent.OnTitleChanged(project.title))
+                        onEvent(AddEditProjectEvent.OnDescriptionChanged(project.description))
+                        onEvent(AddEditProjectEvent.OnPlatformChanged(project.platform))
+                        onEvent(AddEditProjectEvent.OnCategoryChanged(project.category))
+                        onEvent(AddEditProjectEvent.OnDeadlineChanged(project.deadline))
+                    }
+
+                    onEvent(AddEditProjectEvent.Idle)
+                }
+
+                is UIState.Fail -> {
+                    LaunchedEffect(scaffoldState) {
+                        projectDetailState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                is UIState.Error -> {
+                    LaunchedEffect(scaffoldState) {
+                        projectDetailState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                else -> {}
             }
         }
 

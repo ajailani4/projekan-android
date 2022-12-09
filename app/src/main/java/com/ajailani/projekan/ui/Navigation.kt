@@ -128,11 +128,24 @@ fun Navigation(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
-                onNavigateToAddEditProject = {}
+                onNavigateToAddEditProject = { projectId ->
+                    navController.navigate(
+                        Screen.AddEditProject.route + "?projectId=$projectId"
+                    )
+                }
             )
         }
 
-        composable(route = Screen.AddEditProject.route) {
+        composable(
+            route = Screen.AddEditProject.route + "?projectId={projectId}",
+            arguments = listOf(
+                navArgument("projectId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
             AddEditProjectScreen(
                 sharedViewModel = sharedViewModel,
                 onNavigateUp = {
