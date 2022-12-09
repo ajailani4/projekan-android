@@ -39,4 +39,6 @@ interface ProjectRepository {
         deadline: String,
         icon: File?
     ): Flow<Resource<Any>>
+
+    fun deleteProject(id: String): Flow<Resource<Any>>
 }

@@ -155,7 +155,7 @@ class ProjectRepositoryTest {
                 201,
                 BaseResponse(
                     code = 201,
-                    status = "OK",
+                    status = "Created",
                     data = null
                 )
             )
@@ -236,7 +236,7 @@ class ProjectRepositoryTest {
             val response = Response.success(
                 200,
                 BaseResponse(
-                    code = 201,
+                    code = 200,
                     status = "OK",
                     data = null
                 )
@@ -304,6 +304,56 @@ class ProjectRepositoryTest {
             ).first()
 
             val isSuccess = when (actualResource) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be error",
+                false,
+                isSuccess
+            )
+        }
+
+    @Test
+    fun `Delete project should return success`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.success(
+                200,
+                BaseResponse(
+                    code = 200,
+                    status = "OK",
+                    data = null
+                )
+            )
+
+            doReturn(response).`when`(projectRemoteDataSource).deleteProject(anyString())
+
+            val isSuccess = when (projectRepository.deleteProject("a1b2c3").first()) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be success",
+                true,
+                isSuccess
+            )
+        }
+
+    @Test
+    fun `Delete project should return error`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.error<Any>(
+                400,
+                "".toResponseBody()
+            )
+
+            doReturn(response).`when`(projectRemoteDataSource).deleteProject(anyString())
+
+            val isSuccess = when (projectRepository.deleteProject("a1b2c3").first()) {
                 is Resource.Success -> true
 
                 is Resource.Error -> false

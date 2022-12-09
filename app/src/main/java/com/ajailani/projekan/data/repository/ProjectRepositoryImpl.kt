@@ -12,6 +12,7 @@ import com.ajailani.projekan.data.remote.data_source.ProjectRemoteDataSource
 import com.ajailani.projekan.domain.repository.ProjectRepository
 import com.ajailani.projekan.util.ProjectType
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.io.File
@@ -121,6 +122,17 @@ class ProjectRepositoryImpl @Inject constructor(
                 200 -> emit(Resource.Success(response.body()?.data))
 
                 413 -> emit(Resource.Error(context.getString(R.string.photo_size_is_too_large)))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
+
+    override fun deleteProject(id: String) =
+        flow {
+            val response = projectRemoteDataSource.deleteProject(id)
+
+            when (response.code()) {
+                200 -> emit(Resource.Success(response.body()?.data))
 
                 else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
             }

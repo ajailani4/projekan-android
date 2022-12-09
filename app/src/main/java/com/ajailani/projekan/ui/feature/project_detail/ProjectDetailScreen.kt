@@ -35,10 +35,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.TaskItem
+import com.ajailani.projekan.ui.common.CustomAlertDialog
 import com.ajailani.projekan.ui.common.SharedViewModel
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.Label
+import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
 import com.ajailani.projekan.ui.feature.project_detail.component.BottomSheetItem
 import com.ajailani.projekan.ui.feature.project_detail.component.ProjectDetailShimmer
 import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
@@ -58,9 +60,11 @@ fun ProjectDetailScreen(
 ) {
     val onEvent = projectDetailViewModel::onEvent
     val projectId = projectDetailViewModel.projectId
+    val projectDetailState = projectDetailViewModel.projectDetailState
+    val deleteProjectState = projectDetailViewModel.deleteProjectState
     val pullRefreshing = projectDetailViewModel.pullRefreshing
     val actionMenu = projectDetailViewModel.actionMenu
-    val projectDetailState = projectDetailViewModel.projectDetailState
+    val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
 
     val reloaded = sharedViewModel.reloaded
     val onReloadedChanged = sharedViewModel::onReloadedChanged
@@ -79,6 +83,7 @@ fun ProjectDetailScreen(
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        sheetBackgroundColor = MaterialTheme.colors.background,
         sheetContent = {
             Column(modifier = Modifier.padding(vertical = 10.dp)) {
                 BottomSheetItem(
@@ -106,6 +111,14 @@ fun ProjectDetailScreen(
                     onClick = {
                         coroutineScope.launch {
                             modalBottomSheetState.hide()
+                        }
+
+                        when (actionMenu) {
+                            1 -> {
+                                onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(true))
+                            }
+
+                            2 -> {}
                         }
                     }
                 )
@@ -343,6 +356,53 @@ fun ProjectDetailScreen(
                     state = pullRefreshState,
                     contentColor = MaterialTheme.colors.primary
                 )
+            }
+
+            // Delete project confirmation dialog
+            if (deleteProjectDialogVis) {
+                CustomAlertDialog(
+                    title = stringResource(id = R.string.delete_project),
+                    message = stringResource(id = R.string.delete_project_confirm_msg),
+                    onConfirmed = {
+                        onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
+                        onEvent(ProjectDetailEvent.DeleteProject)
+                    },
+                    onDismissed = {
+                        onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
+                    }
+                )
+            }
+
+            // Observe delete project state
+            when (deleteProjectState) {
+                UIState.Loading -> {
+                    ProgressBarWithBackground()
+                }
+
+                is UIState.Success -> {
+                    LaunchedEffect(Unit) {
+                        onReloadedChanged(true)
+                        onNavigateUp()
+                    }
+                }
+
+                is UIState.Fail -> {
+                    LaunchedEffect(scaffoldState) {
+                        deleteProjectState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                is UIState.Error -> {
+                    LaunchedEffect(scaffoldState) {
+                        deleteProjectState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                else -> {}
             }
 
             // Observe reloaded state from SharedViewModel

@@ -38,6 +38,10 @@
     <string name="no_tasks">Proyek ini belum memiliki tugas.\nAyo tambahkan tugas baru</string>
     <string name="edit">Edit</string>
     <string name="delete">Hapus</string>
+    <string name="delete_project">Hapus Proyek</string>
+    <string name="delete_project_confirm_msg">Apakah kamu yakin ingin menghapus proyek ini?</string>
+    <string name="yes">Iya</string>
+    <string name="no">Tidak</string>
 
     <string name="add_project">Tambah Proyek</string>
     <string name="edit_project">Edit Proyek</string>

@@ -37,6 +37,10 @@
     <string name="no_tasks">This project doesn\'t have tasks yet.\nLet\'s add a new task</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="delete_project">Delete Project</string>
+    <string name="delete_project_confirm_msg">Are you sure to delete this project?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     
     <string name="add_project">Add Project</string>
     <string name="edit_project">Edit Project</string>

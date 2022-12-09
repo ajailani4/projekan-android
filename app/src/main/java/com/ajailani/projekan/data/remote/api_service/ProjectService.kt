@@ -43,4 +43,9 @@ interface ProjectService {
         @Part("deadline") deadline: RequestBody,
         @Part icon: MultipartBody.Part?
     ): Response<BaseResponse<Any>>
+
+    @DELETE("projects/{id}")
+    suspend fun deleteProject(
+        @Path("id") id: String
+    ): Response<BaseResponse<Any>>
 }

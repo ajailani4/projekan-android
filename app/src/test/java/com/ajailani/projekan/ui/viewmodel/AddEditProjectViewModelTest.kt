@@ -80,7 +80,7 @@ class AddEditProjectViewModelTest {
                 else -> false
             }
 
-            assertEquals("Should return success", true, isSuccess)
+            assertEquals("Should be success", true, isSuccess)
         }
     }
 
@@ -106,7 +106,7 @@ class AddEditProjectViewModelTest {
                 else -> false
             }
 
-            assertEquals("Should return fail", false, isSuccess)
+            assertEquals("Should be fail", false, isSuccess)
         }
     }
 
@@ -133,7 +133,7 @@ class AddEditProjectViewModelTest {
                 else -> false
             }
 
-            assertEquals("Should return success", true, isSuccess)
+            assertEquals("Should be success", true, isSuccess)
         }
     }
 
@@ -160,7 +160,7 @@ class AddEditProjectViewModelTest {
                 else -> false
             }
 
-            assertEquals("Should return fail", false, isSuccess)
+            assertEquals("Should be fail", false, isSuccess)
         }
     }
 }
