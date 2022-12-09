@@ -32,6 +32,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.ajailani.projekan.R
 import com.ajailani.projekan.domain.model.TaskItem
+import com.ajailani.projekan.ui.common.SharedViewModel
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.Label
@@ -48,6 +49,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ProjectDetailScreen(
     projectDetailViewModel: ProjectDetailViewModel = hiltViewModel(),
+    sharedViewModel: SharedViewModel,
     onNavigateUp: () -> Unit,
     onNavigateToAddEditProject: (String) -> Unit
 ) {
@@ -55,6 +57,9 @@ fun ProjectDetailScreen(
     val projectId = projectDetailViewModel.projectId
     val actionMenu = projectDetailViewModel.actionMenu
     val projectDetailState = projectDetailViewModel.projectDetailState
+
+    val reloaded = sharedViewModel.reloaded
+    val onReloadedChanged = sharedViewModel::onReloadedChanged
 
     val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
@@ -157,6 +162,8 @@ fun ProjectDetailScreen(
                         }
 
                         is UIState.Success -> {
+                            onReloadedChanged(false)
+
                             projectDetailState.data?.let { project ->
                                 item {
                                     Column(
@@ -316,6 +323,11 @@ fun ProjectDetailScreen(
                         else -> {}
                     }
                 }
+            }
+
+            // Observe reloaded state from SharedViewModel
+            if (reloaded) {
+                onEvent(ProjectDetailEvent.GetProjectDetail)
             }
         }
     }

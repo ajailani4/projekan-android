@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.use_case.project.AddProjectUseCase
+import com.ajailani.projekan.domain.use_case.project.EditProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
 import com.ajailani.projekan.ui.common.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,15 +21,19 @@ import javax.inject.Inject
 @HiltViewModel
 class AddEditProjectViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val getProjectDetailUseCase: GetProjectDetailUseCase,
     private val addProjectUseCase: AddProjectUseCase,
-    private val getProjectDetailUseCase: GetProjectDetailUseCase
+    private val editProjectUseCase: EditProjectUseCase
 ) : ViewModel() {
     val projectId = savedStateHandle.get<String>("projectId")
+
+    var projectDetailState by mutableStateOf<UIState<Project>>(UIState.Idle)
+        private set
 
     var addProjectState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
-    var projectDetailState by mutableStateOf<UIState<Project>>(UIState.Idle)
+    var editProjectState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
     var title by mutableStateOf("")
@@ -57,9 +62,11 @@ class AddEditProjectViewModel @Inject constructor(
         when (event) {
             AddEditProjectEvent.Idle -> idle()
 
+            AddEditProjectEvent.GetProjectDetail -> getProjectDetail()
+
             AddEditProjectEvent.AddProject -> addProject()
 
-            AddEditProjectEvent.GetProjectDetail -> getProjectDetail()
+            AddEditProjectEvent.EditProject -> editProject()
 
             is AddEditProjectEvent.OnIconChanged -> icon = event.icon
 
@@ -80,9 +87,9 @@ class AddEditProjectViewModel @Inject constructor(
     }
 
     private fun getProjectDetail() {
-        viewModelScope.launch {
-            projectDetailState = UIState.Loading
+        projectDetailState = UIState.Loading
 
+        viewModelScope.launch {
             projectId?.let { id ->
                 getProjectDetailUseCase(id).catch {
                     projectDetailState = UIState.Error(it.localizedMessage)
@@ -115,6 +122,32 @@ class AddEditProjectViewModel @Inject constructor(
                     is Resource.Success -> UIState.Success(null)
 
                     is Resource.Error -> UIState.Fail(it.message)
+                }
+            }
+        }
+    }
+
+    private fun editProject() {
+        editProjectState = UIState.Loading
+
+        viewModelScope.launch {
+            projectId?.let {
+                editProjectUseCase(
+                    id = projectId,
+                    title = title,
+                    description = description,
+                    platform = platform,
+                    category = category,
+                    deadline = deadline,
+                    icon = if (icon is File) icon as File else null
+                ).catch {
+                    editProjectState = UIState.Error(it.localizedMessage)
+                }.collect {
+                    editProjectState = when (it) {
+                        is Resource.Success -> UIState.Success(null)
+
+                        is Resource.Error -> UIState.Fail(it.message)
+                    }
                 }
             }
         }

@@ -52,6 +52,7 @@ fun AddEditProjectScreen(
     val projectId = addEditProjectViewModel.projectId
     val projectDetailState = addEditProjectViewModel.projectDetailState
     val addProjectState = addEditProjectViewModel.addProjectState
+    val editProjectState = addEditProjectViewModel.editProjectState
     val title = addEditProjectViewModel.title
     val description = addEditProjectViewModel.description
     val platform = addEditProjectViewModel.platform
@@ -250,7 +251,11 @@ fun AddEditProjectScreen(
                         if (title.isNotEmpty() && description.isNotEmpty() &&
                             platform.isNotEmpty() && category.isNotEmpty() && deadline.isNotEmpty()
                         ) {
-                            onEvent(AddEditProjectEvent.AddProject)
+                            if (projectId == null) {
+                                onEvent(AddEditProjectEvent.AddProject)
+                            } else {
+                                onEvent(AddEditProjectEvent.EditProject)
+                            }
                         } else {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(
@@ -316,8 +321,10 @@ fun AddEditProjectScreen(
             }
 
             is UIState.Success -> {
-                onReloadedChanged(true)
-                onNavigateUp()
+                LaunchedEffect(Unit) {
+                    onReloadedChanged(true)
+                    onNavigateUp()
+                }
             }
 
             is UIState.Fail -> {
@@ -331,6 +338,38 @@ fun AddEditProjectScreen(
             is UIState.Error -> {
                 LaunchedEffect(scaffoldState) {
                     addProjectState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            else -> {}
+        }
+
+        // Observe edit project state
+        when (editProjectState) {
+            UIState.Loading -> {
+                ProgressBarWithBackground()
+            }
+
+            is UIState.Success -> {
+                LaunchedEffect(Unit) {
+                    onReloadedChanged(true)
+                    onNavigateUp()
+                }
+            }
+
+            is UIState.Fail -> {
+                LaunchedEffect(scaffoldState) {
+                    editProjectState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            is UIState.Error -> {
+                LaunchedEffect(scaffoldState) {
+                    editProjectState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
                     }
                 }

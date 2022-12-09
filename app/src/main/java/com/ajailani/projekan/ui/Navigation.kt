@@ -125,6 +125,7 @@ fun Navigation(
             )
         ) {
             ProjectDetailScreen(
+                sharedViewModel = sharedViewModel,
                 onNavigateUp = {
                     navController.navigateUp()
                 },

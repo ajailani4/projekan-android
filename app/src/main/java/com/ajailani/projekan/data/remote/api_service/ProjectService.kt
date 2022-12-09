@@ -33,7 +33,7 @@ interface ProjectService {
     ): Response<BaseResponse<Any>>
 
     @Multipart
-    @POST("projects/{id}")
+    @PUT("projects/{id}")
     suspend fun editProject(
         @Path("id") id: String,
         @Part("title") title: RequestBody,

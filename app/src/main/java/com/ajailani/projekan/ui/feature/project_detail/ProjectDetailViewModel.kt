@@ -42,9 +42,9 @@ class ProjectDetailViewModel @Inject constructor(
     }
 
     private fun getProjectDetail() {
-        viewModelScope.launch {
-            projectDetailState = UIState.Loading
+        projectDetailState = UIState.Loading
 
+        viewModelScope.launch {
             projectId?.let { id ->
                 getProjectDetailUseCase(id).catch {
                     projectDetailState = UIState.Error(it.localizedMessage)
