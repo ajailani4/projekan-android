@@ -83,6 +83,7 @@ fun ProjectDetailScreen(
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
+        sheetBackgroundColor = MaterialTheme.colors.background,
         sheetContent = {
             Column(modifier = Modifier.padding(vertical = 10.dp)) {
                 BottomSheetItem(
