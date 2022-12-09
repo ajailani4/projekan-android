@@ -63,6 +63,7 @@ fun HomeScreen(
     val pullRefreshing = homeViewModel.pullRefreshing
     val lazyListState =
         if (pagingProjects.itemCount > 0) homeViewModel.lazyListState else rememberLazyListState()
+    val resetLazyListState = homeViewModel::resetLazyListState
 
     val reloaded = sharedViewModel.reloaded
     val onReloadedChanged = sharedViewModel::onReloadedChanged
@@ -96,7 +97,9 @@ fun HomeScreen(
                 .padding(innerPadding)
                 .pullRefresh(pullRefreshState)
         ) {
-            LazyColumn(state = lazyListState) {
+            LazyColumn(
+                state = lazyListState
+            ) {
                 item {
                     Column(
                         modifier = Modifier
@@ -144,6 +147,7 @@ fun HomeScreen(
 
         // Observe reloaded state from SharedViewModel
         if (reloaded) {
+            resetLazyListState()
             onEvent(HomeEvent.GetUserProfile)
             onEvent(HomeEvent.GetDeadlines)
             onEvent(HomeEvent.GetProjects)

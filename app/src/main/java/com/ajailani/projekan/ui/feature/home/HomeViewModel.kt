@@ -41,7 +41,8 @@ class HomeViewModel @Inject constructor(
     var pullRefreshing by mutableStateOf(false)
         private set
 
-    val lazyListState = LazyListState()
+    var lazyListState = LazyListState()
+        private set
 
     init {
         getUserProfile()
@@ -58,6 +59,12 @@ class HomeViewModel @Inject constructor(
             HomeEvent.GetProjects -> getProjects()
 
             is HomeEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
+        }
+    }
+
+    fun resetLazyListState() {
+        viewModelScope.launch {
+            lazyListState.scrollToItem(0)
         }
     }
 
