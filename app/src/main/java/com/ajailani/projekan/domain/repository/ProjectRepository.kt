@@ -29,4 +29,14 @@ interface ProjectRepository {
         deadline: String,
         icon: File?
     ): Flow<Resource<Any>>
+
+    fun editProject(
+        id: String,
+        title: String,
+        description: String,
+        platform: String,
+        category: String,
+        deadline: String,
+        icon: File?
+    ): Flow<Resource<Any>>
 }

@@ -22,30 +22,30 @@ fun Navigation(
     sharedViewModel: SharedViewModel
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
-        composable(route = Screen.WelcomeScreen.route) {
+        composable(route = Screen.Welcome.route) {
             WelcomeScreen(
                 onNavigateToLogin = {
-                    navController.navigate(Screen.LoginScreen.route)
+                    navController.navigate(Screen.Login.route)
                 },
                 onNavigateToRegister = {
-                    navController.navigate(Screen.RegisterScreen.route)
+                    navController.navigate(Screen.Register.route)
                 }
             )
         }
 
-        composable(route = Screen.LoginScreen.route) {
+        composable(route = Screen.Login.route) {
             LoginScreen(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
                 onNavigateToRegister = {
-                    navController.navigate(Screen.RegisterScreen.route)
+                    navController.navigate(Screen.Register.route)
                 },
                 onNavigateToHome = {
-                    navController.navigate(Screen.HomeScreen.route) {
+                    navController.navigate(Screen.Home.route) {
                         launchSingleTop = true
 
-                        popUpTo(Screen.WelcomeScreen.route) {
+                        popUpTo(Screen.Welcome.route) {
                             inclusive = true
                         }
                     }
@@ -53,19 +53,19 @@ fun Navigation(
             )
         }
 
-        composable(route = Screen.RegisterScreen.route) {
+        composable(route = Screen.Register.route) {
             RegisterScreen(
                 onNavigateUp = {
                     navController.navigateUp()
                 },
                 onNavigateToLogin = {
-                    navController.navigate(Screen.LoginScreen.route)
+                    navController.navigate(Screen.Login.route)
                 },
                 onNavigateToHome = {
-                    navController.navigate(Screen.HomeScreen.route) {
+                    navController.navigate(Screen.Home.route) {
                         launchSingleTop = true
 
-                        popUpTo(Screen.WelcomeScreen.route) {
+                        popUpTo(Screen.Welcome.route) {
                             inclusive = true
                         }
                     }
@@ -73,29 +73,29 @@ fun Navigation(
             )
         }
 
-        composable(route = Screen.HomeScreen.route) {
+        composable(route = Screen.Home.route) {
             HomeScreen(
                 sharedViewModel = sharedViewModel,
                 onNavigateToProjectList = { projectType ->
                     navController.navigate(
-                        Screen.ProjectListScreen.route + "?projectType=$projectType"
+                        Screen.ProjectList.route + "?projectType=$projectType"
                     )
                 },
                 onNavigateToProjectDetail = { projectId ->
                     navController.navigate(
-                        Screen.ProjectDetailScreen.route + "?projectId=$projectId"
+                        Screen.ProjectDetail.route + "?projectId=$projectId"
                     )
                 },
                 onNavigateToAddEditProject = {
                     navController.navigate(
-                        Screen.AddEditProjectScreen.route
+                        Screen.AddEditProject.route
                     )
                 }
             )
         }
 
         composable(
-            route = Screen.ProjectListScreen.route + "?projectType={projectType}",
+            route = Screen.ProjectList.route + "?projectType={projectType}",
             arguments = listOf(
                 navArgument("projectType") {
                     type = NavType.StringType
@@ -110,14 +110,14 @@ fun Navigation(
                 },
                 onNavigateToProjectDetail = { projectId ->
                     navController.navigate(
-                        Screen.ProjectDetailScreen.route + "?projectId=$projectId"
+                        Screen.ProjectDetail.route + "?projectId=$projectId"
                     )
                 }
             )
         }
 
         composable(
-            route = Screen.ProjectDetailScreen.route + "?projectId={projectId}",
+            route = Screen.ProjectDetail.route + "?projectId={projectId}",
             arguments = listOf(
                 navArgument("projectId") {
                     type = NavType.StringType
@@ -125,13 +125,28 @@ fun Navigation(
             )
         ) {
             ProjectDetailScreen(
+                sharedViewModel = sharedViewModel,
                 onNavigateUp = {
                     navController.navigateUp()
+                },
+                onNavigateToAddEditProject = { projectId ->
+                    navController.navigate(
+                        Screen.AddEditProject.route + "?projectId=$projectId"
+                    )
                 }
             )
         }
 
-        composable(route = Screen.AddEditProjectScreen.route) {
+        composable(
+            route = Screen.AddEditProject.route + "?projectId={projectId}",
+            arguments = listOf(
+                navArgument("projectId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
             AddEditProjectScreen(
                 sharedViewModel = sharedViewModel,
                 onNavigateUp = {

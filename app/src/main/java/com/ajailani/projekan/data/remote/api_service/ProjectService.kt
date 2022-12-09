@@ -31,4 +31,16 @@ interface ProjectService {
         @Part("deadline") deadline: RequestBody,
         @Part icon: MultipartBody.Part?
     ): Response<BaseResponse<Any>>
+
+    @Multipart
+    @PUT("projects/{id}")
+    suspend fun editProject(
+        @Path("id") id: String,
+        @Part("title") title: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("platform") platform: RequestBody,
+        @Part("category") category: RequestBody,
+        @Part("deadline") deadline: RequestBody,
+        @Part icon: MultipartBody.Part?
+    ): Response<BaseResponse<Any>>
 }

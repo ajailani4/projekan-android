@@ -36,9 +36,9 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             splashViewModel.getAccessToken().first().let { accessToken ->
                 val startDestination = if (accessToken != "") {
-                    Screen.HomeScreen.route
+                    Screen.Home.route
                 } else {
-                    Screen.WelcomeScreen.route
+                    Screen.Welcome.route
                 }
 
                 setContent {

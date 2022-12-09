@@ -25,20 +25,31 @@ class ProjectDetailViewModel @Inject constructor(
     var projectDetailState by mutableStateOf<UIState<Project>>(UIState.Idle)
         private set
 
+    var pullRefreshing by mutableStateOf(false)
+        private set
+
+    // 1: Project action menu, 2: Task action menu
+    var actionMenu by mutableStateOf(0)
+        private set
+
     init {
         onEvent(ProjectDetailEvent.GetProjectDetail)
     }
 
-    fun onEvent(projectDetailEvent: ProjectDetailEvent) {
-        when (projectDetailEvent) {
+    fun onEvent(event: ProjectDetailEvent) {
+        when (event) {
             ProjectDetailEvent.GetProjectDetail -> getProjectDetail()
+
+            is ProjectDetailEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
+
+            is ProjectDetailEvent.OnActionMenuClicked -> actionMenu = event.actionMenu
         }
     }
 
     private fun getProjectDetail() {
-        viewModelScope.launch {
-            projectDetailState = UIState.Loading
+        projectDetailState = UIState.Loading
 
+        viewModelScope.launch {
             projectId?.let { id ->
                 getProjectDetailUseCase(id).catch {
                     projectDetailState = UIState.Error(it.localizedMessage)

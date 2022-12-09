@@ -49,7 +49,10 @@ fun AddEditProjectScreen(
     onNavigateUp: () -> Unit
 ) {
     val onEvent = addEditProjectViewModel::onEvent
+    val projectId = addEditProjectViewModel.projectId
+    val projectDetailState = addEditProjectViewModel.projectDetailState
     val addProjectState = addEditProjectViewModel.addProjectState
+    val editProjectState = addEditProjectViewModel.editProjectState
     val title = addEditProjectViewModel.title
     val description = addEditProjectViewModel.description
     val platform = addEditProjectViewModel.platform
@@ -93,7 +96,13 @@ fun AddEditProjectScreen(
                 elevation = 0.dp,
                 title = {
                     Text(
-                        text = stringResource(id = R.string.add_project)
+                        text = stringResource(
+                            id = if (projectId == null) {
+                                R.string.add_project
+                            } else {
+                                R.string.edit_project
+                            }
+                        )
                     )
                 },
                 backgroundColor = MaterialTheme.colors.surface,
@@ -242,7 +251,11 @@ fun AddEditProjectScreen(
                         if (title.isNotEmpty() && description.isNotEmpty() &&
                             platform.isNotEmpty() && category.isNotEmpty() && deadline.isNotEmpty()
                         ) {
-                            onEvent(AddEditProjectEvent.AddProject)
+                            if (projectId == null) {
+                                onEvent(AddEditProjectEvent.AddProject)
+                            } else {
+                                onEvent(AddEditProjectEvent.EditProject)
+                            }
                         } else {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(
@@ -261,6 +274,46 @@ fun AddEditProjectScreen(
             }
         }
 
+        // Observe plant detail state if projectId is not null
+        if (projectId != null) {
+            when (projectDetailState) {
+                UIState.Loading -> {
+                    ProgressBarWithBackground()
+                }
+
+                is UIState.Success -> {
+                    projectDetailState.data?.let { project ->
+                        onEvent(AddEditProjectEvent.OnIconChanged(project.icon))
+                        onEvent(AddEditProjectEvent.OnTitleChanged(project.title))
+                        onEvent(AddEditProjectEvent.OnDescriptionChanged(project.description))
+                        onEvent(AddEditProjectEvent.OnPlatformChanged(project.platform))
+                        onEvent(AddEditProjectEvent.OnCategoryChanged(project.category))
+                        onEvent(AddEditProjectEvent.OnDeadlineChanged(project.deadline))
+                    }
+
+                    onEvent(AddEditProjectEvent.Idle)
+                }
+
+                is UIState.Fail -> {
+                    LaunchedEffect(scaffoldState) {
+                        projectDetailState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                is UIState.Error -> {
+                    LaunchedEffect(scaffoldState) {
+                        projectDetailState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                else -> {}
+            }
+        }
+
         // Observe add project state
         when (addProjectState) {
             UIState.Loading -> {
@@ -268,8 +321,10 @@ fun AddEditProjectScreen(
             }
 
             is UIState.Success -> {
-                onReloadedChanged(true)
-                onNavigateUp()
+                LaunchedEffect(Unit) {
+                    onReloadedChanged(true)
+                    onNavigateUp()
+                }
             }
 
             is UIState.Fail -> {
@@ -283,6 +338,38 @@ fun AddEditProjectScreen(
             is UIState.Error -> {
                 LaunchedEffect(scaffoldState) {
                     addProjectState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            else -> {}
+        }
+
+        // Observe edit project state
+        when (editProjectState) {
+            UIState.Loading -> {
+                ProgressBarWithBackground()
+            }
+
+            is UIState.Success -> {
+                LaunchedEffect(Unit) {
+                    onReloadedChanged(true)
+                    onNavigateUp()
+                }
+            }
+
+            is UIState.Fail -> {
+                LaunchedEffect(scaffoldState) {
+                    editProjectState.message?.let {
+                        scaffoldState.snackbarHostState.showSnackbar(it)
+                    }
+                }
+            }
+
+            is UIState.Error -> {
+                LaunchedEffect(scaffoldState) {
+                    editProjectState.message?.let {
                         scaffoldState.snackbarHostState.showSnackbar(it)
                     }
                 }

@@ -51,6 +51,21 @@ class ProjectRepositoryFake : ProjectRepository {
             ResourceType.Error -> flowOf(Resource.Error(null))
         }
 
+    override fun editProject(
+        id: String,
+        title: String,
+        description: String,
+        platform: String,
+        category: String,
+        deadline: String,
+        icon: File?
+    ): Flow<Resource<Any>> =
+        when (resourceType) {
+            ResourceType.Success -> flowOf(Resource.Success(Any()))
+
+            ResourceType.Error -> flowOf(Resource.Error(null))
+        }
+
     fun setResourceType(type: ResourceType) {
         resourceType = type
     }

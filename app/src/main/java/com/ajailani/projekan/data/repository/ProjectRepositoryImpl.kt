@@ -96,4 +96,33 @@ class ProjectRepositoryImpl @Inject constructor(
                 else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
             }
         }
+
+    override fun editProject(
+        id: String,
+        title: String,
+        description: String,
+        platform: String,
+        category: String,
+        deadline: String,
+        icon: File?
+    ) =
+        flow {
+            val response = projectRemoteDataSource.editProject(
+                id = id,
+                title = title,
+                description = description,
+                platform = platform,
+                category = category,
+                deadline = deadline,
+                icon = icon
+            )
+
+            when (response.code()) {
+                200 -> emit(Resource.Success(response.body()?.data))
+
+                413 -> emit(Resource.Error(context.getString(R.string.photo_size_is_too_large)))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
 }

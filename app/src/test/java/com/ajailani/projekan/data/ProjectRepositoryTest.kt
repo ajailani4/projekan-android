@@ -229,4 +229,90 @@ class ProjectRepositoryTest {
                 isSuccess
             )
         }
+
+    @Test
+    fun `Edit project should return success`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.success(
+                200,
+                BaseResponse(
+                    code = 201,
+                    status = "OK",
+                    data = null
+                )
+            )
+
+            doReturn(response).`when`(projectRemoteDataSource).editProject(
+                id = anyString(),
+                title = anyString(),
+                description = anyString(),
+                platform = anyString(),
+                category = anyString(),
+                deadline = anyString(),
+                icon = isNull()
+            )
+
+            val actualResource = projectRepository.editProject(
+                id = "a1b2c3",
+                title = "Projekan",
+                description = "Project management app",
+                platform = "Mobile",
+                category = "Application",
+                deadline = "2022-12-05",
+                icon = null
+            ).first()
+
+            val isSuccess = when (actualResource) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be success",
+                true,
+                isSuccess
+            )
+        }
+
+    @Test
+    fun `Edit project should return fail`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.error<Any>(
+                400,
+                "".toResponseBody()
+            )
+
+            doReturn(response).`when`(projectRemoteDataSource).editProject(
+                id = anyString(),
+                title = anyString(),
+                description = anyString(),
+                platform = anyString(),
+                category = anyString(),
+                deadline = anyString(),
+                icon = isNull()
+            )
+
+            val actualResource = projectRepository.editProject(
+                id = "a1b2c3",
+                title = "Projekan",
+                description = "Project management app",
+                platform = "Mobile",
+                category = "Application",
+                deadline = "2022-12-05",
+                icon = null
+            ).first()
+
+            val isSuccess = when (actualResource) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be error",
+                false,
+                isSuccess
+            )
+        }
 }
