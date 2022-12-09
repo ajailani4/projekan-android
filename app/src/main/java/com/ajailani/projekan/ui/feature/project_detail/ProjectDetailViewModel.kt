@@ -25,13 +25,19 @@ class ProjectDetailViewModel @Inject constructor(
     var projectDetailState by mutableStateOf<UIState<Project>>(UIState.Idle)
         private set
 
+    // 1: Project action menu, 2: Task action menu
+    var actionMenu by mutableStateOf(0)
+        private set
+
     init {
         onEvent(ProjectDetailEvent.GetProjectDetail)
     }
 
-    fun onEvent(projectDetailEvent: ProjectDetailEvent) {
-        when (projectDetailEvent) {
+    fun onEvent(event: ProjectDetailEvent) {
+        when (event) {
             ProjectDetailEvent.GetProjectDetail -> getProjectDetail()
+
+            is ProjectDetailEvent.OnActionMenuClicked -> actionMenu = event.actionMenu
         }
     }
 

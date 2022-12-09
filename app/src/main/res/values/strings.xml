@@ -35,6 +35,8 @@
     <string name="done">Done</string>
     <string name="tasks">Tasks</string>
     <string name="no_tasks">This project doesn\'t have tasks yet.\nLet\'s add a new task</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
     
     <string name="add_project">Add Project</string>
     <string name="edit_project">Edit Project</string>

@@ -127,7 +127,8 @@ fun Navigation(
             ProjectDetailScreen(
                 onNavigateUp = {
                     navController.navigateUp()
-                }
+                },
+                onNavigateToAddEditProject = {}
             )
         }
 
