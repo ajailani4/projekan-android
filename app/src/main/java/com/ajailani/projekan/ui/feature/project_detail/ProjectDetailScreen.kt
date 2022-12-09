@@ -75,7 +75,7 @@ fun ProjectDetailScreen(
             onEvent(ProjectDetailEvent.GetProjectDetail)
         }
     )
-    
+
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
