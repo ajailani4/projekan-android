@@ -3,6 +3,7 @@ package com.ajailani.projekan.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.use_case.project.DeleteProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailEvent
@@ -32,6 +33,9 @@ class ProjectDetailViewModelTest {
     @Mock
     private lateinit var getProjectDetailUseCase: GetProjectDetailUseCase
 
+    @Mock
+    private lateinit var deleteProjectUseCase: DeleteProjectUseCase
+
     private lateinit var savedStateHandle: SavedStateHandle
 
     private lateinit var projectDetailViewModel: ProjectDetailViewModel
@@ -43,7 +47,11 @@ class ProjectDetailViewModelTest {
         savedStateHandle = SavedStateHandle().apply {
             set("projectId", "a1b2c3")
         }
-        projectDetailViewModel = ProjectDetailViewModel(savedStateHandle, getProjectDetailUseCase)
+        projectDetailViewModel = ProjectDetailViewModel(
+            savedStateHandle,
+            getProjectDetailUseCase,
+            deleteProjectUseCase
+        )
         onEvent = projectDetailViewModel::onEvent
     }
 
@@ -78,6 +86,44 @@ class ProjectDetailViewModelTest {
             onEvent(ProjectDetailEvent.GetProjectDetail)
 
             val isSuccess = when (projectDetailViewModel.projectDetailState) {
+                is UIState.Success -> true
+
+                else -> false
+            }
+
+            assertEquals("Should be fail", false, isSuccess)
+        }
+    }
+
+    @Test
+    fun `Delete project should return success`() {
+        testCoroutineRule.runTest {
+            val resource = flowOf(Resource.Success(Any()))
+
+            doReturn(resource).`when`(deleteProjectUseCase)(anyString())
+
+            onEvent(ProjectDetailEvent.DeleteProject)
+
+            val isSuccess = when (projectDetailViewModel.deleteProjectState) {
+                is UIState.Success -> true
+
+                else -> false
+            }
+
+            assertEquals("Should be success", true, isSuccess)
+        }
+    }
+
+    @Test
+    fun `Delete project should return fail`() {
+        testCoroutineRule.runTest {
+            val resource = flowOf(Resource.Error<Any>())
+
+            doReturn(resource).`when`(deleteProjectUseCase)(anyString())
+
+            onEvent(ProjectDetailEvent.DeleteProject)
+
+            val isSuccess = when (projectDetailViewModel.deleteProjectState) {
                 is UIState.Success -> true
 
                 else -> false

@@ -66,6 +66,10 @@ class ProjectRepositoryFake : ProjectRepository {
             ResourceType.Error -> flowOf(Resource.Error(null))
         }
 
+    override fun deleteProject(id: String): Flow<Resource<Any>> {
+        TODO("Not yet implemented")
+    }
+
     fun setResourceType(type: ResourceType) {
         resourceType = type
     }
