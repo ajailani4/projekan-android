@@ -88,4 +88,6 @@ class ProjectRemoteDataSource @Inject constructor(
             icon = iconPart
         )
     }
+
+    suspend fun deleteProject(id: String) = projectService.deleteProject(id)
 }
