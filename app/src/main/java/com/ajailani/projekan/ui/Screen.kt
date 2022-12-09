@@ -1,11 +1,11 @@
 package com.ajailani.projekan.ui
 
 sealed class Screen(val route: String) {
-    object WelcomeScreen : Screen("welcome_screen")
-    object LoginScreen : Screen("login_screen")
-    object RegisterScreen : Screen("register_screen")
-    object HomeScreen : Screen("home_screen")
-    object ProjectListScreen : Screen("project_list_screen")
-    object ProjectDetailScreen : Screen("project_detail_screen")
-    object AddEditProjectScreen : Screen("add_edit_project_screen")
+    object Welcome : Screen("welcome_screen")
+    object Login : Screen("login_screen")
+    object Register : Screen("register_screen")
+    object Home : Screen("home_screen")
+    object ProjectList : Screen("project_list_screen")
+    object ProjectDetail : Screen("project_detail_screen")
+    object AddEditProject : Screen("add_edit_project_screen")
 }
