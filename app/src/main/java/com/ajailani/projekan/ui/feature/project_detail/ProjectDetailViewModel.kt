@@ -1,5 +1,7 @@
 package com.ajailani.projekan.ui.feature.project_detail
 
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.use_case.project.DeleteProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
 import com.ajailani.projekan.ui.common.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,11 +21,15 @@ import javax.inject.Inject
 @HiltViewModel
 class ProjectDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getProjectDetailUseCase: GetProjectDetailUseCase
+    private val getProjectDetailUseCase: GetProjectDetailUseCase,
+    private val deleteProjectUseCase: DeleteProjectUseCase
 ) : ViewModel() {
     val projectId = savedStateHandle.get<String>("projectId")
 
     var projectDetailState by mutableStateOf<UIState<Project>>(UIState.Idle)
+        private set
+
+    var deleteProjectState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
     var pullRefreshing by mutableStateOf(false)
@@ -30,6 +37,9 @@ class ProjectDetailViewModel @Inject constructor(
 
     // 1: Project action menu, 2: Task action menu
     var actionMenu by mutableStateOf(0)
+        private set
+
+    var deleteProjectDialogVis by mutableStateOf(false)
         private set
 
     init {
@@ -40,9 +50,13 @@ class ProjectDetailViewModel @Inject constructor(
         when (event) {
             ProjectDetailEvent.GetProjectDetail -> getProjectDetail()
 
+            ProjectDetailEvent.DeleteProject -> deleteProject()
+
             is ProjectDetailEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
 
             is ProjectDetailEvent.OnActionMenuClicked -> actionMenu = event.actionMenu
+
+            is ProjectDetailEvent.OnDeleteProjectDialogVisChanged -> deleteProjectDialogVis = event.isVisible
         }
     }
 
@@ -56,6 +70,24 @@ class ProjectDetailViewModel @Inject constructor(
                 }.collect {
                     projectDetailState = when (it) {
                         is Resource.Success -> UIState.Success(it.data)
+
+                        is Resource.Error -> UIState.Fail(it.message)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun deleteProject() {
+        deleteProjectState = UIState.Loading
+
+        viewModelScope.launch {
+            projectId?.let { id ->
+                deleteProjectUseCase(id).catch {
+                    deleteProjectState = UIState.Error(it.localizedMessage)
+                }.collect {
+                    deleteProjectState = when (it) {
+                        is Resource.Success -> UIState.Success(null)
 
                         is Resource.Error -> UIState.Fail(it.message)
                     }
