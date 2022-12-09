@@ -10,6 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -55,6 +58,7 @@ fun ProjectDetailScreen(
 ) {
     val onEvent = projectDetailViewModel::onEvent
     val projectId = projectDetailViewModel.projectId
+    val pullRefreshing = projectDetailViewModel.pullRefreshing
     val actionMenu = projectDetailViewModel.actionMenu
     val projectDetailState = projectDetailViewModel.projectDetailState
 
@@ -64,6 +68,13 @@ fun ProjectDetailScreen(
     val modalBottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberScaffoldState()
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = pullRefreshing,
+        onRefresh = {
+            onEvent(ProjectDetailEvent.OnPullRefresh(true))
+            onEvent(ProjectDetailEvent.GetProjectDetail)
+        }
+    )
     
     ModalBottomSheetLayout(
         sheetState = modalBottomSheetState,
@@ -150,6 +161,7 @@ fun ProjectDetailScreen(
                     .fillMaxSize()
                     .background(color = MaterialTheme.colors.backgroundGrey)
                     .padding(innerPadding)
+                    .pullRefresh(pullRefreshState)
             ) {
                 LazyColumn {
                     when (projectDetailState) {
@@ -162,6 +174,7 @@ fun ProjectDetailScreen(
                         }
 
                         is UIState.Success -> {
+                            onEvent(ProjectDetailEvent.OnPullRefresh(false))
                             onReloadedChanged(false)
 
                             projectDetailState.data?.let { project ->
@@ -323,6 +336,13 @@ fun ProjectDetailScreen(
                         else -> {}
                     }
                 }
+
+                PullRefreshIndicator(
+                    modifier = Modifier.align(Alignment.TopCenter),
+                    refreshing = pullRefreshing,
+                    state = pullRefreshState,
+                    contentColor = MaterialTheme.colors.primary
+                )
             }
 
             // Observe reloaded state from SharedViewModel
