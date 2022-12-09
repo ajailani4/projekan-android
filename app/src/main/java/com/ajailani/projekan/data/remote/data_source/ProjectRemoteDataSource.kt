@@ -55,4 +55,37 @@ class ProjectRemoteDataSource @Inject constructor(
             icon = iconPart
         )
     }
+
+    suspend fun editProject(
+        id: String,
+        title: String,
+        description: String,
+        platform: String,
+        category: String,
+        deadline: String,
+        icon: File?
+    ): Response<BaseResponse<Any>> {
+        val titlePart = title.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val descriptionPart = description.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val platformPart = platform.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val categoryPart = category.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val deadlinePart = deadline.toRequestBody("multipart/form-data".toMediaTypeOrNull())
+        val iconPart = icon?.let {
+            MultipartBody.Part.createFormData(
+                "icon",
+                icon.name,
+                icon.asRequestBody("image/*".toMediaTypeOrNull())
+            )
+        }
+
+        return projectService.editProject(
+            id = id,
+            title = titlePart,
+            description = descriptionPart,
+            platform = platformPart,
+            category = categoryPart,
+            deadline = deadlinePart,
+            icon = iconPart
+        )
+    }
 }
