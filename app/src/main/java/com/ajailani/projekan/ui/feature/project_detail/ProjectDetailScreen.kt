@@ -61,6 +61,7 @@ fun ProjectDetailScreen(
     val deleteProjectState = projectDetailViewModel.deleteProjectState
     val pullRefreshing = projectDetailViewModel.pullRefreshing
     val moreMenu = projectDetailViewModel.moreMenu
+    val addEditTaskSheetVis = projectDetailViewModel.addEditTaskSheetVis
     val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
 
     val reloaded = sharedViewModel.reloaded
@@ -82,14 +83,26 @@ fun ProjectDetailScreen(
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetBackgroundColor = MaterialTheme.colors.background,
         sheetContent = {
-            if (moreMenu > 0) {
-                MoreMenuSheet(
-                    onEvent = onEvent,
-                    projectId = projectId,
-                    modalBottomSheetState = modalBottomSheetState,
-                    moreMenu = moreMenu,
-                    onNavigateToAddEditProject = onNavigateToAddEditProject
-                )
+            when {
+                moreMenu > 0 -> {
+                    MoreMenuSheet(
+                        onEvent = onEvent,
+                        projectId = projectId,
+                        modalBottomSheetState = modalBottomSheetState,
+                        moreMenu = moreMenu,
+                        onNavigateToAddEditProject = onNavigateToAddEditProject
+                    )
+                }
+
+                addEditTaskSheetVis -> {
+                    AddEditTaskSheet(
+                        onEvent = onEvent,
+                        projectId = projectId,
+                        modalBottomSheetState = modalBottomSheetState
+                    )
+                }
+                
+                else -> Box { Text(text = "Initial") }
             }
         }
     ) {
@@ -129,7 +142,13 @@ fun ProjectDetailScreen(
                 )
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = {}) {
+                FloatingActionButton(
+                    onClick = {
+                        onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(true))
+
+                        coroutineScope.launch { modalBottomSheetState.show() }
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add task icon"
@@ -371,6 +390,14 @@ fun ProjectDetailScreen(
                 }
 
                 else -> {}
+            }
+            
+            // Observe modalBottomSheetState current value
+            LaunchedEffect(modalBottomSheetState.currentValue) {
+                if (modalBottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
+                    onEvent(ProjectDetailEvent.OnMoreMenuClicked(0))
+                    onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(false))
+                }
             }
 
             // Observe reloaded state from SharedViewModel

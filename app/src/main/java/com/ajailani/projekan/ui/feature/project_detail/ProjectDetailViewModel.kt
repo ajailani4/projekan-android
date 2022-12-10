@@ -37,6 +37,9 @@ class ProjectDetailViewModel @Inject constructor(
     var moreMenu by mutableStateOf(0)
         private set
 
+    var addEditTaskSheetVis by mutableStateOf(false)
+        private set
+
     var deleteProjectDialogVis by mutableStateOf(false)
         private set
 
@@ -53,6 +56,8 @@ class ProjectDetailViewModel @Inject constructor(
             is ProjectDetailEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
 
             is ProjectDetailEvent.OnMoreMenuClicked -> moreMenu = event.actionMenu
+
+            is ProjectDetailEvent.OnAddEditTaskSheetVisChanged -> addEditTaskSheetVis = event.isVisible
 
             is ProjectDetailEvent.OnDeleteProjectDialogVisChanged -> deleteProjectDialogVis = event.isVisible
         }
