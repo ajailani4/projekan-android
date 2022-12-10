@@ -41,10 +41,7 @@ import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.Label
 import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
-import com.ajailani.projekan.ui.feature.project_detail.component.BottomSheetItem
-import com.ajailani.projekan.ui.feature.project_detail.component.ProjectDetailShimmer
-import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
-import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCardShimmer
+import com.ajailani.projekan.ui.feature.project_detail.component.*
 import com.ajailani.projekan.ui.theme.*
 import com.ajailani.projekan.util.Formatter
 import com.ajailani.projekan.util.ProjectStatus
@@ -85,42 +82,13 @@ fun ProjectDetailScreen(
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetBackgroundColor = MaterialTheme.colors.background,
         sheetContent = {
-            Column(modifier = Modifier.padding(vertical = 10.dp)) {
-                BottomSheetItem(
-                    icon = Icons.Default.Edit,
-                    title = stringResource(id = R.string.edit),
-                    onClick = {
-                        coroutineScope.launch {
-                            modalBottomSheetState.hide()
-                        }
-
-                        when (moreMenu) {
-                            1 -> {
-                                projectId?.let { id ->
-                                    onNavigateToAddEditProject(id)
-                                }
-                            }
-
-                            2 -> {}
-                        }
-                    }
-                )
-                BottomSheetItem(
-                    icon = Icons.Default.Delete,
-                    title = stringResource(id = R.string.delete),
-                    onClick = {
-                        coroutineScope.launch {
-                            modalBottomSheetState.hide()
-                        }
-
-                        when (moreMenu) {
-                            1 -> {
-                                onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(true))
-                            }
-
-                            2 -> {}
-                        }
-                    }
+            if (moreMenu > 0) {
+                MoreMenuSheet(
+                    onEvent = onEvent,
+                    projectId = projectId,
+                    modalBottomSheetState = modalBottomSheetState,
+                    moreMenu = moreMenu,
+                    onNavigateToAddEditProject = onNavigateToAddEditProject
                 )
             }
         }
