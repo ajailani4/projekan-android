@@ -41,10 +41,10 @@ fun TaskItemCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = taskItem.title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
+                modifier = Modifier.weight(1f),
+                text = taskItem.title
             )
+            Spacer(modifier = Modifier.width(10.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {

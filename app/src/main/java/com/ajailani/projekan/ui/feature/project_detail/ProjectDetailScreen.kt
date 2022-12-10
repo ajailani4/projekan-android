@@ -41,10 +41,7 @@ import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.Label
 import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
-import com.ajailani.projekan.ui.feature.project_detail.component.BottomSheetItem
-import com.ajailani.projekan.ui.feature.project_detail.component.ProjectDetailShimmer
-import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
-import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCardShimmer
+import com.ajailani.projekan.ui.feature.project_detail.component.*
 import com.ajailani.projekan.ui.theme.*
 import com.ajailani.projekan.util.Formatter
 import com.ajailani.projekan.util.ProjectStatus
@@ -62,8 +59,11 @@ fun ProjectDetailScreen(
     val projectId = projectDetailViewModel.projectId
     val projectDetailState = projectDetailViewModel.projectDetailState
     val deleteProjectState = projectDetailViewModel.deleteProjectState
+    val addTaskState = projectDetailViewModel.addTaskState
+    val taskTitle = projectDetailViewModel.taskTitle
     val pullRefreshing = projectDetailViewModel.pullRefreshing
-    val actionMenu = projectDetailViewModel.actionMenu
+    val moreMenu = projectDetailViewModel.moreMenu
+    val addEditTaskSheetVis = projectDetailViewModel.addEditTaskSheetVis
     val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
 
     val reloaded = sharedViewModel.reloaded
@@ -85,43 +85,26 @@ fun ProjectDetailScreen(
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetBackgroundColor = MaterialTheme.colors.background,
         sheetContent = {
-            Column(modifier = Modifier.padding(vertical = 10.dp)) {
-                BottomSheetItem(
-                    icon = Icons.Default.Edit,
-                    title = stringResource(id = R.string.edit),
-                    onClick = {
-                        coroutineScope.launch {
-                            modalBottomSheetState.hide()
-                        }
+            when {
+                moreMenu > 0 -> {
+                    MoreMenuSheet(
+                        onEvent = onEvent,
+                        projectId = projectId,
+                        modalBottomSheetState = modalBottomSheetState,
+                        moreMenu = moreMenu,
+                        onNavigateToAddEditProject = onNavigateToAddEditProject
+                    )
+                }
 
-                        when (actionMenu) {
-                            1 -> {
-                                projectId?.let { id ->
-                                    onNavigateToAddEditProject(id)
-                                }
-                            }
-
-                            2 -> {}
-                        }
-                    }
-                )
-                BottomSheetItem(
-                    icon = Icons.Default.Delete,
-                    title = stringResource(id = R.string.delete),
-                    onClick = {
-                        coroutineScope.launch {
-                            modalBottomSheetState.hide()
-                        }
-
-                        when (actionMenu) {
-                            1 -> {
-                                onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(true))
-                            }
-
-                            2 -> {}
-                        }
-                    }
-                )
+                addEditTaskSheetVis -> {
+                    AddEditTaskSheet(
+                        onEvent = onEvent,
+                        title = taskTitle,
+                        modalBottomSheetState = modalBottomSheetState
+                    )
+                }
+                
+                else -> Box { Text(text = "Initial") }
             }
         }
     ) {
@@ -147,7 +130,7 @@ fun ProjectDetailScreen(
                     actions = {
                         IconButton(
                             onClick = {
-                                onEvent(ProjectDetailEvent.OnActionMenuClicked(1))
+                                onEvent(ProjectDetailEvent.OnMoreMenuClicked(1))
 
                                 coroutineScope.launch { modalBottomSheetState.show() }
                             }
@@ -161,7 +144,13 @@ fun ProjectDetailScreen(
                 )
             },
             floatingActionButton = {
-                FloatingActionButton(onClick = {}) {
+                FloatingActionButton(
+                    onClick = {
+                        onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(true))
+
+                        coroutineScope.launch { modalBottomSheetState.show() }
+                    }
+                ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add task icon"
@@ -223,7 +212,7 @@ fun ProjectDetailScreen(
                                                     style = MaterialTheme.typography.h3
                                                 )
                                             }
-                                            Spacer(modifier = Modifier.width(5.dp))
+                                            Spacer(modifier = Modifier.width(10.dp))
                                             Label(
                                                 text = stringResource(
                                                     id = when (project.status) {
@@ -358,6 +347,15 @@ fun ProjectDetailScreen(
                 )
             }
 
+            // Observe modalBottomSheetState current value
+            LaunchedEffect(modalBottomSheetState.currentValue) {
+                if (modalBottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
+                    onEvent(ProjectDetailEvent.OnMoreMenuClicked(0))
+                    onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(false))
+                    onEvent(ProjectDetailEvent.OnTaskTitleChanged(""))
+                }
+            }
+
             // Delete project confirmation dialog
             if (deleteProjectDialogVis) {
                 CustomAlertDialog(
@@ -371,6 +369,11 @@ fun ProjectDetailScreen(
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
                     }
                 )
+            }
+
+            // Observe reloaded state from SharedViewModel
+            if (reloaded) {
+                onEvent(ProjectDetailEvent.GetProjectDetail)
             }
 
             // Observe delete project state
@@ -405,9 +408,35 @@ fun ProjectDetailScreen(
                 else -> {}
             }
 
-            // Observe reloaded state from SharedViewModel
-            if (reloaded) {
-                onEvent(ProjectDetailEvent.GetProjectDetail)
+            // Observe add task state
+            when (addTaskState) {
+                UIState.Loading -> {
+                    ProgressBarWithBackground()
+                }
+
+                is UIState.Success -> {
+                    LaunchedEffect(Unit) {
+                        onEvent(ProjectDetailEvent.GetProjectDetail)
+                    }
+                }
+
+                is UIState.Fail -> {
+                    LaunchedEffect(scaffoldState) {
+                        addTaskState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                is UIState.Error -> {
+                    LaunchedEffect(scaffoldState) {
+                        addTaskState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                else -> {}
             }
         }
     }
@@ -435,9 +464,13 @@ private fun LazyListScope.tasksSection(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 taskItem = taskItem,
                 onChecked = {},
-                onMoreClicked = { onEvent(ProjectDetailEvent.OnActionMenuClicked(2)) }
+                onMoreClicked = { onEvent(ProjectDetailEvent.OnMoreMenuClicked(2)) }
             )
             Spacer(modifier = Modifier.height(15.dp))
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(45.dp))
         }
     } else {
         item {

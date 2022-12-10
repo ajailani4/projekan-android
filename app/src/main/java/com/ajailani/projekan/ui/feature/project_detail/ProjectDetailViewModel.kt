@@ -1,7 +1,5 @@
 package com.ajailani.projekan.ui.feature.project_detail
 
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -12,9 +10,11 @@ import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.use_case.project.DeleteProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
+import com.ajailani.projekan.domain.use_case.task.AddTaskUseCase
 import com.ajailani.projekan.ui.common.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,7 +22,8 @@ import javax.inject.Inject
 class ProjectDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getProjectDetailUseCase: GetProjectDetailUseCase,
-    private val deleteProjectUseCase: DeleteProjectUseCase
+    private val deleteProjectUseCase: DeleteProjectUseCase,
+    private val addTaskUseCase: AddTaskUseCase
 ) : ViewModel() {
     val projectId = savedStateHandle.get<String>("projectId")
 
@@ -32,11 +33,20 @@ class ProjectDetailViewModel @Inject constructor(
     var deleteProjectState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
         private set
 
+    var addTaskState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
+        private set
+
+    var taskTitle by mutableStateOf("")
+        private set
+
     var pullRefreshing by mutableStateOf(false)
         private set
 
-    // 1: Project action menu, 2: Task action menu
-    var actionMenu by mutableStateOf(0)
+    // 1: Project more menu, 2: Task more menu
+    var moreMenu by mutableStateOf(0)
+        private set
+
+    var addEditTaskSheetVis by mutableStateOf(false)
         private set
 
     var deleteProjectDialogVis by mutableStateOf(false)
@@ -52,9 +62,15 @@ class ProjectDetailViewModel @Inject constructor(
 
             ProjectDetailEvent.DeleteProject -> deleteProject()
 
+            ProjectDetailEvent.AddTask -> addTask()
+
+            is ProjectDetailEvent.OnTaskTitleChanged -> taskTitle = event.taskTitle
+
             is ProjectDetailEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
 
-            is ProjectDetailEvent.OnActionMenuClicked -> actionMenu = event.actionMenu
+            is ProjectDetailEvent.OnMoreMenuClicked -> moreMenu = event.actionMenu
+
+            is ProjectDetailEvent.OnAddEditTaskSheetVisChanged -> addEditTaskSheetVis = event.isVisible
 
             is ProjectDetailEvent.OnDeleteProjectDialogVisChanged -> deleteProjectDialogVis = event.isVisible
         }
@@ -87,6 +103,27 @@ class ProjectDetailViewModel @Inject constructor(
                     deleteProjectState = UIState.Error(it.localizedMessage)
                 }.collect {
                     deleteProjectState = when (it) {
+                        is Resource.Success -> UIState.Success(null)
+
+                        is Resource.Error -> UIState.Fail(it.message)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addTask() {
+        addTaskState = UIState.Loading
+
+        viewModelScope.launch {
+            projectId?.let { id ->
+                addTaskUseCase(
+                    projectId = id,
+                    title = taskTitle
+                ).catch {
+                    addTaskState = UIState.Error(it.localizedMessage)
+                }.collect {
+                    addTaskState = when (it) {
                         is Resource.Success -> UIState.Success(null)
 
                         is Resource.Error -> UIState.Fail(it.message)
