@@ -468,6 +468,10 @@ private fun LazyListScope.tasksSection(
             )
             Spacer(modifier = Modifier.height(15.dp))
         }
+
+        item {
+            Spacer(modifier = Modifier.height(45.dp))
+        }
     } else {
         item {
             CaptionImage(
