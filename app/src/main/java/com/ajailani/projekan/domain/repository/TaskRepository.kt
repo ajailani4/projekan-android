@@ -4,8 +4,5 @@ import com.ajailani.projekan.data.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface TaskRepository {
-    fun addTask(
-        projectId: String,
-        title: String
-    ): Flow<Resource<Any>>
+    fun addTask(projectId: String, title: String): Flow<Resource<Any>>
 }
