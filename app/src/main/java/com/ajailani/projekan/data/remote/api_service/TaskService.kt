@@ -8,5 +8,5 @@ import retrofit2.http.POST
 
 interface TaskService {
     @POST("tasks")
-    fun addTask(@Body taskRequest: TaskRequest): Response<BaseResponse<Any>>
+    suspend fun addTask(@Body taskRequest: TaskRequest): Response<BaseResponse<Any>>
 }

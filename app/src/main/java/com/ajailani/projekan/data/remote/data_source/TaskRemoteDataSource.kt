@@ -7,5 +7,5 @@ import javax.inject.Inject
 class TaskRemoteDataSource @Inject constructor(
     private val taskService: TaskService
 ) {
-    fun addTask(taskRequest: TaskRequest) = taskService.addTask(taskRequest)
+    suspend fun addTask(taskRequest: TaskRequest) = taskService.addTask(taskRequest)
 }

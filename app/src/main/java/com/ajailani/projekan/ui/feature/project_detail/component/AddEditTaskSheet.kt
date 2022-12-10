@@ -14,12 +14,13 @@ import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailEvent
 import com.ajailani.projekan.ui.theme.extraLarge
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun AddEditTaskSheet(
     onEvent: (ProjectDetailEvent) -> Unit,
-    projectId: String?,
+    title: String,
     modalBottomSheetState: ModalBottomSheetState
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -32,15 +33,29 @@ fun AddEditTaskSheet(
         )
         TextField(
             modifier = Modifier.fillMaxWidth(),
-            value = "",
-            onValueChange = {},
+            value = title,
+            onValueChange = { onEvent(ProjectDetailEvent.OnTaskTitleChanged(it)) },
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent)
         )
         Spacer(modifier = Modifier.height(30.dp))
         Button(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.extraLarge,
-            onClick = { /*TODO*/ }
+            onClick = {
+                if (title.isNotEmpty()) {
+                    coroutineScope.launch {
+                        modalBottomSheetState.hide()
+                    }
+
+                    onEvent(ProjectDetailEvent.AddTask)
+                } else {
+                    /*coroutineScope.launch {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            context.getString(R.string.fill_the_form)
+                        )
+                    }*/
+                }
+            }
         ) {
             Text(
                 modifier = Modifier.padding(5.dp),

@@ -10,9 +10,11 @@ import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.use_case.project.DeleteProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
+import com.ajailani.projekan.domain.use_case.task.AddTaskUseCase
 import com.ajailani.projekan.ui.common.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +22,8 @@ import javax.inject.Inject
 class ProjectDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getProjectDetailUseCase: GetProjectDetailUseCase,
-    private val deleteProjectUseCase: DeleteProjectUseCase
+    private val deleteProjectUseCase: DeleteProjectUseCase,
+    private val addTaskUseCase: AddTaskUseCase
 ) : ViewModel() {
     val projectId = savedStateHandle.get<String>("projectId")
 
@@ -28,6 +31,12 @@ class ProjectDetailViewModel @Inject constructor(
         private set
 
     var deleteProjectState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
+        private set
+
+    var addTaskState by mutableStateOf<UIState<Nothing>>(UIState.Idle)
+        private set
+
+    var taskTitle by mutableStateOf("")
         private set
 
     var pullRefreshing by mutableStateOf(false)
@@ -52,6 +61,10 @@ class ProjectDetailViewModel @Inject constructor(
             ProjectDetailEvent.GetProjectDetail -> getProjectDetail()
 
             ProjectDetailEvent.DeleteProject -> deleteProject()
+
+            ProjectDetailEvent.AddTask -> addTask()
+
+            is ProjectDetailEvent.OnTaskTitleChanged -> taskTitle = event.taskTitle
 
             is ProjectDetailEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
 
@@ -90,6 +103,27 @@ class ProjectDetailViewModel @Inject constructor(
                     deleteProjectState = UIState.Error(it.localizedMessage)
                 }.collect {
                     deleteProjectState = when (it) {
+                        is Resource.Success -> UIState.Success(null)
+
+                        is Resource.Error -> UIState.Fail(it.message)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addTask() {
+        addTaskState = UIState.Loading
+
+        viewModelScope.launch {
+            projectId?.let { id ->
+                addTaskUseCase(
+                    projectId = id,
+                    title = taskTitle
+                ).catch {
+                    addTaskState = UIState.Error(it.localizedMessage)
+                }.collect {
+                    addTaskState = when (it) {
                         is Resource.Success -> UIState.Success(null)
 
                         is Resource.Error -> UIState.Fail(it.message)

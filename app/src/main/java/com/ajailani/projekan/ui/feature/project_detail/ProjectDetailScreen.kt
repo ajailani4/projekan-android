@@ -59,6 +59,8 @@ fun ProjectDetailScreen(
     val projectId = projectDetailViewModel.projectId
     val projectDetailState = projectDetailViewModel.projectDetailState
     val deleteProjectState = projectDetailViewModel.deleteProjectState
+    val addTaskState = projectDetailViewModel.addTaskState
+    val taskTitle = projectDetailViewModel.taskTitle
     val pullRefreshing = projectDetailViewModel.pullRefreshing
     val moreMenu = projectDetailViewModel.moreMenu
     val addEditTaskSheetVis = projectDetailViewModel.addEditTaskSheetVis
@@ -97,7 +99,7 @@ fun ProjectDetailScreen(
                 addEditTaskSheetVis -> {
                     AddEditTaskSheet(
                         onEvent = onEvent,
-                        projectId = projectId,
+                        title = taskTitle,
                         modalBottomSheetState = modalBottomSheetState
                     )
                 }
@@ -345,6 +347,15 @@ fun ProjectDetailScreen(
                 )
             }
 
+            // Observe modalBottomSheetState current value
+            LaunchedEffect(modalBottomSheetState.currentValue) {
+                if (modalBottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
+                    onEvent(ProjectDetailEvent.OnMoreMenuClicked(0))
+                    onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(false))
+                    onEvent(ProjectDetailEvent.OnTaskTitleChanged(""))
+                }
+            }
+
             // Delete project confirmation dialog
             if (deleteProjectDialogVis) {
                 CustomAlertDialog(
@@ -358,6 +369,11 @@ fun ProjectDetailScreen(
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
                     }
                 )
+            }
+
+            // Observe reloaded state from SharedViewModel
+            if (reloaded) {
+                onEvent(ProjectDetailEvent.GetProjectDetail)
             }
 
             // Observe delete project state
@@ -391,18 +407,36 @@ fun ProjectDetailScreen(
 
                 else -> {}
             }
-            
-            // Observe modalBottomSheetState current value
-            LaunchedEffect(modalBottomSheetState.currentValue) {
-                if (modalBottomSheetState.currentValue == ModalBottomSheetValue.Hidden) {
-                    onEvent(ProjectDetailEvent.OnMoreMenuClicked(0))
-                    onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(false))
-                }
-            }
 
-            // Observe reloaded state from SharedViewModel
-            if (reloaded) {
-                onEvent(ProjectDetailEvent.GetProjectDetail)
+            // Observe add task state
+            when (addTaskState) {
+                UIState.Loading -> {
+                    ProgressBarWithBackground()
+                }
+
+                is UIState.Success -> {
+                    LaunchedEffect(Unit) {
+                        onEvent(ProjectDetailEvent.GetProjectDetail)
+                    }
+                }
+
+                is UIState.Fail -> {
+                    LaunchedEffect(scaffoldState) {
+                        addTaskState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                is UIState.Error -> {
+                    LaunchedEffect(scaffoldState) {
+                        addTaskState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                else -> {}
             }
         }
     }
