@@ -212,7 +212,7 @@ fun ProjectDetailScreen(
                                                     style = MaterialTheme.typography.h3
                                                 )
                                             }
-                                            Spacer(modifier = Modifier.width(5.dp))
+                                            Spacer(modifier = Modifier.width(10.dp))
                                             Label(
                                                 text = stringResource(
                                                     id = when (project.status) {
