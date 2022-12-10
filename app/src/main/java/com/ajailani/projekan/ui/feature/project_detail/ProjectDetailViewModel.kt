@@ -1,7 +1,5 @@
 package com.ajailani.projekan.ui.feature.project_detail
 
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -35,8 +33,8 @@ class ProjectDetailViewModel @Inject constructor(
     var pullRefreshing by mutableStateOf(false)
         private set
 
-    // 1: Project action menu, 2: Task action menu
-    var actionMenu by mutableStateOf(0)
+    // 1: Project more menu, 2: Task more menu
+    var moreMenu by mutableStateOf(0)
         private set
 
     var deleteProjectDialogVis by mutableStateOf(false)
@@ -54,7 +52,7 @@ class ProjectDetailViewModel @Inject constructor(
 
             is ProjectDetailEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
 
-            is ProjectDetailEvent.OnActionMenuClicked -> actionMenu = event.actionMenu
+            is ProjectDetailEvent.OnMoreMenuClicked -> moreMenu = event.actionMenu
 
             is ProjectDetailEvent.OnDeleteProjectDialogVisChanged -> deleteProjectDialogVis = event.isVisible
         }

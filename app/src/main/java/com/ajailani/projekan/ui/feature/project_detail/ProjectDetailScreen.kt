@@ -63,7 +63,7 @@ fun ProjectDetailScreen(
     val projectDetailState = projectDetailViewModel.projectDetailState
     val deleteProjectState = projectDetailViewModel.deleteProjectState
     val pullRefreshing = projectDetailViewModel.pullRefreshing
-    val actionMenu = projectDetailViewModel.actionMenu
+    val moreMenu = projectDetailViewModel.moreMenu
     val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
 
     val reloaded = sharedViewModel.reloaded
@@ -94,7 +94,7 @@ fun ProjectDetailScreen(
                             modalBottomSheetState.hide()
                         }
 
-                        when (actionMenu) {
+                        when (moreMenu) {
                             1 -> {
                                 projectId?.let { id ->
                                     onNavigateToAddEditProject(id)
@@ -113,7 +113,7 @@ fun ProjectDetailScreen(
                             modalBottomSheetState.hide()
                         }
 
-                        when (actionMenu) {
+                        when (moreMenu) {
                             1 -> {
                                 onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(true))
                             }
@@ -147,7 +147,7 @@ fun ProjectDetailScreen(
                     actions = {
                         IconButton(
                             onClick = {
-                                onEvent(ProjectDetailEvent.OnActionMenuClicked(1))
+                                onEvent(ProjectDetailEvent.OnMoreMenuClicked(1))
 
                                 coroutineScope.launch { modalBottomSheetState.show() }
                             }
@@ -435,7 +435,7 @@ private fun LazyListScope.tasksSection(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 taskItem = taskItem,
                 onChecked = {},
-                onMoreClicked = { onEvent(ProjectDetailEvent.OnActionMenuClicked(2)) }
+                onMoreClicked = { onEvent(ProjectDetailEvent.OnMoreMenuClicked(2)) }
             )
             Spacer(modifier = Modifier.height(15.dp))
         }
