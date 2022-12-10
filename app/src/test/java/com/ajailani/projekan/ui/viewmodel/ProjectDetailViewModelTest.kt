@@ -5,6 +5,7 @@ import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.use_case.project.DeleteProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
+import com.ajailani.projekan.domain.use_case.task.AddTaskUseCase
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailEvent
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailViewModel
@@ -36,6 +37,9 @@ class ProjectDetailViewModelTest {
     @Mock
     private lateinit var deleteProjectUseCase: DeleteProjectUseCase
 
+    @Mock
+    private lateinit var addTaskUseCase: AddTaskUseCase
+
     private lateinit var savedStateHandle: SavedStateHandle
 
     private lateinit var projectDetailViewModel: ProjectDetailViewModel
@@ -50,7 +54,8 @@ class ProjectDetailViewModelTest {
         projectDetailViewModel = ProjectDetailViewModel(
             savedStateHandle,
             getProjectDetailUseCase,
-            deleteProjectUseCase
+            deleteProjectUseCase,
+            addTaskUseCase
         )
         onEvent = projectDetailViewModel::onEvent
     }
@@ -124,6 +129,50 @@ class ProjectDetailViewModelTest {
             onEvent(ProjectDetailEvent.DeleteProject)
 
             val isSuccess = when (projectDetailViewModel.deleteProjectState) {
+                is UIState.Success -> true
+
+                else -> false
+            }
+
+            assertEquals("Should be fail", false, isSuccess)
+        }
+    }
+
+    @Test
+    fun `Add task should return success`() {
+        testCoroutineRule.runTest {
+            val resource = flowOf(Resource.Success(Any()))
+
+            doReturn(resource).`when`(addTaskUseCase)(
+                projectId = anyString(),
+                title = anyString()
+            )
+
+            onEvent(ProjectDetailEvent.AddTask)
+
+            val isSuccess = when (projectDetailViewModel.addTaskState) {
+                is UIState.Success -> true
+
+                else -> false
+            }
+
+            assertEquals("Should be success", true, isSuccess)
+        }
+    }
+
+    @Test
+    fun `Add task should return fail`() {
+        testCoroutineRule.runTest {
+            val resource = flowOf(Resource.Error<Any>())
+
+            doReturn(resource).`when`(addTaskUseCase)(
+                projectId = anyString(),
+                title = anyString()
+            )
+
+            onEvent(ProjectDetailEvent.AddTask)
+
+            val isSuccess = when (projectDetailViewModel.addTaskState) {
                 is UIState.Success -> true
 
                 else -> false
