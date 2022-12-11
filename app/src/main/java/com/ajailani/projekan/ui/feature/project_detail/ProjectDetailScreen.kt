@@ -472,8 +472,8 @@ private fun LazyListScope.tasksSection(
                 onChecked = {
                     onEvent(
                         ProjectDetailEvent.OnTaskChecked(
-                            i,
-                            taskItem.copy(
+                            index = i,
+                            task = taskItem.copy(
                                 status = if (taskItem.status == TaskStatus.UNDONE) {
                                     TaskStatus.DONE
                                 } else {
