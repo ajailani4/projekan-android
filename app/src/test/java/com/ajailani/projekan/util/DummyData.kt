@@ -79,6 +79,13 @@ val tasksDto = listOf(
     )
 )
 
+val task = TaskItem(
+    id = "1",
+    projectId = "a1b2c3",
+    title = "Task 1",
+    status = TaskStatus.DONE
+)
+
 val tasks = listOf(
     TaskItem(
         id = "1",
