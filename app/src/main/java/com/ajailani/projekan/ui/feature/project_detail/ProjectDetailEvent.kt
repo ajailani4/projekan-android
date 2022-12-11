@@ -1,9 +1,12 @@
 package com.ajailani.projekan.ui.feature.project_detail
 
+import com.ajailani.projekan.domain.model.TaskItem
+
 sealed class ProjectDetailEvent {
     object GetProjectDetail : ProjectDetailEvent()
     object DeleteProject : ProjectDetailEvent()
     object AddTask : ProjectDetailEvent()
+    data class OnTaskChecked(val index: Int, val task: TaskItem) : ProjectDetailEvent()
     data class OnTaskTitleChanged(val taskTitle: String) : ProjectDetailEvent()
     data class OnPullRefresh(val isRefreshing: Boolean) : ProjectDetailEvent()
     data class OnMoreMenuClicked(val actionMenu: Int) : ProjectDetailEvent()

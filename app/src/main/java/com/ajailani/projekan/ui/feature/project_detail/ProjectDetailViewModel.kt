@@ -1,18 +1,20 @@
 package com.ajailani.projekan.ui.feature.project_detail
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.model.Project
+import com.ajailani.projekan.domain.model.TaskItem
 import com.ajailani.projekan.domain.use_case.project.DeleteProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
 import com.ajailani.projekan.domain.use_case.task.AddTaskUseCase
 import com.ajailani.projekan.ui.common.UIState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -52,8 +54,11 @@ class ProjectDetailViewModel @Inject constructor(
     var deleteProjectDialogVis by mutableStateOf(false)
         private set
 
+    var tasks = mutableStateListOf<TaskItem>()
+        private set
+
     init {
-        onEvent(ProjectDetailEvent.GetProjectDetail)
+        getProjectDetail()
     }
 
     fun onEvent(event: ProjectDetailEvent) {
@@ -65,6 +70,8 @@ class ProjectDetailViewModel @Inject constructor(
             ProjectDetailEvent.AddTask -> addTask()
 
             is ProjectDetailEvent.OnTaskTitleChanged -> taskTitle = event.taskTitle
+
+            is ProjectDetailEvent.OnTaskChecked -> tasks[event.index] = event.task
 
             is ProjectDetailEvent.OnPullRefresh -> pullRefreshing = event.isRefreshing
 
@@ -85,9 +92,21 @@ class ProjectDetailViewModel @Inject constructor(
                     projectDetailState = UIState.Error(it.localizedMessage)
                 }.collect {
                     projectDetailState = when (it) {
-                        is Resource.Success -> UIState.Success(it.data)
+                        is Resource.Success -> {
+                            val project = it.data
 
-                        is Resource.Error -> UIState.Fail(it.message)
+                            // Set up tasks
+                            tasks.clear()
+                            project?.tasks?.let { taskItems ->
+                                tasks.addAll(taskItems)
+                            }
+
+                            UIState.Success(project)
+                        }
+
+                        is Resource.Error -> {
+                            UIState.Fail(it.message)
+                        }
                     }
                 }
             }

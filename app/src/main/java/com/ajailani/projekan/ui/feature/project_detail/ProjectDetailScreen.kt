@@ -5,7 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -45,6 +45,7 @@ import com.ajailani.projekan.ui.feature.project_detail.component.*
 import com.ajailani.projekan.ui.theme.*
 import com.ajailani.projekan.util.Formatter
 import com.ajailani.projekan.util.ProjectStatus
+import com.ajailani.projekan.util.TaskStatus
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -65,6 +66,7 @@ fun ProjectDetailScreen(
     val moreMenu = projectDetailViewModel.moreMenu
     val addEditTaskSheetVis = projectDetailViewModel.addEditTaskSheetVis
     val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
+    val tasks = projectDetailViewModel.tasks
 
     val reloaded = sharedViewModel.reloaded
     val onReloadedChanged = sharedViewModel::onReloadedChanged
@@ -103,7 +105,7 @@ fun ProjectDetailScreen(
                         modalBottomSheetState = modalBottomSheetState
                     )
                 }
-                
+
                 else -> Box { Text(text = "Initial") }
             }
         }
@@ -306,16 +308,17 @@ fun ProjectDetailScreen(
                                     Spacer(modifier = Modifier.height(25.dp))
                                 }
 
-                                project.tasks?.let {
-                                    tasksSection(
-                                        onEvent = onEvent,
-                                        tasks = it
-                                    )
-                                }
+                                tasksSection(
+                                    onEvent = onEvent,
+                                    tasks = tasks
+                                )
                             }
                         }
 
                         is UIState.Fail -> {
+                            onEvent(ProjectDetailEvent.OnPullRefresh(false))
+                            onReloadedChanged(false)
+
                             item {
                                 LaunchedEffect(scaffoldState) {
                                     projectDetailState.message?.let {
@@ -326,6 +329,9 @@ fun ProjectDetailScreen(
                         }
 
                         is UIState.Error -> {
+                            onEvent(ProjectDetailEvent.OnPullRefresh(false))
+                            onReloadedChanged(false)
+
                             item {
                                 LaunchedEffect(scaffoldState) {
                                     projectDetailState.message?.let {
@@ -459,11 +465,24 @@ private fun LazyListScope.tasksSection(
     }
 
     if (tasks.isNotEmpty()) {
-        items(tasks) { taskItem ->
+        itemsIndexed(tasks) { i, taskItem ->
             TaskItemCard(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 taskItem = taskItem,
-                onChecked = {},
+                onChecked = {
+                    onEvent(
+                        ProjectDetailEvent.OnTaskChecked(
+                            i,
+                            taskItem.copy(
+                                status = if (taskItem.status == TaskStatus.UNDONE) {
+                                    TaskStatus.DONE
+                                } else {
+                                    TaskStatus.UNDONE
+                                }
+                            )
+                        )
+                    )
+                },
                 onMoreClicked = { onEvent(ProjectDetailEvent.OnMoreMenuClicked(2)) }
             )
             Spacer(modifier = Modifier.height(15.dp))

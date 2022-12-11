@@ -25,7 +25,7 @@ import com.valentinilk.shimmer.shimmer
 fun TaskItemCard(
     modifier: Modifier = Modifier,
     taskItem: TaskItem,
-    onChecked: (Boolean) -> Unit,
+    onChecked: () -> Unit,
     onMoreClicked: () -> Unit
 ) {
     Card(
@@ -48,10 +48,9 @@ fun TaskItemCard(
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconToggleButton(
+                IconButton(
                     modifier = Modifier.size(24.dp),
-                    checked = taskItem.status == TaskStatus.DONE,
-                    onCheckedChange = onChecked
+                    onClick = onChecked
                 ) {
                     Icon(
                         imageVector = if (taskItem.status == TaskStatus.DONE) {
