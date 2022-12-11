@@ -8,4 +8,12 @@ class TaskRemoteDataSource @Inject constructor(
     private val taskService: TaskService
 ) {
     suspend fun addTask(taskRequest: TaskRequest) = taskService.addTask(taskRequest)
+
+    suspend fun editTask(
+        id: String,
+        taskRequest: TaskRequest
+    ) = taskService.editTask(
+        id = id,
+        taskRequest = taskRequest
+    )
 }

@@ -6,6 +6,7 @@ import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.data.remote.data_source.TaskRemoteDataSource
 import com.ajailani.projekan.data.remote.dto.request.TaskRequest
 import com.ajailani.projekan.domain.repository.TaskRepository
+import com.ajailani.projekan.util.TaskStatus
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,6 +27,27 @@ class TaskRepositoryImpl @Inject constructor(
 
             when (response.code()) {
                 201 -> emit(Resource.Success(response.body()?.data))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
+
+    override fun editTask(
+        id: String,
+        title: String,
+        status: TaskStatus
+    ) =
+        flow {
+            val response = taskRemoteDataSource.editTask(
+                id = id,
+                taskRequest = TaskRequest(
+                    title = title,
+                    status = status
+                )
+            )
+
+            when (response.code()) {
+                200 -> emit(Resource.Success(response.body()?.data))
 
                 else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
             }
