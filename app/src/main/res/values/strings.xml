@@ -52,4 +52,5 @@
     <string name="save">Save</string>
     <string name="photo_size_is_too_large">Photo size is too large</string>
     <string name="add_task">Add Task</string>
+    <string name="edit_task">Edit Task</string>
 </resources>

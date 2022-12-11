@@ -13,29 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.R
+import com.ajailani.projekan.domain.model.TaskItem
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailEvent
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MoreMenuSheet(
     onEvent: (ProjectDetailEvent) -> Unit,
     projectId: String?,
-    modalBottomSheetState: ModalBottomSheetState,
     moreMenu: Int,
     onNavigateToAddEditProject: (String) -> Unit
 ) {
-    val coroutineScope = rememberCoroutineScope()
-
     Column(modifier = Modifier.padding(vertical = 10.dp)) {
         BottomSheetItem(
             icon = Icons.Default.Edit,
             title = stringResource(id = R.string.edit),
             onClick = {
-                coroutineScope.launch {
-                    modalBottomSheetState.hide()
-                }
-
                 when (moreMenu) {
                     1 -> {
                         projectId?.let { id ->
@@ -43,7 +36,10 @@ fun MoreMenuSheet(
                         }
                     }
 
-                    2 -> {}
+                    2 -> {
+                        onEvent(ProjectDetailEvent.OnMoreMenuClicked(0))
+                        onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(true))
+                    }
                 }
             }
         )
@@ -51,10 +47,6 @@ fun MoreMenuSheet(
             icon = Icons.Default.Delete,
             title = stringResource(id = R.string.delete),
             onClick = {
-                coroutineScope.launch {
-                    modalBottomSheetState.hide()
-                }
-
                 when (moreMenu) {
                     1 -> {
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(true))

@@ -6,14 +6,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.R
+import com.ajailani.projekan.domain.model.TaskItem
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailEvent
 import com.ajailani.projekan.ui.theme.extraLarge
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -21,13 +24,15 @@ import kotlinx.coroutines.launch
 fun AddEditTaskSheet(
     onEvent: (ProjectDetailEvent) -> Unit,
     title: String,
-    modalBottomSheetState: ModalBottomSheetState
+    selectedTask: TaskItem?,
+    modalBottomSheetState: ModalBottomSheetState,
+    coroutineScope: CoroutineScope
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    
     Column(modifier = Modifier.padding(20.dp)) {
         Text(
-            text = stringResource(id = R.string.add_task),
+            text = stringResource(
+                id = if (selectedTask == null) R.string.add_task else R.string.edit_task
+            ),
             fontWeight = FontWeight.SemiBold,
             style = MaterialTheme.typography.subtitle1
         )
@@ -47,13 +52,11 @@ fun AddEditTaskSheet(
                         modalBottomSheetState.hide()
                     }
 
-                    onEvent(ProjectDetailEvent.AddTask)
-                } else {
-                    /*coroutineScope.launch {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            context.getString(R.string.fill_the_form)
-                        )
-                    }*/
+                    if (selectedTask == null) {
+                        onEvent(ProjectDetailEvent.AddTask)
+                    } else {
+                        onEvent(ProjectDetailEvent.EditTask)
+                    }
                 }
             }
         ) {
