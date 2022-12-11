@@ -6,6 +6,7 @@ import com.ajailani.projekan.data.remote.dto.response.BaseResponse
 import com.ajailani.projekan.data.repository.TaskRepositoryImpl
 import com.ajailani.projekan.domain.repository.TaskRepository
 import com.ajailani.projekan.util.ResourceType
+import com.ajailani.projekan.util.TaskStatus
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -16,6 +17,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
@@ -94,6 +96,74 @@ class TaskRepositoryTest {
 
             assertEquals(
                 "Resource should be fail",
+                false,
+                isSuccess
+            )
+        }
+
+    @Test
+    fun `Edit task should return success`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.success(
+                200,
+                BaseResponse(
+                    code = 200,
+                    status = "OK",
+                    data = null
+                )
+            )
+
+            doReturn(response).`when`(taskRemoteDataSource).editTask(
+                id = ArgumentMatchers.anyString(),
+                taskRequest = any()
+            )
+
+            val actualResource = taskRepository.editTask(
+                id = "a1b2c3",
+                title = "Task 1",
+                status = TaskStatus.UNDONE
+            ).first()
+
+            val isSuccess = when (actualResource) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be success",
+                true,
+                isSuccess
+            )
+        }
+
+    @Test
+    fun `Edit task should return fail`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.error<Any>(
+                400,
+                "".toResponseBody()
+            )
+
+            doReturn(response).`when`(taskRemoteDataSource).editTask(
+                id = ArgumentMatchers.anyString(),
+                taskRequest = any()
+            )
+
+            val actualResource = taskRepository.editTask(
+                id = "a1b2c3",
+                title = "Task 1",
+                status = TaskStatus.UNDONE
+            ).first()
+
+            val isSuccess = when (actualResource) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be error",
                 false,
                 isSuccess
             )
