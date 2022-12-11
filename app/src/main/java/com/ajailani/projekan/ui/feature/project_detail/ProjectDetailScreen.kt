@@ -5,7 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -45,6 +45,8 @@ import com.ajailani.projekan.ui.feature.project_detail.component.*
 import com.ajailani.projekan.ui.theme.*
 import com.ajailani.projekan.util.Formatter
 import com.ajailani.projekan.util.ProjectStatus
+import com.ajailani.projekan.util.TaskStatus
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -60,11 +62,14 @@ fun ProjectDetailScreen(
     val projectDetailState = projectDetailViewModel.projectDetailState
     val deleteProjectState = projectDetailViewModel.deleteProjectState
     val addTaskState = projectDetailViewModel.addTaskState
+    val editTaskState = projectDetailViewModel.editTaskState
     val taskTitle = projectDetailViewModel.taskTitle
+    val selectedTask = projectDetailViewModel.selectedTask
     val pullRefreshing = projectDetailViewModel.pullRefreshing
     val moreMenu = projectDetailViewModel.moreMenu
     val addEditTaskSheetVis = projectDetailViewModel.addEditTaskSheetVis
     val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
+    val tasks = projectDetailViewModel.tasks
 
     val reloaded = sharedViewModel.reloaded
     val onReloadedChanged = sharedViewModel::onReloadedChanged
@@ -85,26 +90,27 @@ fun ProjectDetailScreen(
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetBackgroundColor = MaterialTheme.colors.background,
         sheetContent = {
-            when {
-                moreMenu > 0 -> {
-                    MoreMenuSheet(
-                        onEvent = onEvent,
-                        projectId = projectId,
-                        modalBottomSheetState = modalBottomSheetState,
-                        moreMenu = moreMenu,
-                        onNavigateToAddEditProject = onNavigateToAddEditProject
-                    )
-                }
+            Box(modifier = Modifier.heightIn(min = 1.dp)) {
+                when {
+                    moreMenu > 0 -> {
+                        MoreMenuSheet(
+                            onEvent = onEvent,
+                            projectId = projectId,
+                            moreMenu = moreMenu,
+                            onNavigateToAddEditProject = onNavigateToAddEditProject
+                        )
+                    }
 
-                addEditTaskSheetVis -> {
-                    AddEditTaskSheet(
-                        onEvent = onEvent,
-                        title = taskTitle,
-                        modalBottomSheetState = modalBottomSheetState
-                    )
+                    addEditTaskSheetVis -> {
+                        AddEditTaskSheet(
+                            onEvent = onEvent,
+                            title = taskTitle,
+                            selectedTask = selectedTask,
+                            modalBottomSheetState = modalBottomSheetState,
+                            coroutineScope = coroutineScope
+                        )
+                    }
                 }
-                
-                else -> Box { Text(text = "Initial") }
             }
         }
     ) {
@@ -132,7 +138,11 @@ fun ProjectDetailScreen(
                             onClick = {
                                 onEvent(ProjectDetailEvent.OnMoreMenuClicked(1))
 
-                                coroutineScope.launch { modalBottomSheetState.show() }
+                                if (!modalBottomSheetState.isAnimationRunning) {
+                                    coroutineScope.launch {
+                                        modalBottomSheetState.show()
+                                    }
+                                }
                             }
                         ) {
                             Icon(
@@ -147,8 +157,13 @@ fun ProjectDetailScreen(
                 FloatingActionButton(
                     onClick = {
                         onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(true))
+                        onEvent(ProjectDetailEvent.OnTaskSelected(null))
 
-                        coroutineScope.launch { modalBottomSheetState.show() }
+                        if (!modalBottomSheetState.isAnimationRunning) {
+                            coroutineScope.launch {
+                                modalBottomSheetState.show()
+                            }
+                        }
                     }
                 ) {
                     Icon(
@@ -201,7 +216,9 @@ fun ProjectDetailScreen(
                                                     model = ImageRequest.Builder(LocalContext.current)
                                                         .data(project.icon)
                                                         .build(),
-                                                    placeholder = painterResource(id = R.drawable.img_default_project_icon),
+                                                    placeholder = painterResource(
+                                                        id = R.drawable.img_default_project_icon
+                                                    ),
                                                     contentScale = ContentScale.Crop,
                                                     contentDescription = "Project icon"
                                                 )
@@ -306,16 +323,19 @@ fun ProjectDetailScreen(
                                     Spacer(modifier = Modifier.height(25.dp))
                                 }
 
-                                project.tasks?.let {
-                                    tasksSection(
-                                        onEvent = onEvent,
-                                        tasks = it
-                                    )
-                                }
+                                tasksSection(
+                                    onEvent = onEvent,
+                                    tasks = tasks,
+                                    modalBottomSheetState = modalBottomSheetState,
+                                    coroutineScope = coroutineScope
+                                )
                             }
                         }
 
                         is UIState.Fail -> {
+                            onEvent(ProjectDetailEvent.OnPullRefresh(false))
+                            onReloadedChanged(false)
+
                             item {
                                 LaunchedEffect(scaffoldState) {
                                     projectDetailState.message?.let {
@@ -326,6 +346,9 @@ fun ProjectDetailScreen(
                         }
 
                         is UIState.Error -> {
+                            onEvent(ProjectDetailEvent.OnPullRefresh(false))
+                            onReloadedChanged(false)
+
                             item {
                                 LaunchedEffect(scaffoldState) {
                                     projectDetailState.message?.let {
@@ -353,6 +376,7 @@ fun ProjectDetailScreen(
                     onEvent(ProjectDetailEvent.OnMoreMenuClicked(0))
                     onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(false))
                     onEvent(ProjectDetailEvent.OnTaskTitleChanged(""))
+                    onEvent(ProjectDetailEvent.OnTaskSelected(null))
                 }
             }
 
@@ -364,6 +388,8 @@ fun ProjectDetailScreen(
                     onConfirmed = {
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
                         onEvent(ProjectDetailEvent.DeleteProject)
+
+                        coroutineScope.launch { modalBottomSheetState.hide() }
                     },
                     onDismissed = {
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
@@ -438,13 +464,53 @@ fun ProjectDetailScreen(
 
                 else -> {}
             }
+
+            // Observe edit task state
+            when (editTaskState) {
+                UIState.Loading -> {
+                    // This will be triggered if only a task is edited
+                    if (addEditTaskSheetVis) {
+                        ProgressBarWithBackground()
+                    }
+                }
+
+                is UIState.Success -> {
+                    LaunchedEffect(Unit) {
+                        // This will be triggered if only a task is edited
+                        if (addEditTaskSheetVis) {
+                            onEvent(ProjectDetailEvent.GetProjectDetail)
+                        }
+                    }
+                }
+
+                is UIState.Fail -> {
+                    LaunchedEffect(scaffoldState) {
+                        editTaskState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                is UIState.Error -> {
+                    LaunchedEffect(scaffoldState) {
+                        editTaskState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                else -> {}
+            }
         }
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 private fun LazyListScope.tasksSection(
     onEvent: (ProjectDetailEvent) -> Unit,
-    tasks: List<TaskItem>
+    tasks: List<TaskItem>,
+    modalBottomSheetState: ModalBottomSheetState,
+    coroutineScope: CoroutineScope
 ) {
     item {
         Text(
@@ -459,12 +525,36 @@ private fun LazyListScope.tasksSection(
     }
 
     if (tasks.isNotEmpty()) {
-        items(tasks) { taskItem ->
+        itemsIndexed(tasks) { i, taskItem ->
             TaskItemCard(
                 modifier = Modifier.padding(horizontal = 20.dp),
                 taskItem = taskItem,
-                onChecked = {},
-                onMoreClicked = { onEvent(ProjectDetailEvent.OnMoreMenuClicked(2)) }
+                onChecked = {
+                    onEvent(
+                        ProjectDetailEvent.OnTaskChecked(
+                            index = i,
+                            task = taskItem.copy(
+                                status = if (taskItem.status == TaskStatus.UNDONE) {
+                                    TaskStatus.DONE
+                                } else {
+                                    TaskStatus.UNDONE
+                                }
+                            )
+                        )
+                    )
+
+                    onEvent(ProjectDetailEvent.EditTask)
+                },
+                onMoreClicked = {
+                    onEvent(ProjectDetailEvent.OnTaskSelected(taskItem))
+                    onEvent(ProjectDetailEvent.OnMoreMenuClicked(2))
+
+                    if (!modalBottomSheetState.isAnimationRunning) {
+                        coroutineScope.launch {
+                            modalBottomSheetState.show()
+                        }
+                    }
+                }
             )
             Spacer(modifier = Modifier.height(15.dp))
         }

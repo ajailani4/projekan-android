@@ -6,11 +6,14 @@ import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.use_case.project.DeleteProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
 import com.ajailani.projekan.domain.use_case.task.AddTaskUseCase
+import com.ajailani.projekan.domain.use_case.task.EditTaskUseCase
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailEvent
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailViewModel
 import com.ajailani.projekan.util.TestCoroutineRule
 import com.ajailani.projekan.util.project
+import com.ajailani.projekan.util.task
+import com.ajailani.projekan.util.tasks
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert.*
@@ -22,7 +25,9 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.isNull
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -40,6 +45,9 @@ class ProjectDetailViewModelTest {
     @Mock
     private lateinit var addTaskUseCase: AddTaskUseCase
 
+    @Mock
+    private lateinit var editTaskUseCase: EditTaskUseCase
+
     private lateinit var savedStateHandle: SavedStateHandle
 
     private lateinit var projectDetailViewModel: ProjectDetailViewModel
@@ -55,7 +63,8 @@ class ProjectDetailViewModelTest {
             savedStateHandle,
             getProjectDetailUseCase,
             deleteProjectUseCase,
-            addTaskUseCase
+            addTaskUseCase,
+            editTaskUseCase
         )
         onEvent = projectDetailViewModel::onEvent
     }
@@ -173,6 +182,56 @@ class ProjectDetailViewModelTest {
             onEvent(ProjectDetailEvent.AddTask)
 
             val isSuccess = when (projectDetailViewModel.addTaskState) {
+                is UIState.Success -> true
+
+                else -> false
+            }
+
+            assertEquals("Should be fail", false, isSuccess)
+        }
+    }
+
+    @Test
+    fun `Edit task should return success`() {
+        testCoroutineRule.runTest {
+            val resource = flowOf(Resource.Success(Any()))
+
+            onEvent(ProjectDetailEvent.OnTaskSelected(task))
+
+            doReturn(resource).`when`(editTaskUseCase)(
+                id = anyString(),
+                title = anyString(),
+                status = any()
+            )
+
+            onEvent(ProjectDetailEvent.EditTask)
+
+            val isSuccess = when (projectDetailViewModel.editTaskState) {
+                is UIState.Success -> true
+
+                else -> false
+            }
+
+            assertEquals("Should be success", true, isSuccess)
+        }
+    }
+
+    @Test
+    fun `Edit task should return fail`() {
+        testCoroutineRule.runTest {
+            val resource = flowOf(Resource.Error<Any>())
+
+            onEvent(ProjectDetailEvent.OnTaskSelected(task))
+
+            doReturn(resource).`when`(editTaskUseCase)(
+                id = anyString(),
+                title = anyString(),
+                status = any()
+            )
+
+            onEvent(ProjectDetailEvent.EditTask)
+
+            val isSuccess = when (projectDetailViewModel.editTaskState) {
                 is UIState.Success -> true
 
                 else -> false

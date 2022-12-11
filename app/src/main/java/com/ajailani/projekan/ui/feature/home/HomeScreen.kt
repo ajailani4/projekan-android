@@ -147,7 +147,8 @@ fun HomeScreen(
 
         // Observe reloaded state from SharedViewModel
         if (reloaded) {
-            resetLazyListState()
+            if (pagingProjects.itemCount > 0) resetLazyListState()
+            
             onEvent(HomeEvent.GetUserProfile)
             onEvent(HomeEvent.GetDeadlines)
             onEvent(HomeEvent.GetProjects)
@@ -216,6 +217,7 @@ private fun Header(
 
             is UIState.Fail -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 LaunchedEffect(scaffoldState) {
                     userProfileState.message?.let {
@@ -226,6 +228,7 @@ private fun Header(
 
             is UIState.Error -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 LaunchedEffect(scaffoldState) {
                     userProfileState.message?.let {
@@ -314,6 +317,7 @@ private fun ThisWeekDeadlinesSection(
 
             is UIState.Fail -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 LaunchedEffect(scaffoldState) {
                     deadlinesState.message?.let {
@@ -324,6 +328,7 @@ private fun ThisWeekDeadlinesSection(
 
             is UIState.Error -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 LaunchedEffect(scaffoldState) {
                     deadlinesState.message?.let {
@@ -403,6 +408,7 @@ private fun LazyListScope.myProjectsSection(
 
             loadState.append is LoadState.Error -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 item {
                     LaunchedEffect(scaffoldState) {

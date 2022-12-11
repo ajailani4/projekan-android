@@ -21,6 +21,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.ajailani.projekan.R
+import com.ajailani.projekan.ui.common.SharedViewModel
 import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.VProjectItemCard
 import com.ajailani.projekan.ui.common.component.VProjectItemCardShimmer
@@ -31,6 +32,7 @@ import com.ajailani.projekan.util.ProjectType
 @Composable
 fun ProjectListScreen(
     projectListViewModel: ProjectListViewModel = hiltViewModel(),
+    sharedViewModel: SharedViewModel,
     onNavigateUp: () -> Unit,
     onNavigateToProjectDetail: (String) -> Unit
 ) {
@@ -38,6 +40,9 @@ fun ProjectListScreen(
     val projectType = projectListViewModel.projectType
     val pagingProjects = projectListViewModel.pagingProjects.collectAsLazyPagingItems()
     val pullRefreshing = projectListViewModel.pullRefreshing
+
+    val reloaded = sharedViewModel.reloaded
+    val onReloadedChanged = sharedViewModel::onReloadedChanged
 
     val scaffoldState = rememberScaffoldState()
     val pullRefreshState = rememberPullRefreshState(
@@ -115,20 +120,26 @@ fun ProjectListScreen(
 
                         loadState.source.refresh is LoadState.NotLoading && loadState.append.endOfPaginationReached -> {
                             onEvent(ProjectListEvent.OnPullRefresh(false))
+                            onReloadedChanged(false)
 
                             if (itemCount < 1) {
                                 item {
-                                    CaptionImage(
-                                        modifier = Modifier.size(200.dp),
-                                        image = painterResource(id = R.drawable.illustration_add_project),
-                                        caption = stringResource(id = R.string.no_projects)
-                                    )
+                                    Box(
+                                        modifier = Modifier.padding(top = 150.dp)
+                                    ) {
+                                        CaptionImage(
+                                            modifier = Modifier.size(200.dp),
+                                            image = painterResource(id = R.drawable.illustration_add_project),
+                                            caption = stringResource(id = R.string.no_projects)
+                                        )
+                                    }
                                 }
                             }
                         }
 
                         loadState.append is LoadState.Error -> {
                             onEvent(ProjectListEvent.OnPullRefresh(false))
+                            onReloadedChanged(false)
 
                             item {
                                 LaunchedEffect(scaffoldState) {
@@ -148,6 +159,11 @@ fun ProjectListScreen(
                 state = pullRefreshState,
                 contentColor = MaterialTheme.colors.primary
             )
+        }
+
+        // Observe reloaded state from SharedViewModel
+        if (reloaded) {
+            onEvent(ProjectListEvent.GetPagingProjects)
         }
     }
 }
