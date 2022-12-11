@@ -110,7 +110,7 @@ fun ProjectDetailScreen(
                     )
                 }
 
-                else -> Box { Text(text = "Initial") }
+                else -> Box(modifier = Modifier.height(1.dp))
             }
         }
     ) {
@@ -212,7 +212,9 @@ fun ProjectDetailScreen(
                                                     model = ImageRequest.Builder(LocalContext.current)
                                                         .data(project.icon)
                                                         .build(),
-                                                    placeholder = painterResource(id = R.drawable.img_default_project_icon),
+                                                    placeholder = painterResource(
+                                                        id = R.drawable.img_default_project_icon
+                                                    ),
                                                     contentScale = ContentScale.Crop,
                                                     contentDescription = "Project icon"
                                                 )
