@@ -10,6 +10,6 @@ interface TaskRepository {
     fun editTask(
         id: String,
         title: String,
-        status: TaskStatus
+        status: TaskStatus?
     ): Flow<Resource<Any>>
 }

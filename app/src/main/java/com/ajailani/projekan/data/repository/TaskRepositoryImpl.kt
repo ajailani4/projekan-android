@@ -35,7 +35,7 @@ class TaskRepositoryImpl @Inject constructor(
     override fun editTask(
         id: String,
         title: String,
-        status: TaskStatus
+        status: TaskStatus?
     ) =
         flow {
             val response = taskRemoteDataSource.editTask(

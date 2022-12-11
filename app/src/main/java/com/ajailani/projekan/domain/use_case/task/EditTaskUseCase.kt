@@ -10,7 +10,7 @@ class EditTaskUseCase @Inject constructor(
     operator fun invoke(
         id: String,
         title: String,
-        status: TaskStatus
+        status: TaskStatus? = null
     ) = taskRepository.editTask(
         id = id,
         title = title,
