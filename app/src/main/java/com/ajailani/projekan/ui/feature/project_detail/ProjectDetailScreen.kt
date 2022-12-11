@@ -90,27 +90,27 @@ fun ProjectDetailScreen(
         sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
         sheetBackgroundColor = MaterialTheme.colors.background,
         sheetContent = {
-            when {
-                moreMenu > 0 -> {
-                    MoreMenuSheet(
-                        onEvent = onEvent,
-                        projectId = projectId,
-                        moreMenu = moreMenu,
-                        onNavigateToAddEditProject = onNavigateToAddEditProject
-                    )
-                }
+            Box(modifier = Modifier.heightIn(min = 1.dp)) {
+                when {
+                    moreMenu > 0 -> {
+                        MoreMenuSheet(
+                            onEvent = onEvent,
+                            projectId = projectId,
+                            moreMenu = moreMenu,
+                            onNavigateToAddEditProject = onNavigateToAddEditProject
+                        )
+                    }
 
-                addEditTaskSheetVis -> {
-                    AddEditTaskSheet(
-                        onEvent = onEvent,
-                        title = taskTitle,
-                        selectedTask = selectedTask,
-                        modalBottomSheetState = modalBottomSheetState,
-                        coroutineScope = coroutineScope
-                    )
+                    addEditTaskSheetVis -> {
+                        AddEditTaskSheet(
+                            onEvent = onEvent,
+                            title = taskTitle,
+                            selectedTask = selectedTask,
+                            modalBottomSheetState = modalBottomSheetState,
+                            coroutineScope = coroutineScope
+                        )
+                    }
                 }
-
-                else -> Box(modifier = Modifier.height(1.dp))
             }
         }
     ) {
@@ -138,8 +138,10 @@ fun ProjectDetailScreen(
                             onClick = {
                                 onEvent(ProjectDetailEvent.OnMoreMenuClicked(1))
 
-                                coroutineScope.launch {
-                                    modalBottomSheetState.show()
+                                if (!modalBottomSheetState.isAnimationRunning) {
+                                    coroutineScope.launch {
+                                        modalBottomSheetState.show()
+                                    }
                                 }
                             }
                         ) {
@@ -157,8 +159,10 @@ fun ProjectDetailScreen(
                         onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(true))
                         onEvent(ProjectDetailEvent.OnTaskSelected(null))
 
-                        coroutineScope.launch {
-                            modalBottomSheetState.show()
+                        if (!modalBottomSheetState.isAnimationRunning) {
+                            coroutineScope.launch {
+                                modalBottomSheetState.show()
+                            }
                         }
                     }
                 ) {
@@ -543,8 +547,10 @@ private fun LazyListScope.tasksSection(
                     onEvent(ProjectDetailEvent.OnTaskSelected(taskItem))
                     onEvent(ProjectDetailEvent.OnMoreMenuClicked(2))
 
-                    coroutineScope.launch {
-                        modalBottomSheetState.show()
+                    if (!modalBottomSheetState.isAnimationRunning) {
+                        coroutineScope.launch {
+                            modalBottomSheetState.show()
+                        }
                     }
                 }
             )
