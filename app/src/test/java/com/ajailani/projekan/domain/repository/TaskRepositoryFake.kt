@@ -16,7 +16,7 @@ class TaskRepositoryFake : TaskRepository {
             ResourceType.Error -> flowOf(Resource.Error(null))
         }
 
-    override fun editTask(id: String, title: String, status: TaskStatus?): Flow<Resource<Any>> =
+    override fun editTask(id: String, title: String, status: TaskStatus): Flow<Resource<Any>> =
         when (resourceType) {
             ResourceType.Success -> flowOf(Resource.Success(Any()))
 

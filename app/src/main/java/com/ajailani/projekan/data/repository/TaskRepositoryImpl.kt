@@ -8,7 +8,6 @@ import com.ajailani.projekan.data.remote.dto.request.TaskRequest
 import com.ajailani.projekan.domain.repository.TaskRepository
 import com.ajailani.projekan.util.TaskStatus
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -35,7 +34,7 @@ class TaskRepositoryImpl @Inject constructor(
     override fun editTask(
         id: String,
         title: String,
-        status: TaskStatus?
+        status: TaskStatus
     ) =
         flow {
             val response = taskRemoteDataSource.editTask(
