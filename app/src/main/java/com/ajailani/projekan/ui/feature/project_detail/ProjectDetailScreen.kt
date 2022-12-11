@@ -468,6 +468,7 @@ fun ProjectDetailScreen(
             // Observe edit task state
             when (editTaskState) {
                 UIState.Loading -> {
+                    // This will be triggered if only a task is edited
                     if (addEditTaskSheetVis) {
                         ProgressBarWithBackground()
                     }
@@ -475,6 +476,7 @@ fun ProjectDetailScreen(
 
                 is UIState.Success -> {
                     LaunchedEffect(Unit) {
+                        // This will be triggered if only a task is edited
                         if (addEditTaskSheetVis) {
                             onEvent(ProjectDetailEvent.GetProjectDetail)
                         }
