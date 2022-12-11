@@ -216,6 +216,7 @@ private fun Header(
 
             is UIState.Fail -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 LaunchedEffect(scaffoldState) {
                     userProfileState.message?.let {
@@ -226,6 +227,7 @@ private fun Header(
 
             is UIState.Error -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 LaunchedEffect(scaffoldState) {
                     userProfileState.message?.let {
@@ -314,6 +316,7 @@ private fun ThisWeekDeadlinesSection(
 
             is UIState.Fail -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 LaunchedEffect(scaffoldState) {
                     deadlinesState.message?.let {
@@ -324,6 +327,7 @@ private fun ThisWeekDeadlinesSection(
 
             is UIState.Error -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 LaunchedEffect(scaffoldState) {
                     deadlinesState.message?.let {
@@ -403,6 +407,7 @@ private fun LazyListScope.myProjectsSection(
 
             loadState.append is LoadState.Error -> {
                 onEvent(HomeEvent.OnPullRefresh(false))
+                onReloadedChanged(false)
 
                 item {
                     LaunchedEffect(scaffoldState) {
