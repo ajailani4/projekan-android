@@ -53,8 +53,6 @@ fun MoreMenuSheet(
             icon = Icons.Default.Delete,
             title = stringResource(id = R.string.delete),
             onClick = {
-                coroutineScope.launch { modalBottomSheetState.hide() }
-
                 when (moreMenu) {
                     1 -> {
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(true))
