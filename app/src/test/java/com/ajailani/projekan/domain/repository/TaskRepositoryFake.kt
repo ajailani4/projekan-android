@@ -23,6 +23,13 @@ class TaskRepositoryFake : TaskRepository {
             ResourceType.Error -> flowOf(Resource.Error(null))
         }
 
+    override fun deleteTask(id: String): Flow<Resource<Any>> =
+        when (resourceType) {
+            ResourceType.Success -> flowOf(Resource.Success(Any()))
+
+            ResourceType.Error -> flowOf(Resource.Error(null))
+        }
+
     fun setResourceType(type: ResourceType) {
         resourceType = type
     }
