@@ -14,5 +14,6 @@ sealed class ProjectDetailEvent {
     data class OnMoreMenuClicked(val actionMenu: Int) : ProjectDetailEvent()
     data class OnAddEditTaskSheetVisChanged(val isVisible: Boolean) : ProjectDetailEvent()
     data class OnDeleteProjectDialogVisChanged(val isVisible: Boolean) : ProjectDetailEvent()
+    data class OnDeleteTaskDialogVisChanged(val isVisible: Boolean) : ProjectDetailEvent()
     //data class DeleteTask(val id: String) : ProjectDetailEvent()
 }

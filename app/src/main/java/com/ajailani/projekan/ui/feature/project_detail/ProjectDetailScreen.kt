@@ -69,6 +69,7 @@ fun ProjectDetailScreen(
     val moreMenu = projectDetailViewModel.moreMenu
     val addEditTaskSheetVis = projectDetailViewModel.addEditTaskSheetVis
     val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
+    val deleteTaskDialogVis = projectDetailViewModel.deleteTaskDialogVis
     val tasks = projectDetailViewModel.tasks
 
     val reloaded = sharedViewModel.reloaded
@@ -390,11 +391,23 @@ fun ProjectDetailScreen(
                     onConfirmed = {
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
                         onEvent(ProjectDetailEvent.DeleteProject)
-
-                        coroutineScope.launch { modalBottomSheetState.hide() }
                     },
                     onDismissed = {
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
+                    }
+                )
+            }
+
+            // Delete project confirmation dialog
+            if (deleteTaskDialogVis) {
+                CustomAlertDialog(
+                    title = stringResource(id = R.string.delete_task),
+                    message = stringResource(id = R.string.delete_task_confirm_msg),
+                    onConfirmed = {
+                        onEvent(ProjectDetailEvent.OnDeleteTaskDialogVisChanged(false))
+                    },
+                    onDismissed = {
+                        onEvent(ProjectDetailEvent.OnDeleteTaskDialogVisChanged(false))
                     }
                 )
             }

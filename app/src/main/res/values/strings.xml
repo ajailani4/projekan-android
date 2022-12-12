@@ -41,6 +41,10 @@
     <string name="delete_project_confirm_msg">Are you sure to delete this project?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="add_task">Add Task</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="delete_task_confirm_msg">Are you sure to delete this task?</string>
     
     <string name="add_project">Add Project</string>
     <string name="edit_project">Edit Project</string>
@@ -51,6 +55,4 @@
     <string name="category">Category</string>
     <string name="save">Save</string>
     <string name="photo_size_is_too_large">Photo size is too large</string>
-    <string name="add_task">Add Task</string>
-    <string name="edit_task">Edit Task</string>
 </resources>

@@ -60,7 +60,9 @@ fun MoreMenuSheet(
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(true))
                     }
 
-                    2 -> {}
+                    2 -> {
+                        onEvent(ProjectDetailEvent.OnDeleteTaskDialogVisChanged(true))
+                    }
                 }
             }
         )
