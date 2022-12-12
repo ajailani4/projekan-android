@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Projekan</string>
+
+    <string name="welcome_to_projekan">Selamat Datang di Projekan</string>
+    <string name="manage_your_projects">Ayo kelola proyekmu</string>
+
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+
+    <string name="username">Username</string>
+    <string name="password">Kata Sandi</string>
+    <string name="have_no_account">Belum punya akun?</string>
+    <string name="register_here">Daftar di sini</string>
+    <string name="fill_the_form">Mohon isi form dengan lengkap</string>
+    <string name="incorrect_username_or_pass">Username atau password salah</string>
+    <string name="something_wrong_happened">Maaf, terjadi kesalahan</string>
+
+    <string name="name">Nama</string>
+    <string name="email">Email</string>
+    <string name="have_account">Sudah punya akun?</string>
+    <string name="login_here">Masuk di sini</string>
+    <string name="username_already_exists">Username sudah ada. Coba yang lain</string>
+
+    <string name="hello">Halo</string>
+    <string name="this_week_deadlines">Deadline Minggu Ini</string>
+    <string name="view_all">Lihat semua</string>
+    <string name="no_deadlines">Kamu tidak memiliki deadline</string>
+    <string name="my_projects">Proyek Saya</string>
+    <string name="no_projects">Kamu belum memiliki proyek.\nAyo tambahkan proyek baru</string>
+    <string name="deadline">Deadline</string>
+
+    <string name="project_detail">Detail Proyek</string>
+    <string name="todo">To-Do</string>
+    <string name="in_progress">In Progress</string>
+    <string name="done">Done</string>
+    <string name="tasks">Tugas</string>
+    <string name="no_tasks">Proyek ini belum memiliki tugas.\nAyo tambahkan tugas baru</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Hapus</string>
+    <string name="delete_project">Hapus Proyek</string>
+    <string name="delete_project_confirm_msg">Apakah kamu yakin ingin menghapus proyek ini?</string>
+    <string name="yes">Iya</string>
+    <string name="no">Tidak</string>
+    <string name="add_task">Tambah Tugas</string>
+    <string name="edit_task">Edit Tugas</string>
+    <string name="delete_task">Hapus Tugas</string>
+    <string name="delete_task_confirm_msg">Apakah kamu yakin ingin menghapus tugas ini?</string>
+
+    <string name="add_project">Tambah Proyek</string>
+    <string name="edit_project">Edit Proyek</string>
+    <string name="project_icon">Ikon Proyek</string>
+    <string name="title">Judul</string>
+    <string name="description">Deskripsi</string>
+    <string name="platform">Platform</string>
+    <string name="category">Kategori</string>
+    <string name="save">Simpan</string>
+    <string name="photo_size_is_too_large">Ukuran foto terlalu besar</string>
+</resources>

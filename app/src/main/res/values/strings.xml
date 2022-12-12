@@ -1,3 +1,58 @@
 <resources>
     <string name="app_name">Projekan</string>
+
+    <string name="welcome_to_projekan">Welcome to Projekan</string>
+    <string name="manage_your_projects">Let\'s manage your projects</string>
+
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="have_no_account">Don\'t have an account?</string>
+    <string name="register_here">Register here</string>
+    <string name="fill_the_form">Please fill the form completely</string>
+    <string name="incorrect_username_or_pass">Username or password is incorrect</string>
+    <string name="something_wrong_happened">Sorry, something wrong happened</string>
+
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="have_account">Have an account?</string>
+    <string name="login_here">Login here</string>
+    <string name="username_already_exists">Username already exists. Try another username</string>
+
+    <string name="hello">Hello</string>
+    <string name="this_week_deadlines">This Week Deadlines</string>
+    <string name="view_all">View all</string>
+    <string name="no_deadlines">You don\'t have deadlines</string>
+    <string name="my_projects">My Projects</string>
+    <string name="no_projects">You don\'t have projects yet.\nLet\'s add a new project</string>
+    <string name="deadline">Deadline</string>
+    
+    <string name="project_detail">Project Detail</string>
+    <string name="todo">To-Do</string>
+    <string name="in_progress">In Progress</string>
+    <string name="done">Done</string>
+    <string name="tasks">Tasks</string>
+    <string name="no_tasks">This project doesn\'t have tasks yet.\nLet\'s add a new task</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="delete_project">Delete Project</string>
+    <string name="delete_project_confirm_msg">Are you sure to delete this project?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="add_task">Add Task</string>
+    <string name="edit_task">Edit Task</string>
+    <string name="delete_task">Delete Task</string>
+    <string name="delete_task_confirm_msg">Are you sure to delete this task?</string>
+    
+    <string name="add_project">Add Project</string>
+    <string name="edit_project">Edit Project</string>
+    <string name="project_icon">Project Icon</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="platform">Platform</string>
+    <string name="category">Category</string>
+    <string name="save">Save</string>
+    <string name="photo_size_is_too_large">Photo size is too large</string>
 </resources>
