@@ -97,6 +97,8 @@ fun ProjectDetailScreen(
                             onEvent = onEvent,
                             projectId = projectId,
                             moreMenu = moreMenu,
+                            modalBottomSheetState = modalBottomSheetState,
+                            coroutineScope = coroutineScope,
                             onNavigateToAddEditProject = onNavigateToAddEditProject
                         )
                     }
