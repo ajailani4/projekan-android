@@ -21,3 +21,4 @@
 #-renamesourcefileattribute SourceFile
 
 -keepclassmembers class com.ajailani.projekan.data.remote.dto.** { <fields>; }
+-keepclassmembers enum * { *; }
