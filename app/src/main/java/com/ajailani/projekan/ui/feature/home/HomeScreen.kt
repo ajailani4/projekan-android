@@ -63,7 +63,7 @@ fun HomeScreen(
     val pullRefreshing = homeViewModel.pullRefreshing
     val lazyListState =
         if (pagingProjects.itemCount > 0) homeViewModel.lazyListState else rememberLazyListState()
-    val resetLazyListState = homeViewModel::resetLazyListState
+    val resetLazyListPosition = homeViewModel::resetLazyListPosition
 
     val reloaded = sharedViewModel.reloaded
     val onReloadedChanged = sharedViewModel::onReloadedChanged
@@ -147,7 +147,7 @@ fun HomeScreen(
 
         // Observe reloaded state from SharedViewModel
         if (reloaded) {
-            resetLazyListState()
+            resetLazyListPosition()
             onEvent(HomeEvent.GetUserProfile)
             onEvent(HomeEvent.GetDeadlines)
             onEvent(HomeEvent.GetProjects)

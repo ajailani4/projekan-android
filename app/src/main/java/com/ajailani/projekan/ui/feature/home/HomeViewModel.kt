@@ -62,7 +62,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun resetLazyListState() {
+    fun resetLazyListPosition() {
         viewModelScope.launch {
             if (lazyListState.firstVisibleItemIndex > 0) {
                 lazyListState.scrollToItem(0)
