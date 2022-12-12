@@ -1,7 +1,7 @@
-package com.ajailani.projekan.domain.use_case.project
+package com.ajailani.projekan.domain.use_case.task
 
 import com.ajailani.projekan.data.Resource
-import com.ajailani.projekan.domain.repository.ProjectRepositoryFake
+import com.ajailani.projekan.domain.repository.TaskRepositoryFake
 import com.ajailani.projekan.util.ResourceType
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -12,22 +12,22 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class DeleteProjectUseCaseTest {
-    private lateinit var projectRepositoryFake: ProjectRepositoryFake
-    private lateinit var deleteProjectUseCase: DeleteProjectUseCase
+class DeleteTaskUseCaseTest {
+    private lateinit var taskRepositoryFake: TaskRepositoryFake
+    private lateinit var deleteTaskUseCase: DeleteTaskUseCase
 
     @Before
     fun setUp() {
-        projectRepositoryFake = ProjectRepositoryFake()
-        deleteProjectUseCase = DeleteProjectUseCase(projectRepositoryFake)
+        taskRepositoryFake = TaskRepositoryFake()
+        deleteTaskUseCase = DeleteTaskUseCase(taskRepositoryFake)
     }
 
     @Test
-    fun `Add project should return success`() =
+    fun `Delete task should return success`() =
         runTest(UnconfinedTestDispatcher()) {
-            projectRepositoryFake.setResourceType(ResourceType.Success)
+            taskRepositoryFake.setResourceType(ResourceType.Success)
 
-            val isSuccess = when (deleteProjectUseCase("a1b2c3").first()) {
+            val isSuccess = when (deleteTaskUseCase("a1b2c3").first()) {
                 is Resource.Success -> true
 
                 is Resource.Error -> false
@@ -41,11 +41,11 @@ class DeleteProjectUseCaseTest {
         }
 
     @Test
-    fun `Add project should return fail`() =
+    fun `Delete task should return fail`() =
         runTest(UnconfinedTestDispatcher()) {
-            projectRepositoryFake.setResourceType(ResourceType.Error)
+            taskRepositoryFake.setResourceType(ResourceType.Error)
 
-            val isSuccess = when (deleteProjectUseCase("a1b2c3").first()) {
+            val isSuccess = when (deleteTaskUseCase("a1b2c3").first()) {
                 is Resource.Success -> true
 
                 is Resource.Error -> false

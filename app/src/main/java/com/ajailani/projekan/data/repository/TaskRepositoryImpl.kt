@@ -51,4 +51,15 @@ class TaskRepositoryImpl @Inject constructor(
                 else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
             }
         }
+
+    override fun deleteTask(id: String) =
+        flow {
+            val response = taskRemoteDataSource.deleteTask(id)
+
+            when (response.code()) {
+                200 -> emit(Resource.Success(response.body()?.data))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
 }

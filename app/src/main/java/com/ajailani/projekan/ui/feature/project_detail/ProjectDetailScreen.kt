@@ -63,12 +63,14 @@ fun ProjectDetailScreen(
     val deleteProjectState = projectDetailViewModel.deleteProjectState
     val addTaskState = projectDetailViewModel.addTaskState
     val editTaskState = projectDetailViewModel.editTaskState
+    val deleteTaskState = projectDetailViewModel.deleteTaskState
     val taskTitle = projectDetailViewModel.taskTitle
     val selectedTask = projectDetailViewModel.selectedTask
     val pullRefreshing = projectDetailViewModel.pullRefreshing
     val moreMenu = projectDetailViewModel.moreMenu
     val addEditTaskSheetVis = projectDetailViewModel.addEditTaskSheetVis
     val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
+    val deleteTaskDialogVis = projectDetailViewModel.deleteTaskDialogVis
     val tasks = projectDetailViewModel.tasks
 
     val reloaded = sharedViewModel.reloaded
@@ -97,6 +99,8 @@ fun ProjectDetailScreen(
                             onEvent = onEvent,
                             projectId = projectId,
                             moreMenu = moreMenu,
+                            modalBottomSheetState = modalBottomSheetState,
+                            coroutineScope = coroutineScope,
                             onNavigateToAddEditProject = onNavigateToAddEditProject
                         )
                     }
@@ -386,13 +390,34 @@ fun ProjectDetailScreen(
                     title = stringResource(id = R.string.delete_project),
                     message = stringResource(id = R.string.delete_project_confirm_msg),
                     onConfirmed = {
+                        coroutineScope.launch { modalBottomSheetState.hide() }
+
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
                         onEvent(ProjectDetailEvent.DeleteProject)
-
-                        coroutineScope.launch { modalBottomSheetState.hide() }
                     },
                     onDismissed = {
+                        coroutineScope.launch { modalBottomSheetState.hide() }
+
                         onEvent(ProjectDetailEvent.OnDeleteProjectDialogVisChanged(false))
+                    }
+                )
+            }
+
+            // Delete project confirmation dialog
+            if (deleteTaskDialogVis) {
+                CustomAlertDialog(
+                    title = stringResource(id = R.string.delete_task),
+                    message = stringResource(id = R.string.delete_task_confirm_msg),
+                    onConfirmed = {
+                        coroutineScope.launch { modalBottomSheetState.hide() }
+
+                        onEvent(ProjectDetailEvent.OnDeleteTaskDialogVisChanged(false))
+                        onEvent(ProjectDetailEvent.DeleteTask)
+                    },
+                    onDismissed = {
+                        coroutineScope.launch { modalBottomSheetState.hide() }
+
+                        onEvent(ProjectDetailEvent.OnDeleteTaskDialogVisChanged(false))
                     }
                 )
             }
@@ -494,6 +519,37 @@ fun ProjectDetailScreen(
                 is UIState.Error -> {
                     LaunchedEffect(scaffoldState) {
                         editTaskState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                else -> {}
+            }
+
+            // Observe delete task state
+            when (deleteTaskState) {
+                UIState.Loading -> {
+                    ProgressBarWithBackground()
+                }
+
+                is UIState.Success -> {
+                    LaunchedEffect(Unit) {
+                        onEvent(ProjectDetailEvent.GetProjectDetail)
+                    }
+                }
+
+                is UIState.Fail -> {
+                    LaunchedEffect(scaffoldState) {
+                        deleteTaskState.message?.let {
+                            scaffoldState.snackbarHostState.showSnackbar(it)
+                        }
+                    }
+                }
+
+                is UIState.Error -> {
+                    LaunchedEffect(scaffoldState) {
+                        deleteTaskState.message?.let {
                             scaffoldState.snackbarHostState.showSnackbar(it)
                         }
                     }

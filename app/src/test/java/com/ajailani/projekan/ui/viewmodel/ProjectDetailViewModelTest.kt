@@ -6,6 +6,7 @@ import com.ajailani.projekan.domain.model.Project
 import com.ajailani.projekan.domain.use_case.project.DeleteProjectUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectDetailUseCase
 import com.ajailani.projekan.domain.use_case.task.AddTaskUseCase
+import com.ajailani.projekan.domain.use_case.task.DeleteTaskUseCase
 import com.ajailani.projekan.domain.use_case.task.EditTaskUseCase
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailEvent
@@ -13,11 +14,9 @@ import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailViewModel
 import com.ajailani.projekan.util.TestCoroutineRule
 import com.ajailani.projekan.util.project
 import com.ajailani.projekan.util.task
-import com.ajailani.projekan.util.tasks
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert.*
-
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,7 +26,6 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.isNull
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -48,6 +46,9 @@ class ProjectDetailViewModelTest {
     @Mock
     private lateinit var editTaskUseCase: EditTaskUseCase
 
+    @Mock
+    private lateinit var deleteTaskUseCase: DeleteTaskUseCase
+
     private lateinit var savedStateHandle: SavedStateHandle
 
     private lateinit var projectDetailViewModel: ProjectDetailViewModel
@@ -64,7 +65,8 @@ class ProjectDetailViewModelTest {
             getProjectDetailUseCase,
             deleteProjectUseCase,
             addTaskUseCase,
-            editTaskUseCase
+            editTaskUseCase,
+            deleteTaskUseCase
         )
         onEvent = projectDetailViewModel::onEvent
     }
@@ -232,6 +234,48 @@ class ProjectDetailViewModelTest {
             onEvent(ProjectDetailEvent.EditTask)
 
             val isSuccess = when (projectDetailViewModel.editTaskState) {
+                is UIState.Success -> true
+
+                else -> false
+            }
+
+            assertEquals("Should be fail", false, isSuccess)
+        }
+    }
+
+    @Test
+    fun `Delete task should return success`() {
+        testCoroutineRule.runTest {
+            val resource = flowOf(Resource.Success(Any()))
+
+            onEvent(ProjectDetailEvent.OnTaskSelected(task))
+
+            doReturn(resource).`when`(deleteTaskUseCase)(anyString())
+
+            onEvent(ProjectDetailEvent.DeleteTask)
+
+            val isSuccess = when (projectDetailViewModel.deleteTaskState) {
+                is UIState.Success -> true
+
+                else -> false
+            }
+
+            assertEquals("Should be success", true, isSuccess)
+        }
+    }
+
+    @Test
+    fun `Delete task should return fail`() {
+        testCoroutineRule.runTest {
+            val resource = flowOf(Resource.Error<Any>())
+
+            onEvent(ProjectDetailEvent.OnTaskSelected(task))
+
+            doReturn(resource).`when`(deleteTaskUseCase)(anyString())
+
+            onEvent(ProjectDetailEvent.DeleteTask)
+
+            val isSuccess = when (projectDetailViewModel.deleteTaskState) {
                 is UIState.Success -> true
 
                 else -> false

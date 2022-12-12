@@ -42,6 +42,10 @@
     <string name="delete_project_confirm_msg">Apakah kamu yakin ingin menghapus proyek ini?</string>
     <string name="yes">Iya</string>
     <string name="no">Tidak</string>
+    <string name="add_task">Tambah Tugas</string>
+    <string name="edit_task">Edit Tugas</string>
+    <string name="delete_task">Hapus Tugas</string>
+    <string name="delete_task_confirm_msg">Apakah kamu yakin ingin menghapus tugas ini?</string>
 
     <string name="add_project">Tambah Proyek</string>
     <string name="edit_project">Edit Proyek</string>
@@ -52,6 +56,4 @@
     <string name="category">Kategori</string>
     <string name="save">Simpan</string>
     <string name="photo_size_is_too_large">Ukuran foto terlalu besar</string>
-    <string name="add_task">Tambah Tugas</string>
-    <string name="edit_task">Edit Task</string>
 </resources>
