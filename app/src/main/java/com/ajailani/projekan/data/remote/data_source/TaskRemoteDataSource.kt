@@ -16,4 +16,6 @@ class TaskRemoteDataSource @Inject constructor(
         id = id,
         taskRequest = taskRequest
     )
+
+    suspend fun deleteTask(id: String) = taskService.deleteTask(id)
 }

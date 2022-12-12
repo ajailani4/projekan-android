@@ -8,6 +8,7 @@ import com.ajailani.projekan.data.remote.dto.request.TaskRequest
 import com.ajailani.projekan.domain.repository.TaskRepository
 import com.ajailani.projekan.util.TaskStatus
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
@@ -44,6 +45,17 @@ class TaskRepositoryImpl @Inject constructor(
                     status = status
                 )
             )
+
+            when (response.code()) {
+                200 -> emit(Resource.Success(response.body()?.data))
+
+                else -> emit(Resource.Error(context.getString(R.string.something_wrong_happened)))
+            }
+        }
+
+    override fun deleteTask(id: String) =
+        flow {
+            val response = taskRemoteDataSource.deleteTask(id)
 
             when (response.code()) {
                 200 -> emit(Resource.Success(response.body()?.data))
