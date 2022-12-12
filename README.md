@@ -31,19 +31,19 @@ This app implements Clean Architecture which has three main layers, UI/Presentat
 
 ## Preview
 **Home**
-![Home](https://res.cloudinary.com/dysojzcqm/image/upload/v1670824433/projekan_screenshot/01_atx4wm.jpg)
+![Home](https://res.cloudinary.com/dysojzcqm/image/upload/w_360,h_800/v1670824433/projekan_screenshot/01_atx4wm.jpg)
 
 **Add Project**
-![Add Project](https://res.cloudinary.com/dysojzcqm/image/upload/v1670824434/projekan_screenshot/02_ppj6ss.jpg)
+![Add Project](https://res.cloudinary.com/dysojzcqm/image/upload/w_360,h_800/v1670824434/projekan_screenshot/02_ppj6ss.jpg)
 
 **Project Detail**
-![Project Detail](https://res.cloudinary.com/dysojzcqm/image/upload/v1670824434/projekan_screenshot/03_x6blbu.jpg)
+![Project Detail](https://res.cloudinary.com/dysojzcqm/image/upload/w_360,h_800/v1670824434/projekan_screenshot/03_x6blbu.jpg)
 
 **Add Task**
-![Add Task](https://res.cloudinary.com/dysojzcqm/image/upload/v1670824434/projekan_screenshot/04_r3waxo.jpg)
+![Add Task](https://res.cloudinary.com/dysojzcqm/image/upload/w_360,h_800/v1670824434/projekan_screenshot/04_r3waxo.jpg)
 
 **Deadlines**
-![Deadlines](https://res.cloudinary.com/dysojzcqm/image/upload/v1670824433/projekan_screenshot/05_kjmh9q.jpg)
+![Deadlines](https://res.cloudinary.com/dysojzcqm/image/upload/w_360,h_800/v1670824433/projekan_screenshot/05_kjmh9q.jpg)
 
 ## Installation and Usage
 Download the zip from this repository or use git clone on your terminal.
