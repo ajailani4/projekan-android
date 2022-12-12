@@ -18,6 +18,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
@@ -114,7 +115,7 @@ class TaskRepositoryTest {
             )
 
             doReturn(response).`when`(taskRemoteDataSource).editTask(
-                id = ArgumentMatchers.anyString(),
+                id = anyString(),
                 taskRequest = any()
             )
 
@@ -146,7 +147,7 @@ class TaskRepositoryTest {
             )
 
             doReturn(response).`when`(taskRemoteDataSource).editTask(
-                id = ArgumentMatchers.anyString(),
+                id = anyString(),
                 taskRequest = any()
             )
 
@@ -157,6 +158,56 @@ class TaskRepositoryTest {
             ).first()
 
             val isSuccess = when (actualResource) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be error",
+                false,
+                isSuccess
+            )
+        }
+
+    @Test
+    fun `Delete task should return success`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.success(
+                200,
+                BaseResponse(
+                    code = 200,
+                    status = "OK",
+                    data = null
+                )
+            )
+
+            doReturn(response).`when`(taskRemoteDataSource).deleteTask(anyString())
+
+            val isSuccess = when (taskRepository.deleteTask("a1b2c3").first()) {
+                is Resource.Success -> true
+
+                is Resource.Error -> false
+            }
+
+            assertEquals(
+                "Resource should be success",
+                true,
+                isSuccess
+            )
+        }
+
+    @Test
+    fun `Delete task should return fail`() =
+        runTest(UnconfinedTestDispatcher()) {
+            val response = Response.error<Any>(
+                400,
+                "".toResponseBody()
+            )
+
+            doReturn(response).`when`(taskRemoteDataSource).deleteTask(anyString())
+
+            val isSuccess = when (taskRepository.deleteTask("a1b2c3").first()) {
                 is Resource.Success -> true
 
                 is Resource.Error -> false
