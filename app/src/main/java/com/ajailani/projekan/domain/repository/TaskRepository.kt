@@ -12,4 +12,6 @@ interface TaskRepository {
         title: String,
         status: TaskStatus
     ): Flow<Resource<Any>>
+
+    fun deleteTask(id: String): Flow<Resource<Any>>
 }
