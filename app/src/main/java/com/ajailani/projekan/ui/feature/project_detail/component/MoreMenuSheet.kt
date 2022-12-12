@@ -8,12 +8,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.ajailani.projekan.R
-import com.ajailani.projekan.domain.model.TaskItem
 import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

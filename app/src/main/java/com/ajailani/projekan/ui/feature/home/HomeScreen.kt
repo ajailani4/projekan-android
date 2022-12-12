@@ -148,7 +148,7 @@ fun HomeScreen(
         // Observe reloaded state from SharedViewModel
         if (reloaded) {
             if (pagingProjects.itemCount > 0) resetLazyListState()
-            
+
             onEvent(HomeEvent.GetUserProfile)
             onEvent(HomeEvent.GetDeadlines)
             onEvent(HomeEvent.GetProjects)

@@ -3,7 +3,6 @@ package com.ajailani.projekan.domain.use_case.task
 import com.ajailani.projekan.data.Resource
 import com.ajailani.projekan.domain.repository.TaskRepositoryFake
 import com.ajailani.projekan.util.ResourceType
-import com.ajailani.projekan.util.TaskStatus
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.UnconfinedTestDispatcher

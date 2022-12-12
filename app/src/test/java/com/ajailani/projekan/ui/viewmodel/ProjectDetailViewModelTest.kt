@@ -14,11 +14,9 @@ import com.ajailani.projekan.ui.feature.project_detail.ProjectDetailViewModel
 import com.ajailani.projekan.util.TestCoroutineRule
 import com.ajailani.projekan.util.project
 import com.ajailani.projekan.util.task
-import com.ajailani.projekan.util.tasks
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert.*
-
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,7 +26,6 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.isNull
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
