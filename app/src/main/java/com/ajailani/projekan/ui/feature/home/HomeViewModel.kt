@@ -64,7 +64,9 @@ class HomeViewModel @Inject constructor(
 
     fun resetLazyListState() {
         viewModelScope.launch {
-            lazyListState.scrollToItem(0)
+            if (lazyListState.firstVisibleItemIndex > 0) {
+                lazyListState.scrollToItem(0)
+            }
         }
     }
 
