@@ -9,7 +9,14 @@ class SharedViewModel : ViewModel() {
     var reloaded by mutableStateOf(false)
         private set
 
+    var deeplinkProjectId by mutableStateOf("")
+        private set
+
     fun onReloadedChanged(isReloaded: Boolean) {
         reloaded = isReloaded
+    }
+
+    fun onDeeplinkProjectIdChanged(id: String) {
+        deeplinkProjectId = id
     }
 }

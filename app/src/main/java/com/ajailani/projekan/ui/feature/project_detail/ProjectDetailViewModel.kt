@@ -1,5 +1,6 @@
 package com.ajailani.projekan.ui.feature.project_detail
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -120,6 +121,7 @@ class ProjectDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             projectId?.let { id ->
+                Log.d("ProjectDetailViewModel", "getProjectDetail: $id")
                 getProjectDetailUseCase(id).catch {
                     projectDetailState = UIState.Error(it.localizedMessage)
                 }.collect {

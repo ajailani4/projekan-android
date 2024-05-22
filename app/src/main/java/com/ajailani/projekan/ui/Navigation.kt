@@ -18,9 +18,14 @@ import com.ajailani.projekan.ui.feature.welcome.WelcomeScreen
 @Composable
 fun Navigation(
     navController: NavHostController,
+    projectId: String,
     startDestination: String,
     sharedViewModel: SharedViewModel
 ) {
+    if (projectId != "") {
+        navController.navigate(Screen.ProjectDetail.route + "?projectId=$projectId")
+    }
+
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.Welcome.route) {
             WelcomeScreen(
