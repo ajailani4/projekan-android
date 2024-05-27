@@ -1,5 +1,6 @@
 package com.ajailani.projekan.ui.feature.home
 
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,6 +14,7 @@ import com.ajailani.projekan.domain.model.ProjectItem
 import com.ajailani.projekan.domain.model.UserProfile
 import com.ajailani.projekan.domain.use_case.project.GetPagingProjectsUseCase
 import com.ajailani.projekan.domain.use_case.project.GetProjectsUseCase
+import com.ajailani.projekan.domain.use_case.user_credential.GetConversionDataUseCase
 import com.ajailani.projekan.domain.use_case.user_profile.GetUserProfileUseCase
 import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.util.ProjectType
@@ -27,7 +29,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val getProjectsUseCase: GetProjectsUseCase,
-    private val getPagingProjectsUseCase: GetPagingProjectsUseCase
+    private val getPagingProjectsUseCase: GetPagingProjectsUseCase,
+    private val getConversionDataUseCase: GetConversionDataUseCase
 ) : ViewModel() {
     var userProfileState by mutableStateOf<UIState<UserProfile>>(UIState.Idle)
         private set
@@ -44,10 +47,14 @@ class HomeViewModel @Inject constructor(
     var lazyListState = LazyListState()
         private set
 
+    var conversionData by mutableStateOf("")
+        private set
+
     init {
         getUserProfile()
         getDeadlines()
         getProjects()
+        getConversionData()
     }
 
     fun onEvent(event: HomeEvent) {
@@ -82,6 +89,18 @@ class HomeViewModel @Inject constructor(
 
                     is Resource.Error -> UIState.Fail(it.message)
                 }
+            }
+        }
+    }
+
+    private fun getConversionData() {
+        Log.d("ProjectDetailViewModel", "getConversionData: ")
+        viewModelScope.launch {
+            getConversionDataUseCase().catch {
+                Log.d("ProjectDetailViewModel", "getConversionData: ${it.localizedMessage}")
+            }.collect {
+                conversionData = it
+                Log.d("ProjectDetailViewModel", "getConversionData: $it")
             }
         }
     }

@@ -108,13 +108,18 @@ class ProjectDetailViewModel @Inject constructor(
 
             is ProjectDetailEvent.OnMoreMenuClicked -> moreMenu = event.actionMenu
 
-            is ProjectDetailEvent.OnAddEditTaskSheetVisChanged -> addEditTaskSheetVis = event.isVisible
+            is ProjectDetailEvent.OnAddEditTaskSheetVisChanged -> addEditTaskSheetVis =
+                event.isVisible
 
-            is ProjectDetailEvent.OnDeleteProjectDialogVisChanged -> deleteProjectDialogVis = event.isVisible
+            is ProjectDetailEvent.OnDeleteProjectDialogVisChanged -> deleteProjectDialogVis =
+                event.isVisible
 
-            is ProjectDetailEvent.OnDeleteTaskDialogVisChanged -> deleteTaskDialogVis = event.isVisible
+            is ProjectDetailEvent.OnDeleteTaskDialogVisChanged -> deleteTaskDialogVis =
+                event.isVisible
         }
     }
+
+
 
     private fun getProjectDetail() {
         projectDetailState = UIState.Loading

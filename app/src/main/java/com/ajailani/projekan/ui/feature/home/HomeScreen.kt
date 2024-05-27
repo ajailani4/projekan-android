@@ -54,9 +54,12 @@ fun HomeScreen(
     sharedViewModel: SharedViewModel,
     onNavigateToProjectList: (ProjectType) -> Unit,
     onNavigateToProjectDetail: (String) -> Unit,
-    onNavigateToAddEditProject: () -> Unit
+    onNavigateToAddEditProject: () -> Unit,
+    projectId: String
 ) {
+
     val onEvent = homeViewModel::onEvent
+    val conversionData = homeViewModel.conversionData
     val userProfileState = homeViewModel.userProfileState
     val deadlinesState = homeViewModel.deadlinesState
     val pagingProjects = homeViewModel.pagingProjects.collectAsLazyPagingItems()
@@ -64,7 +67,6 @@ fun HomeScreen(
     val lazyListState =
         if (pagingProjects.itemCount > 0) homeViewModel.lazyListState else rememberLazyListState()
     val resetLazyListPosition = homeViewModel::resetLazyListPosition
-
     val reloaded = sharedViewModel.reloaded
     val onReloadedChanged = sharedViewModel::onReloadedChanged
 
@@ -107,6 +109,8 @@ fun HomeScreen(
                             .padding(vertical = 20.dp)
                     ) {
                         Header(
+                            projectId = projectId,
+                            conversionData = conversionData,
                             onEvent = onEvent,
                             userProfileState = userProfileState,
                             onReloadedChanged = onReloadedChanged,
@@ -160,7 +164,9 @@ private fun Header(
     onEvent: (HomeEvent) -> Unit,
     userProfileState: UIState<UserProfile>,
     onReloadedChanged: (Boolean) -> Unit,
-    scaffoldState: ScaffoldState
+    scaffoldState: ScaffoldState,
+    projectId: String,
+    conversionData: String
 ) {
     Row(
         modifier = Modifier
@@ -194,6 +200,14 @@ private fun Header(
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(
                         text = stringResource(id = R.string.manage_your_projects),
+                        color = MaterialTheme.colors.onPrimary,
+                    )
+                    Text(
+                        text = projectId,
+                        color = MaterialTheme.colors.onPrimary,
+                    )
+                    Text(
+                        text = conversionData,
                         color = MaterialTheme.colors.onPrimary,
                     )
                 }

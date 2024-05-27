@@ -19,8 +19,15 @@ class PreferencesDataStore @Inject constructor(
             Constants.DataStore.PREFERENCES_NAME
         )
         private val ACCESS_TOKEN = stringPreferencesKey(Constants.DataStore.ACCESS_TOKEN_KEY)
+        private val CONVERSION_DATA= stringPreferencesKey(Constants.DataStore.CONVERSION_DATA_KEY)
     }
-
+    suspend fun saveConversionData(conversionData: String) {
+        context.dataStore.edit {
+            it[CONVERSION_DATA] = conversionData
+        }
+    }
+    fun getConversionData() =
+        context.dataStore.data.map { it[CONVERSION_DATA] ?: "" }
     suspend fun saveAccessToken(accessToken: String) {
         context.dataStore.edit {
             it[ACCESS_TOKEN] = accessToken

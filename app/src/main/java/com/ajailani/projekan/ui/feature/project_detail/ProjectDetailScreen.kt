@@ -72,6 +72,7 @@ fun ProjectDetailScreen(
     val deleteProjectDialogVis = projectDetailViewModel.deleteProjectDialogVis
     val deleteTaskDialogVis = projectDetailViewModel.deleteTaskDialogVis
     val tasks = projectDetailViewModel.tasks
+    val conversionData = sharedViewModel.conversionData
 
     val reloaded = sharedViewModel.reloaded
     val onReloadedChanged = sharedViewModel::onReloadedChanged
@@ -251,10 +252,19 @@ fun ProjectDetailScreen(
                                             )
                                         }
                                         Spacer(modifier = Modifier.height(20.dp))
-                                        Text(
-                                            text = project.description,
-                                            color = MaterialTheme.colors.onSurface
-                                        )
+
+                                        if (conversionData.isNotEmpty()) {
+                                            Text(
+                                                text = sharedViewModel.conversionData,
+                                                color = MaterialTheme.colors.onSurface
+                                            )
+
+                                        } else {
+                                            Text(
+                                                text = project.description,
+                                                color = MaterialTheme.colors.onSurface
+                                            )
+                                        }
                                         Spacer(modifier = Modifier.height(20.dp))
                                         Row(
                                             modifier = Modifier.fillMaxWidth(),

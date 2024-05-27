@@ -4,6 +4,7 @@ class Constants {
     object DataStore {
         const val PREFERENCES_NAME = "projekanPreferences"
         const val ACCESS_TOKEN_KEY = "accessToken"
+        const val CONVERSION_DATA_KEY = "conversionData"
     }
 
     object List {

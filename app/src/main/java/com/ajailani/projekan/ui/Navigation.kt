@@ -22,9 +22,7 @@ fun Navigation(
     startDestination: String,
     sharedViewModel: SharedViewModel
 ) {
-    if (projectId != "") {
-        navController.navigate(Screen.ProjectDetail.route + "?projectId=$projectId")
-    }
+
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.Welcome.route) {
@@ -80,6 +78,7 @@ fun Navigation(
 
         composable(route = Screen.Home.route) {
             HomeScreen(
+                projectId=projectId,
                 sharedViewModel = sharedViewModel,
                 onNavigateToProjectList = { projectType ->
                     navController.navigate(
