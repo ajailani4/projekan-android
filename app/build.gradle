@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'com.ajailani.projekan'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.ajailani.projekan"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 5
         versionName "2.0.0"
 
