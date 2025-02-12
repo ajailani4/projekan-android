@@ -1,14 +1,30 @@
 package com.ajailani.projekan.ui.feature.project_list
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -19,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
 import com.ajailani.projekan.R
 import com.ajailani.projekan.ui.common.SharedViewModel
 import com.ajailani.projekan.ui.common.component.CaptionImage
@@ -89,8 +104,8 @@ fun ProjectListScreen(
                 .pullRefresh(pullRefreshState)
         ) {
             LazyColumn(contentPadding = PaddingValues(20.dp)) {
-                items(pagingProjects) { projectItem ->
-                    projectItem?.let {
+                items(pagingProjects.itemCount) { index ->
+                    pagingProjects[index]?.let { projectItem ->
                         VProjectItemCard(
                             projectItem = projectItem,
                             onClick = { onNavigateToProjectDetail(projectItem.id) }

@@ -2,17 +2,43 @@ package com.ajailani.projekan.ui.feature.project_detail
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.ModalBottomSheetState
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -41,8 +67,16 @@ import com.ajailani.projekan.ui.common.UIState
 import com.ajailani.projekan.ui.common.component.CaptionImage
 import com.ajailani.projekan.ui.common.component.Label
 import com.ajailani.projekan.ui.common.component.ProgressBarWithBackground
-import com.ajailani.projekan.ui.feature.project_detail.component.*
-import com.ajailani.projekan.ui.theme.*
+import com.ajailani.projekan.ui.feature.project_detail.component.AddEditTaskSheet
+import com.ajailani.projekan.ui.feature.project_detail.component.MoreMenuSheet
+import com.ajailani.projekan.ui.feature.project_detail.component.ProjectDetailShimmer
+import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCard
+import com.ajailani.projekan.ui.feature.project_detail.component.TaskItemCardShimmer
+import com.ajailani.projekan.ui.theme.Blue
+import com.ajailani.projekan.ui.theme.Grey
+import com.ajailani.projekan.ui.theme.LightGrey
+import com.ajailani.projekan.ui.theme.Yellow
+import com.ajailani.projekan.ui.theme.backgroundGrey
 import com.ajailani.projekan.util.Formatter
 import com.ajailani.projekan.util.ProjectStatus
 import com.ajailani.projekan.util.TaskStatus
@@ -142,10 +176,8 @@ fun ProjectDetailScreen(
                             onClick = {
                                 onEvent(ProjectDetailEvent.OnMoreMenuClicked(1))
 
-                                if (!modalBottomSheetState.isAnimationRunning) {
-                                    coroutineScope.launch {
-                                        modalBottomSheetState.show()
-                                    }
+                                coroutineScope.launch {
+                                    modalBottomSheetState.show()
                                 }
                             }
                         ) {
@@ -163,10 +195,8 @@ fun ProjectDetailScreen(
                         onEvent(ProjectDetailEvent.OnAddEditTaskSheetVisChanged(true))
                         onEvent(ProjectDetailEvent.OnTaskSelected(null))
 
-                        if (!modalBottomSheetState.isAnimationRunning) {
-                            coroutineScope.launch {
-                                modalBottomSheetState.show()
-                            }
+                        coroutineScope.launch {
+                            modalBottomSheetState.show()
                         }
                     }
                 ) {
@@ -605,10 +635,8 @@ private fun LazyListScope.tasksSection(
                     onEvent(ProjectDetailEvent.OnTaskSelected(taskItem))
                     onEvent(ProjectDetailEvent.OnMoreMenuClicked(2))
 
-                    if (!modalBottomSheetState.isAnimationRunning) {
-                        coroutineScope.launch {
-                            modalBottomSheetState.show()
-                        }
+                    coroutineScope.launch {
+                        modalBottomSheetState.show()
                     }
                 }
             )

@@ -6,7 +6,7 @@ import com.ajailani.projekan.data.remote.dto.response.BaseResponse
 import retrofit2.Response
 
 class PagingDataSource<T : Any>(
-    private inline val serviceMethod: suspend (page: Int, size: Int) -> Response<BaseResponse<List<T>>>
+    private val serviceMethod: suspend (page: Int, size: Int) -> Response<BaseResponse<List<T>>>
 ) : PagingSource<Int, T>() {
     override suspend fun load(params: LoadParams<Int>) =
         try {
